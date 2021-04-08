@@ -25,4 +25,17 @@
         <tag>456</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2021/04/08/Test/</url>
+    <content><![CDATA[<p>This IS Test</p>
+<p><img src="https://i.loli.net/2021/04/08/yLhJOMezlPUu6iD.png" alt="堆区结构.png"></p>
+]]></content>
+      <categories>
+        <category>test</category>
+      </categories>
+      <tags>
+        <tag>123</tag>
+      </tags>
+  </entry>
 </search>
