@@ -21,7 +21,8 @@
         <category>test</category>
       </categories>
       <tags>
-        <tag>-123 -456</tag>
+        <tag>123</tag>
+        <tag>456</tag>
       </tags>
   </entry>
 </search>
