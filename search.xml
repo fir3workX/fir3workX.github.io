@@ -155,4 +155,16 @@
         <tag>链接</tag>
       </tags>
   </entry>
+  <entry>
+    <title>CVE-2021-25646堆溢出漏洞复现及分析</title>
+    <url>/2021/04/10/CVE-2021-3156/</url>
+    <content><![CDATA[<h1 id="CVE-2021-25646堆溢出漏洞复现及分析"><a href="#CVE-2021-25646堆溢出漏洞复现及分析" class="headerlink" title="CVE-2021-25646堆溢出漏洞复现及分析"></a>CVE-2021-25646堆溢出漏洞复现及分析</h1>]]></content>
+      <categories>
+        <category>CVE</category>
+      </categories>
+      <tags>
+        <tag>堆溢出</tag>
+        <tag>CVE-2021-3156</tag>
+      </tags>
+  </entry>
 </search>
