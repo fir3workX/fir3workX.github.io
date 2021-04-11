@@ -20,7 +20,7 @@
   </entry>
   <entry>
     <title>Linux代码编译过程</title>
-    <url>/2021/04/09/Linux%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B/</url>
+    <url>/2021/04/12/Linux%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B/</url>
     <content><![CDATA[<h1 id="Linux下Hello-World的前生今世"><a href="#Linux下Hello-World的前生今世" class="headerlink" title="Linux下Hello World的前生今世"></a>Linux下Hello World的前生今世</h1><h2 id="代码引入"><a href="#代码引入" class="headerlink" title="代码引入"></a>代码引入</h2><p>hello.c</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">char</span> *argv[],<span class="keyword">char</span> *envp[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Hello World\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -91,11 +91,11 @@
 <p>.debug:调试符号表</p>
 <p>可执行文件中的段是由目标文件中的节合并而来的，以下是链接器如何将它们的各个节合并到输出文件，也即输出文件中的空间如何分配给输入文件的两种方式。</p>
 <p><strong>顺序叠加</strong></p>
-<p><img src="https://i.loli.net/2021/04/10/4gsBqv7fHbFXjMT.png" alt="elf1.png"></p>
+<p><img src="https://i.loli.net/2021/04/10/s5acwxbHEJCvldq.png" alt="elf2.png"></p>
 <p>虽然这种方法非常简单，但是它存在一个问题：在有很多输入文件的情况下，输出文件会有很多零散的节。这种做法非常浪费空间，因为每个节都需要有一定的地址和空间对齐要求。x86硬件的对齐要求是4KB。如果一个节的大小只有1个字节，它也要在内存在重用4KB。这样会造成大量内部碎片。所以不是一个好的方案。</p>
 <p><strong>合并相似节</strong></p>
 <p>一个更加实际的方法便是合并相同性质的节，比如：将所有输入文件的 <strong><code>.text</code>节</strong>合并到输出文件的 <strong><code>text</code>段</strong>（注意，此时出现了段和节两个概念），如下图所示。</p>
-<p><img src="https://i.loli.net/2021/04/10/s5acwxbHEJCvldq.png" alt="elf2.png"></p>
+<p><img src="https://i.loli.net/2021/04/10/4gsBqv7fHbFXjMT.png" alt="elf1.png"></p>
 <p>其中<code>.bss</code>节在目标文件和可执行文件中不占用文件的空间，但是它在装载时占用地址空间。事实上，这里的<strong>空间和地址</strong>有两层含义:</p>
 <ol>
 <li>在输出的可执行文件中的空间</li>
