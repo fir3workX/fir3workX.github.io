@@ -656,8 +656,8 @@ Last Remainder chunk：对small bin的malloc机制的介绍中当用户请求的
 <p>According to SearchSecurity, SSH is a network protocol that gives users, particularly system administrators, a secure way to <strong>access a computer</strong> over an <strong>unsecured network</strong>.</p>
 <ul>
 <li>Host Name : <code>bandit.labs.overthewire.org</code></li>
-<li>Username : <code>**bandit0**</code></li>
-<li>Password : <code>**bandit0**</code></li>
+<li>Username : <code>bandit0</code></li>
+<li>Password : <code>bandit0</code></li>
 <li>Port Number : <code>2220</code></li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh bandit0@bandit.labs.overthewire.org -p 2220</span><br></pre></td></tr></table></figure>
@@ -670,7 +670,7 @@ Last Remainder chunk：对small bin的malloc机制的介绍中当用户请求的
 <h2 id="Level-1➡Level-2"><a href="#Level-1➡Level-2" class="headerlink" title="Level_1➡Level_2"></a>Level_1➡Level_2</h2><p><strong>cat the file stars with dash:</strong></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bandit1@bandit:~$ cat ./-</span><br><span class="line">CV1DtqXWVFXTvM2F0k09SHz0YwRINYA9</span><br><span class="line">bandit1@bandit:~$ cat &lt;-</span><br><span class="line">CV1DtqXWVFXTvM2F0k09SHz0YwRINYA9</span><br></pre></td></tr></table></figure>
 
-<h2 id="Level-2➡Level-3"><a href="#Level-2➡Level-3" class="headerlink" title="Level_2➡Level_3"></a>Level_2➡Level_3</h2><p>​    <strong>Use” \“ escape character</strong></p>
+<h2 id="Level-2➡Level-3"><a href="#Level-2➡Level-3" class="headerlink" title="Level_2➡Level_3"></a>Level_2➡Level_3</h2><p>​    <strong>Use” \“  to escape character</strong></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bandit2@bandit:~$ ls</span><br><span class="line">spaces <span class="keyword">in</span> this filename</span><br><span class="line">bandit2@bandit:~$ cat spaces\ <span class="keyword">in</span>\ this\ filename </span><br><span class="line">UmHadQclWmgdLOKQ3YNgjWxGoRMb5luK</span><br></pre></td></tr></table></figure>
 
 <h2 id="Level-3➡Level-4"><a href="#Level-3➡Level-4" class="headerlink" title="Level_3➡Level_4"></a>Level_3➡Level_4</h2><p><strong>Usage of command : ls</strong> 、<strong>cd</strong>:</p>
@@ -853,7 +853,107 @@ Last Remainder chunk：对small bin的malloc机制的介绍中当用户请求的
 </ul>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bandit14@bandit:~$ nc localhost 30000</span><br><span class="line">4wcYUJFw0k0XLShlDzztnTBHiqxU3b3e</span><br><span class="line">Correct!</span><br><span class="line">BfMYroe26WYalil77FoDi9qh59eK5xNr</span><br></pre></td></tr></table></figure>
 
-<h2 id="Level-15➡Level-16"><a href="#Level-15➡Level-16" class="headerlink" title="Level_15➡Level_16"></a>Level_15➡Level_16</h2><h2 id="Level-16➡Level-17"><a href="#Level-16➡Level-17" class="headerlink" title="Level_16➡Level_17"></a>Level_16➡Level_17</h2><h2 id="Level-17➡Level-18"><a href="#Level-17➡Level-18" class="headerlink" title="Level_17➡Level_18"></a>Level_17➡Level_18</h2><h2 id="Level-18➡Level-19"><a href="#Level-18➡Level-19" class="headerlink" title="Level_18➡Level_19"></a>Level_18➡Level_19</h2><h2 id="Level-19➡Level-20"><a href="#Level-19➡Level-20" class="headerlink" title="Level_19➡Level_20"></a>Level_19➡Level_20</h2><h2 id="Level-20➡Level-21"><a href="#Level-20➡Level-21" class="headerlink" title="Level_20➡Level_21"></a>Level_20➡Level_21</h2><h2 id="Level-21➡Level-22"><a href="#Level-21➡Level-22" class="headerlink" title="Level_21➡Level_22"></a>Level_21➡Level_22</h2><h2 id="Level-22➡Level-23"><a href="#Level-22➡Level-23" class="headerlink" title="Level_22➡Level_23"></a>Level_22➡Level_23</h2><h2 id="Level-23➡Level-24"><a href="#Level-23➡Level-24" class="headerlink" title="Level_23➡Level_24"></a>Level_23➡Level_24</h2><h2 id="Level-24➡Level-25"><a href="#Level-24➡Level-25" class="headerlink" title="Level_24➡Level_25"></a>Level_24➡Level_25</h2><h2 id="Level-25➡Level-26"><a href="#Level-25➡Level-26" class="headerlink" title="Level_25➡Level_26"></a>Level_25➡Level_26</h2><h2 id="Level-26➡Level-27"><a href="#Level-26➡Level-27" class="headerlink" title="Level_26➡Level_27"></a>Level_26➡Level_27</h2><h2 id="Level-27➡Level-28"><a href="#Level-27➡Level-28" class="headerlink" title="Level_27➡Level_28"></a>Level_27➡Level_28</h2><h2 id="Level-28➡Level-29"><a href="#Level-28➡Level-29" class="headerlink" title="Level_28➡Level_29"></a>Level_28➡Level_29</h2><h2 id="Level-29➡Level-30"><a href="#Level-29➡Level-30" class="headerlink" title="Level_29➡Level_30"></a>Level_29➡Level_30</h2><h2 id="Level-30➡Level-31"><a href="#Level-30➡Level-31" class="headerlink" title="Level_30➡Level_31"></a>Level_30➡Level_31</h2><h2 id="Level-31➡Level-32"><a href="#Level-31➡Level-32" class="headerlink" title="Level_31➡Level_32"></a>Level_31➡Level_32</h2><h2 id="Level-32➡Level-33"><a href="#Level-32➡Level-33" class="headerlink" title="Level_32➡Level_33"></a>Level_32➡Level_33</h2>]]></content>
+<h2 id="Level-15➡Level-16"><a href="#Level-15➡Level-16" class="headerlink" title="Level_15➡Level_16"></a>Level_15➡Level_16</h2><p><strong>Learn about openssl、s_client</strong></p>
+<pre><code>   The s_client command implements a generic SSL/TLS client which connects to a remote host
+   using SSL/TLS. It is a very useful diagnostic tool for SSL servers.
+</code></pre>
+<p>man文档写的很详细。</p>
+<p>直接连就行</p>
+<p><em>openssl s_client -connect localhost:30001</em></p>
+<p>输入本关flag即可</p>
+<h2 id="Level-16➡Level-17"><a href="#Level-16➡Level-17" class="headerlink" title="Level_16➡Level_17"></a>Level_16➡Level_17</h2><p>What’s nmap?</p>
+<p><strong>Name</strong></p>
+<p>nmap - Network exploration tool and security / port scanner</p>
+<p> <strong>Synopsis</strong></p>
+<p><strong>nmap</strong> [<em>Scan Type</em>…] [<em>Options</em>] {<em>target specification</em>}</p>
+<p><strong>Options</strong></p>
+<table>
+<thead>
+<tr>
+<th>-sT</th>
+<th>TCP connect()扫描，这种方式会在目标主机的日志中记录大批连接请求和错误信息。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-sS</td>
+<td>半开扫描，很少有系统能把它记入系统日志。不过，需要Root权限。</td>
+</tr>
+<tr>
+<td>-sF  -sN</td>
+<td>秘密FIN数据包扫描、Xmas Tree、Null扫描模式</td>
+</tr>
+<tr>
+<td>-sP</td>
+<td>ping扫描，Nmap在扫描端口时，默认都会使用ping扫描，只有主机存活，Nmap才会继续扫描。</td>
+</tr>
+<tr>
+<td>-sU</td>
+<td>UDP扫描，但UDP扫描是不可靠的</td>
+</tr>
+<tr>
+<td>-sA</td>
+<td>这项高级的扫描方法通常用来穿过防火墙的规则集</td>
+</tr>
+<tr>
+<td>-sV</td>
+<td>探测端口服务版本</td>
+</tr>
+<tr>
+<td>-Pn</td>
+<td>扫描之前不需要用ping命令，有些防火墙禁止ping命令。可以使用此选项进行扫描</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>显示扫描过程，推荐使用</td>
+</tr>
+<tr>
+<td>-h</td>
+<td>帮助选项，是最清楚的帮助文档</td>
+</tr>
+<tr>
+<td>-p</td>
+<td>指定端口，如“1-65535、1433、135、22、80”等</td>
+</tr>
+<tr>
+<td>-O</td>
+<td>启用远程操作系统检测，存在误报</td>
+</tr>
+<tr>
+<td>-A</td>
+<td>全面系统检测、启用脚本检测、扫描等</td>
+</tr>
+<tr>
+<td>-oN/-oX/-oG</td>
+<td>将报告写入文件，分别是正常、XML、grepable 三种格式</td>
+</tr>
+<tr>
+<td>-T4</td>
+<td>针对TCP端口禁止动态扫描延迟超过10ms</td>
+</tr>
+<tr>
+<td>-iL</td>
+<td>读取主机列表，例如，“-iL C:\ip.txt”</td>
+</tr>
+</tbody></table>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nmap常用参数 </span><br><span class="line">nmap -A IP 	最常规的nmap扫描</span><br><span class="line">nmap -sP IP 	简单扫描（simple Ping）</span><br><span class="line">nmap -sS IP 	用SYN进行扫描，会向目标发一个小的包</span><br><span class="line">nmap -sT IP 	用TCP进行扫描，会向目标发一个小的包</span><br><span class="line">nmap -sU IP 	用UDP进行扫描，会向目标发一个小的包</span><br><span class="line">nmap -sI IP1 IP2 	用伪装的IP1地址去扫描目标IP2</span><br><span class="line">  	 </span><br><span class="line">nmap IP  ;   nmap -PE IP 	常规的基于ICMP ping扫描</span><br><span class="line">nmap -PP IP 	使用ICMP时间戳扫描，可以透墙</span><br><span class="line">nmap -PN IP 	IP如看似离线、宕机，尝试此参数，不用ICMP PING来进行扫描</span><br><span class="line">nmap -PS IP 	使用TCP SYN 扫描，不用ICMP</span><br><span class="line">nmap -PA IP 	使用TCP ACK 扫描，不用ICMP</span><br><span class="line">nmap -PU IP 	使用UDP 扫描，不用ICMP</span><br><span class="line">nmap -p 端口号 IP 	扫描某IP的某端口</span><br><span class="line">nmap -O IP 	扫描目的IP设备，系统检测查看OS等信息</span><br><span class="line">  	 </span><br><span class="line">  	 </span><br><span class="line">nmap -sU -sT -p U:53,T:25 172.20.6.69 	扫描172.20.6.69  的tcp25口，udp的53口</span><br><span class="line">nmap –source-port  54 172.20.6.69 	用指定的端口（如54）去扫描目标IP（172.20.6.69）</span><br><span class="line">nmap –data-length  25  172.20.6.69 	发指定长度的包去探测目标IP</span><br><span class="line">nmap –randomize-hosts 172.20.6.69-100 	随机遍历扫描172.20.6.69-100之间的IP</span><br><span class="line">  	 </span><br><span class="line">nmap -D RND:10 172.20.6.69 	—D 诱饵选项，设定n个随机虚假的地址去扫描目标地址172.20.6.69</span><br><span class="line">nmap -d 172.20.6.69 	debug模式扫描目标IP,可以看到每一步的进度</span><br><span class="line">nmap –mtu 8  172.20.6.69 	设置mtu为8 ，发很小的包给172.20.6.69进行扫描，能避免大多数的防火墙的阻拦，此值只要是8的倍数就行，如16，32,40.。。。</span><br><span class="line">nmap -F IP 	快速扫描目标IP端口，也发送很小的包给目标地址，有点类似上条  –mtu 8</span><br><span class="line">  	 </span><br><span class="line">nmap -oN  scan.txt 172.20.6.1/24 	扫描172.20.6.0网段设备，结果输出至文件sanc.txt中</span><br><span class="line">nmap -oX  scan.xml 172.20.6.1/24 	扫描172.20.6.0网段设备，结果输出至文件sanc.xml中</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nmap -sV localhost -p 31000-32000</span><br></pre></td></tr></table></figure>
+
+<p>扫出来的几个端口不多一个个试即可</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bandit16@bandit:~$ openssl s_client -connect localhost:31790 -ign_eof</span><br></pre></td></tr></table></figure>
+
+<p>输入本关密码即可得到下一关的密钥</p>
+<h2 id="Level-17➡Level-18"><a href="#Level-17➡Level-18" class="headerlink" title="Level_17➡Level_18"></a>Level_17➡Level_18</h2><p>用上一关private_key进行连接的时候注意一点，要用chmod改一下私钥权限</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chmod 777 rsa.priv</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Level-18➡Level-19"><a href="#Level-18➡Level-19" class="headerlink" title="Level_18➡Level_19"></a>Level_18➡Level_19</h2><p><strong>Usage of diff</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bandit17@bandit:~$ ls</span><br><span class="line">passwords.new  passwords.old</span><br><span class="line">bandit17@bandit:~$ diff passwords.old passwords.new</span><br><span class="line">42c42</span><br><span class="line">&lt; w0Yfolrc5bwjS4qw5mq1nnQi6mF03bii</span><br><span class="line">---</span><br><span class="line">&gt; kfBf3eYk5BPBRzwjqutbbfE887SVc5Yd</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Level-19➡Level-20"><a href="#Level-19➡Level-20" class="headerlink" title="Level_19➡Level_20"></a>Level_19➡Level_20</h2><h2 id="Level-20➡Level-21"><a href="#Level-20➡Level-21" class="headerlink" title="Level_20➡Level_21"></a>Level_20➡Level_21</h2><h2 id="Level-21➡Level-22"><a href="#Level-21➡Level-22" class="headerlink" title="Level_21➡Level_22"></a>Level_21➡Level_22</h2><h2 id="Level-22➡Level-23"><a href="#Level-22➡Level-23" class="headerlink" title="Level_22➡Level_23"></a>Level_22➡Level_23</h2><h2 id="Level-23➡Level-24"><a href="#Level-23➡Level-24" class="headerlink" title="Level_23➡Level_24"></a>Level_23➡Level_24</h2><h2 id="Level-24➡Level-25"><a href="#Level-24➡Level-25" class="headerlink" title="Level_24➡Level_25"></a>Level_24➡Level_25</h2><h2 id="Level-25➡Level-26"><a href="#Level-25➡Level-26" class="headerlink" title="Level_25➡Level_26"></a>Level_25➡Level_26</h2><h2 id="Level-26➡Level-27"><a href="#Level-26➡Level-27" class="headerlink" title="Level_26➡Level_27"></a>Level_26➡Level_27</h2><h2 id="Level-27➡Level-28"><a href="#Level-27➡Level-28" class="headerlink" title="Level_27➡Level_28"></a>Level_27➡Level_28</h2><h2 id="Level-28➡Level-29"><a href="#Level-28➡Level-29" class="headerlink" title="Level_28➡Level_29"></a>Level_28➡Level_29</h2><h2 id="Level-29➡Level-30"><a href="#Level-29➡Level-30" class="headerlink" title="Level_29➡Level_30"></a>Level_29➡Level_30</h2><h2 id="Level-30➡Level-31"><a href="#Level-30➡Level-31" class="headerlink" title="Level_30➡Level_31"></a>Level_30➡Level_31</h2><h2 id="Level-31➡Level-32"><a href="#Level-31➡Level-32" class="headerlink" title="Level_31➡Level_32"></a>Level_31➡Level_32</h2><h2 id="Level-32➡Level-33"><a href="#Level-32➡Level-33" class="headerlink" title="Level_32➡Level_33"></a>Level_32➡Level_33</h2>]]></content>
       <categories>
         <category>linux</category>
       </categories>
