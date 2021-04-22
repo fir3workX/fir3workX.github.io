@@ -649,7 +649,7 @@ Last Remainder chunk：对small bin的malloc机制的介绍中当用户请求的
 
 <p>发现导入了”includes/secret.inc” ，比较的时候访问该目录可看到密码，提交即可</p>
 <h2 id="Level-6➡Level-7"><a href="#Level-6➡Level-7" class="headerlink" title="Level_6➡Level_7"></a><strong>Level_6➡Level_7</strong></h2><p>include()文件包含漏洞，用户传入的page参数未经过滤直接调用include()函数，传入/etc/natas_webpass/natas8作为参数即可。</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&lt;?</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$encodedSecret</span> = <span class="string">&quot;3d3d516343746d4d6d6c315669563362&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">encodeSecret</span>(<span class="params"><span class="variable">$secret</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> bin2hex(strrev(base64_encode(<span class="variable">$secret</span>)));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(array_key_exists(<span class="string">&quot;submit&quot;</span>, <span class="variable">$_POST</span>)) &#123;</span><br><span class="line">    <span class="keyword">if</span>(encodeSecret(<span class="variable">$_POST</span>[<span class="string">&#x27;secret&#x27;</span>]) == <span class="variable">$encodedSecret</span>) &#123;</span><br><span class="line">    <span class="keyword">print</span> <span class="string">&quot;Access granted. The password for natas9 is &lt;censored&gt;&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">print</span> <span class="string">&quot;Wrong secret&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Level-7➡Level-8"><a href="#Level-7➡Level-8" class="headerlink" title="Level_7➡Level_8"></a><strong>Level_7➡Level_8</strong></h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&lt;?</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$encodedSecret</span> = <span class="string">&quot;3d3d516343746d4d6d6c315669563362&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">encodeSecret</span>(<span class="params"><span class="variable">$secret</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> bin2hex(strrev(base64_encode(<span class="variable">$secret</span>)));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(array_key_exists(<span class="string">&quot;submit&quot;</span>, <span class="variable">$_POST</span>)) &#123;</span><br><span class="line">    <span class="keyword">if</span>(encodeSecret(<span class="variable">$_POST</span>[<span class="string">&#x27;secret&#x27;</span>]) == <span class="variable">$encodedSecret</span>) &#123;</span><br><span class="line">    <span class="keyword">print</span> <span class="string">&quot;Access granted. The password for natas9 is &lt;censored&gt;&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">print</span> <span class="string">&quot;Wrong secret&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>根据加密过程解密即可</p>
 <p>练习一下python</p>
@@ -661,17 +661,19 @@ Last Remainder chunk：对small bin的malloc机制的介绍中当用户请求的
 
 <p><em>-r</em> | <em>-revert</em></p>
 <p>reverse operation: convert (or patch) hexdump into binary. If not writing to stdout, xxd writes into its output file without truncating it. <strong>Use the combination <em>-r</em> -p to read plain hexadecimal dumps without line number information and without a particular column layout.</strong> Additional Whitespace and line-breaks are allowed anywhere.</p>
-<h2 id="Level-7➡Level-8"><a href="#Level-7➡Level-8" class="headerlink" title="Level_7➡Level_8"></a><strong>Level_7➡Level_8</strong></h2><h2 id="Learn-about-passthru"><a href="#Learn-about-passthru" class="headerlink" title="Learn about passthru()"></a><strong>Learn about passthru()</strong></h2><p>passtru():exec() 函数类似， passthru() 函数也是用来执行外部命令（ command ）的。 </p>
+<h2 id="Level-8➡Level-9"><a href="#Level-8➡Level-9" class="headerlink" title="Level_8➡Level_9"></a><strong>Level_8➡Level_9</strong></h2><h2 id="Learn-about-passthru"><a href="#Learn-about-passthru" class="headerlink" title="Learn about passthru()"></a><strong>Learn about passthru()</strong></h2><p>passtru():exec() 函数类似， passthru() 函数也是用来执行外部命令（ command ）的。 </p>
 <p>用户输入未过滤，直接用 ; 截断grep 命令cat flag</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">;cat /etc/natas_webpass/natas10</span><br></pre></td></tr></table></figure>
 
-<h2 id="Level-8➡Level-9"><a href="#Level-8➡Level-9" class="headerlink" title="Level_8➡Level_9"></a><strong>Level_8➡Level_9</strong></h2><p>注意到对用户输入进行过滤，但只是过滤了; | &amp;特殊字符</p>
+<h2 id="Level-9➡Level-10"><a href="#Level-9➡Level-10" class="headerlink" title="Level_9➡Level_10"></a><strong>Level_9➡Level_10</strong></h2><p>注意到对用户输入进行过滤，但只是过滤了; | &amp;特殊字符</p>
 <h2 id="Uage-of-grep-and-regex"><a href="#Uage-of-grep-and-regex" class="headerlink" title="Uage of grep and regex"></a><strong>Uage of grep and regex</strong></h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grep <span class="string">&#x27;[A-Za-z]&#x27;</span> 文件名</span><br></pre></td></tr></table></figure>
 
 <p>Demo:</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[a-zA-Z] /etc/natas_webpass/natas11</span><br><span class="line">Or</span><br><span class="line">. /etc/natas_webpass/natas11</span><br></pre></td></tr></table></figure>
 
-<h2 id="Level-9➡Level-10"><a href="#Level-9➡Level-10" class="headerlink" title="Level_9➡Level_10"></a><strong>Level_9➡Level_10</strong></h2><h2 id="Level-10➡Level-11"><a href="#Level-10➡Level-11" class="headerlink" title="Level_10➡Level_11"></a><strong>Level_10➡Level_11</strong></h2><h2 id="Level-11➡Level-12"><a href="#Level-11➡Level-12" class="headerlink" title="Level_11➡Level_12"></a><strong>Level_11➡Level_12</strong></h2><h2 id="Level-12➡Level-13"><a href="#Level-12➡Level-13" class="headerlink" title="Level_12➡Level_13"></a><strong>Level_12➡Level_13</strong></h2><h2 id="Level-13➡Level-14"><a href="#Level-13➡Level-14" class="headerlink" title="Level_13➡Level_14"></a><strong>Level_13➡Level_14</strong></h2><h2 id="Level-14➡Level-15"><a href="#Level-14➡Level-15" class="headerlink" title="Level_14➡Level_15"></a><strong>Level_14➡Level_15</strong></h2><h2 id="Level-15➡Level-16"><a href="#Level-15➡Level-16" class="headerlink" title="Level_15➡Level_16"></a><strong>Level_15➡Level_16</strong></h2><h2 id="Level-16➡Level-17"><a href="#Level-16➡Level-17" class="headerlink" title="Level_16➡Level_17"></a><strong>Level_16➡Level_17</strong></h2><h2 id="Level-17➡Level-18"><a href="#Level-17➡Level-18" class="headerlink" title="Level_17➡Level_18"></a><strong>Level_17➡Level_18</strong></h2><h2 id="Level-18➡Level-19"><a href="#Level-18➡Level-19" class="headerlink" title="Level_18➡Level_19"></a><strong>Level_18➡Level_19</strong></h2><h2 id="Level-19➡Level-20"><a href="#Level-19➡Level-20" class="headerlink" title="Level_19➡Level_20"></a><strong>Level_19➡Level_20</strong></h2><h2 id="Level-20➡Level-21"><a href="#Level-20➡Level-21" class="headerlink" title="Level_20➡Level_21"></a><strong>Level_20➡Level_21</strong></h2><h2 id="Level-21➡Level-22"><a href="#Level-21➡Level-22" class="headerlink" title="Level_21➡Level_22"></a><strong>Level_21➡Level_22</strong></h2><h2 id="Level-22➡Level-23"><a href="#Level-22➡Level-23" class="headerlink" title="Level_22➡Level_23"></a><strong>Level_22➡Level_23</strong></h2><h2 id="Level-23➡Level-24"><a href="#Level-23➡Level-24" class="headerlink" title="Level_23➡Level_24"></a><strong>Level_23➡Level_24</strong></h2><h2 id="Level-24➡Level-25"><a href="#Level-24➡Level-25" class="headerlink" title="Level_24➡Level_25"></a><strong>Level_24➡Level_25</strong></h2><h2 id="Level-25➡Level-26"><a href="#Level-25➡Level-26" class="headerlink" title="Level_25➡Level_26"></a><strong>Level_25➡Level_26</strong></h2><h2 id="Level-26➡Level-27"><a href="#Level-26➡Level-27" class="headerlink" title="Level_26➡Level_27"></a><strong>Level_26➡Level_27</strong></h2><h2 id="Level-27➡Level-28"><a href="#Level-27➡Level-28" class="headerlink" title="Level_27➡Level_28"></a><strong>Level_27➡Level_28</strong></h2><h2 id="Level-28➡Level-29"><a href="#Level-28➡Level-29" class="headerlink" title="Level_28➡Level_29"></a><strong>Level_28➡Level_29</strong></h2><h2 id="Level-29➡Level-30"><a href="#Level-29➡Level-30" class="headerlink" title="Level_29➡Level_30"></a><strong>Level_29➡Level_30</strong></h2><h2 id="Level-30➡Level-31"><a href="#Level-30➡Level-31" class="headerlink" title="**Level_30➡Level_**31"></a>**Level_30➡Level_**31</h2><h2 id="Level-31➡Level-32"><a href="#Level-31➡Level-32" class="headerlink" title="Level_31➡Level_32"></a><strong>Level_31➡Level_32</strong></h2><h2 id="Level-32➡Level-33"><a href="#Level-32➡Level-33" class="headerlink" title="Level_32➡Level_33"></a><strong>Level_32➡Level_33</strong></h2><h2 id="Level-33➡Level-34"><a href="#Level-33➡Level-34" class="headerlink" title="**Level_33➡Level_**34"></a>**Level_33➡Level_**34</h2>]]></content>
+
+
+<h2 id="Level-10➡Level-11"><a href="#Level-10➡Level-11" class="headerlink" title="Level_10➡Level_11"></a><strong>Level_10➡Level_11</strong></h2><h2 id="Level-11➡Level-12"><a href="#Level-11➡Level-12" class="headerlink" title="Level_11➡Level_12"></a><strong>Level_11➡Level_12</strong></h2><h2 id="Level-12➡Level-13"><a href="#Level-12➡Level-13" class="headerlink" title="Level_12➡Level_13"></a><strong>Level_12➡Level_13</strong></h2><h2 id="Level-13➡Level-14"><a href="#Level-13➡Level-14" class="headerlink" title="Level_13➡Level_14"></a><strong>Level_13➡Level_14</strong></h2><h2 id="Level-14➡Level-15"><a href="#Level-14➡Level-15" class="headerlink" title="Level_14➡Level_15"></a><strong>Level_14➡Level_15</strong></h2><h2 id="Level-15➡Level-16"><a href="#Level-15➡Level-16" class="headerlink" title="Level_15➡Level_16"></a><strong>Level_15➡Level_16</strong></h2><h2 id="Level-16➡Level-17"><a href="#Level-16➡Level-17" class="headerlink" title="Level_16➡Level_17"></a><strong>Level_16➡Level_17</strong></h2><h2 id="Level-17➡Level-18"><a href="#Level-17➡Level-18" class="headerlink" title="Level_17➡Level_18"></a><strong>Level_17➡Level_18</strong></h2><h2 id="Level-18➡Level-19"><a href="#Level-18➡Level-19" class="headerlink" title="Level_18➡Level_19"></a><strong>Level_18➡Level_19</strong></h2><h2 id="Level-19➡Level-20"><a href="#Level-19➡Level-20" class="headerlink" title="Level_19➡Level_20"></a><strong>Level_19➡Level_20</strong></h2><h2 id="Level-20➡Level-21"><a href="#Level-20➡Level-21" class="headerlink" title="Level_20➡Level_21"></a><strong>Level_20➡Level_21</strong></h2><h2 id="Level-21➡Level-22"><a href="#Level-21➡Level-22" class="headerlink" title="Level_21➡Level_22"></a><strong>Level_21➡Level_22</strong></h2><h2 id="Level-22➡Level-23"><a href="#Level-22➡Level-23" class="headerlink" title="Level_22➡Level_23"></a><strong>Level_22➡Level_23</strong></h2><h2 id="Level-23➡Level-24"><a href="#Level-23➡Level-24" class="headerlink" title="Level_23➡Level_24"></a><strong>Level_23➡Level_24</strong></h2><h2 id="Level-24➡Level-25"><a href="#Level-24➡Level-25" class="headerlink" title="Level_24➡Level_25"></a><strong>Level_24➡Level_25</strong></h2><h2 id="Level-25➡Level-26"><a href="#Level-25➡Level-26" class="headerlink" title="Level_25➡Level_26"></a><strong>Level_25➡Level_26</strong></h2><h2 id="Level-26➡Level-27"><a href="#Level-26➡Level-27" class="headerlink" title="Level_26➡Level_27"></a><strong>Level_26➡Level_27</strong></h2><h2 id="Level-27➡Level-28"><a href="#Level-27➡Level-28" class="headerlink" title="Level_27➡Level_28"></a><strong>Level_27➡Level_28</strong></h2><h2 id="Level-28➡Level-29"><a href="#Level-28➡Level-29" class="headerlink" title="Level_28➡Level_29"></a><strong>Level_28➡Level_29</strong></h2><h2 id="Level-29➡Level-30"><a href="#Level-29➡Level-30" class="headerlink" title="Level_29➡Level_30"></a><strong>Level_29➡Level_30</strong></h2><h2 id="Level-30➡Level-31"><a href="#Level-30➡Level-31" class="headerlink" title="**Level_30➡Level_**31"></a>**Level_30➡Level_**31</h2><h2 id="Level-31➡Level-32"><a href="#Level-31➡Level-32" class="headerlink" title="Level_31➡Level_32"></a><strong>Level_31➡Level_32</strong></h2><h2 id="Level-32➡Level-33"><a href="#Level-32➡Level-33" class="headerlink" title="Level_32➡Level_33"></a><strong>Level_32➡Level_33</strong></h2><h2 id="Level-33➡Level-34"><a href="#Level-33➡Level-34" class="headerlink" title="**Level_33➡Level_**34"></a>**Level_33➡Level_**34</h2>]]></content>
       <categories>
         <category>Web</category>
       </categories>
@@ -1332,6 +1334,170 @@ Last Remainder chunk：对small bin的malloc机制的介绍中当用户请求的
       <tags>
         <tag>linux</tag>
         <tag>CTF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows_PE文件格式</title>
+    <url>/2021/04/22/Windows_PE%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<h1 id="Windows-PE文件格式"><a href="#Windows-PE文件格式" class="headerlink" title="Windows_PE文件格式"></a>Windows_PE文件格式</h1><p>​    PE文件格式是理解Windows操作系统进程、内存、动态链接库加载的基础，本文结合逆向课所学和查询的资料简单做个总结。</p>
+<h2 id="1-PE文件基本介绍"><a href="#1-PE文件基本介绍" class="headerlink" title="1.PE文件基本介绍"></a><strong>1.PE文件基本介绍</strong></h2><p>PE文件是Windows操作系统下使用的一种可执行文件，由COFF（UNIX平台下的通用对象文件格式）格式文件发展而来。32位成为PE32，64位称为PE+或PE32+。</p>
+<h2 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a><strong>基本结构</strong></h2><p> 从DOS头到节区头是PE头部分，其下的节区合称为PE体。</p>
+<ol>
+<li><p><strong>DOS头</strong></p>
+<p>主要为现代PE文件可以对早期的DOS文件进行良好兼容存在，其结构体为IMAGE_DOS_HEADER。</p>
+<p>大小为64字节，其中2个重要的成员分别是：</p>
+<ul>
+<li>e_magic:DOS签名（4D5A，MZ）</li>
+<li>e_lfanew：指示NT头的偏移（文件不同，值不同）</li>
+</ul>
+</li>
+<li><p><strong>DOS存根</strong></p>
+<p>stub，位于DOS头下方，可选，大小不固定，由代码与数据混合组成。</p>
+</li>
+<li><p><strong>NT头</strong></p>
+<p>结构体为IMAGE_NT_HEADERS，大小为F8，由3个成员组成：</p>
+<ul>
+<li>签名结构体，值为50450000h（“PE”00）</li>
+<li>文件头，表现文件大致属性，结构体为IMAGE_FILE_HEADER，重要成员有4个：<ul>
+<li>Machine：每个CPU都拥有的唯一的Machine码，兼容32位Intel x86芯片的Machine码为14C；</li>
+<li>NumberOfSections：指出文件中存在的节区数量；</li>
+<li>SizeOfOptionalHeader：指出结构体IMAGE_OPTIONAL_HEADER32（32位系统）的长度</li>
+<li>Characteristics：标识文件属性，文件是否是可运行形态、是否为DLL等，以bit OR形式进行组合</li>
+</ul>
+</li>
+<li>可选头，结构体为IMAGE_OPTIONAL_HEADER32，重要成员有9个：<ul>
+<li>Magic：IMAGE_OPTIONAL_HEADER32为10B，IMAGE_OPTIONAL_HEADER64为20B</li>
+<li><strong>AddressOfEntryPoint</strong>：持有EP的RVA值，指出程序最先执行的代码起始地址</li>
+<li>ImageBase：指出文件的优先装入地址（32位进程虚拟内存范围为：0～7FFFFFFF）</li>
+<li>SectionAlignment,FileAlignment：前者制定了节区在内存中的最小单位，后者制定了节区在磁盘文件中的最小单位</li>
+<li>SizeOfImage：指定了PE Image在虚拟内存中所占空间的大小</li>
+<li>SizeOfHeaders：指出整个PE头的大小</li>
+<li>Subsystem：区分系统驱动文件和普通可执行文件</li>
+<li>NumberOfRvaAndSize：指定DataDirectory数组的个数</li>
+<li>DataDirectory：由IMAGE_DATA_DIRECTORY结构体组成的数组</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>节区头</strong></p>
+<p>节区头定义了各节区的属性。PE文件中code、data、resource等按照属性储存在不同的节区。好处是可以保证程序的安全性，将代码和数据分隔开，每个节区设计不同的访问权限。</p>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>访问权限权限</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>code</td>
+<td>执行、读取权限</td>
+</tr>
+<tr>
+<td>data</td>
+<td>非执行、读写权限</td>
+</tr>
+<tr>
+<td>resource</td>
+<td>非执行、读取权限</td>
+</tr>
+</tbody></table>
+<p>节区头中定义了各节区的属性，包括不同的特性、访问权限等，结构体为IMAGE_SECTION_HEADER，重要成员有5个：</p>
+<ul>
+<li>VirtualSize：内存中节区所占大小</li>
+<li>VirtualAddress：内存中节区起始地址（RVA）</li>
+<li>SizeOfRawData：磁盘文件中节区所占大小</li>
+<li>Charateristics：节区属性（bit OR）</li>
+</ul>
+</li>
+</ol>
+<h2 id="内存映射-RVA-to-RAW"><a href="#内存映射-RVA-to-RAW" class="headerlink" title="内存映射(RVA_to_RAW)"></a><strong>内存映射(RVA_to_RAW)</strong></h2><p>左边文件中使用偏移（offset），内存中使用VA（Virtual Address，虚拟地址）来表示位置。文件加载到内存时，情况就会发生变化（节区大小、位置等）。文件的内容一般可分为代码（.text）、数据（.data）、资源（.rsrc）节，分别保存。PE头与各节区的尾部存在一个区域，成为NULL填充。文件/内存中节区的起始位置应该在各文件/内存最小单位的倍数上，空白区域使用NULL进行填充（如下图所示）。</p>
+<p><img src="https://i.loli.net/2021/04/22/tuVd4UL9BONoP2K.png" alt="102.jpg"></p>
+<p>VA: Virtual Address 进程虚拟内存绝对地址</p>
+<p>RVA: Relative Virtual Address 相对虚拟地址，指从某个基准位置开始的相对地址</p>
+<p>ImageBase: PE文件的优先装载地址</p>
+<p>转换关系如下：<br>$$<br>RVA+ImageBase=VA<br>$$<br><strong>Why use VA and RVA?</strong></p>
+<p>PE头内部信息大多以RVA形式存在。PE文件（主要是DLL）加载到进程虚拟内存的特定位置时，该位置可能已经加载了其他PE文件。此时必须通过重定位将其加载到其他空白位置，若PE头用的是VA，则会造成无法正常访问。因此使用RVA来定位信息，即使发生重定位，只要相对于基准的相对地址没有发生变化，就能正常访问到指定信息不会发生问题。</p>
+<p>Demo:</p>
+<p>If RVA=5000,  File Offset=?</p>
+<p>①首先查找RVA对应所在的节区</p>
+<p>→位于第一个节区(.text)  图中ImageBase(01000000)</p>
+<p>②计算公式</p>
+<p>→<br>$$<br>RAW=RVA-VirtualAddress+PointerToRawData\<br>=5000-1000+400=4400<br>$$</p>
+<h2 id="2-What’s-IAT"><a href="#2-What’s-IAT" class="headerlink" title="2.What’s IAT"></a><strong>2.What’s IAT</strong></h2><p>IAT: Import Address Table 导入地址表。</p>
+<p>这个表保存了与windows操作系统核心进程、内存、DLL结构等相关的信息。只要了理解了IAT，就掌握了Windows操作系统的根基。IAT是一种表格，用来记录程序正在使用哪些库中的哪些函数。</p>
+<p>先了解一下Windows的DDL</p>
+<p>DLL：Dynamic Linked Library 动态链接库</p>
+<ol>
+<li>不把函数库包含进应用程序中，单独组成DLL文件，在需要使用时再进行调用。</li>
+<li>使用内存映射技术将加载后的DLL代码、资源在多个进程中实现共享。</li>
+<li>在对函数库进行更新时，只更新DLL文件，简单易行</li>
+</ol>
+<p>DLL加载方式有两种：<strong>显式链接（Explicit Linking）</strong> 和 <strong>隐式链接（Implicit Linking）</strong></p>
+<ul>
+<li>显示链接：程序在使用DLL时进行加载，使用完毕后释放内存</li>
+<li>隐式链接：程序在开始时即一同加载DLL，程序终止时再释放占用的内存</li>
+</ul>
+<p>IAT提供的机制与DLL的隐式链接有关</p>
+<p><strong>程序调用系统IAT表的时候具体实现过程：</strong></p>
+<p>假设我们程序中某处要用到MessageBoxA，那么这里会有两种形式，一种是先call到一个地址，这个地址中是一个jmp  [A]，A中存放着数据，数据内容就是我们的MessageBox的入口地址。另一种情况是直接calll到MessageBoxA的入口地址即  [A],[A]是A地址存放的数据，A中存放的数据是MessageBox的入口地址，之所以叫做表也是这个原因，因为程序要调用很多系统dll，如果我们的dll地址发生改变，要对每一处调用修改其调用地址是很麻烦的，如果有这样的表，我们将所有的函数调用的入口地址集中在一个集中的地址中，然后通过解析这个表方便我们进行修改，这样我们只要修改这个表所指的函数入口地址。</p>
+<p>我们在OD中选择call了MessageBox的一行，用view 运行文件的方法查看，可以看到这里并不是函数入口地址，而是一个dword的数，这个十六进制数加上基址假设叫做B，我们跳过去看B，看到B中的数据是一个ASCII码的内容，即字符串MessageBox，也就是说，Windows在运行程序，即在加载前通过内部实现，把我们的字符串MessageBox换为了MessageBox的入口地址，这样我们在call 【A】的时候就是跳转到了MessageBox的入口地址。</p>
+<p>下面引入一个结构体</p>
+<p><strong>IMAGE_IMPORT_DESCRIPTOR</strong></p>
+<p>该结构体位于 IMAGE_OPTIONAL_HEADER 的 IMAGE_DATA_DIRECTORY 中定位到第二个目录，即 IMAGE_DIRECTORY_ENTRY_IMPORT。该结构体保存了导入函数的 RVA 地址，通过该 RVA 地址可以定位到导入表的具体位置。</p>
+<p>每一个导入的 DLL 都有一个对应的 IMAGE_IMPORT_DESCRIPTOR，并且以数组的形式存放在文件中的,定义如下</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">IMAGE_IMPORT_DESCRIPTOR</span> &#123;</span></span><br><span class="line"></span><br><span class="line">     <span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line"></span><br><span class="line">          DWORD Characteristics;         </span><br><span class="line"></span><br><span class="line">          DWORD OriginalFirstThunk;<span class="comment">//该字段指向导入名称表（INT），该RVA是一个IMAGE_THUNK_DATA结构体</span></span><br><span class="line"></span><br><span class="line">     &#125;;</span><br><span class="line"></span><br><span class="line">      DWORD TimeDateStamp;<span class="comment">//可以忽略，一般为0      </span></span><br><span class="line"></span><br><span class="line">      DWORD ForwarderChain;<span class="comment">//一般为0      </span></span><br><span class="line"></span><br><span class="line">      DWORD Name;<span class="comment">//指向DLL的名称的RVA地址            </span></span><br><span class="line"></span><br><span class="line">      DWORD FirstThunk;<span class="comment">//该字段包含导入地址表（IAT）的RVA，IAT是一个IMAGE_THUNK_DATA结构体数组</span></span><br><span class="line"></span><br><span class="line">&#125; IMAGE_IMPORT_DESCRIPTOR;</span><br></pre></td></tr></table></figure>
+
+<p>导入信息并不包含指定导入表的个数，而是以一个全为0的IMAGE_IMPORT_DESCRIPTOR 结构体作为结束标志。</p>
+<p>下面是IMAGE_THUNK_DATA 结构体的定义:</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">IMAGE_THUNK_DATA32</span> &#123;</span></span><br><span class="line"></span><br><span class="line">     <span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line"></span><br><span class="line">           DWORD ForwarderString; <span class="comment">// 一个RVA地址，指向forwarder string </span></span><br><span class="line"></span><br><span class="line">           DWORD Function;        <span class="comment">// PDWORD，被导入的函数的入口地址</span></span><br><span class="line"></span><br><span class="line">           DWORD Ordinal;         <span class="comment">// 该函数的序数</span></span><br><span class="line"></span><br><span class="line">           DWORD AddressOfData;   <span class="comment">// 一个RVA地址，指向IMAGE_IMPORT_BY_NAME</span></span><br><span class="line"></span><br><span class="line">      &#125; u1;</span><br><span class="line"></span><br><span class="line">&#125; IMAGE_THUNK_DATA32;</span><br></pre></td></tr></table></figure>
+
+<p>每一个 IMAGE_THUNK_DATA 对应一个 DLL 中的导入函数。与 IMAGE_IMPORT_DESCRIPTOR 类似，IMAGE_THUNK_DATA 在文件中也是一个数组，并以一个全为 “0” 的 IMAGE_THUNK_DATA 结束。</p>
+<p>当该结构体值的最高位为 0 时，表示函数以函数名字符串的方式导入，这时该 DWORD 的值表示一个 RVA，并指向一个 IMAGE_IMPORT_BY_NAME 结构体：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">IMAGE_IMPORT_BY_NAME</span> &#123;</span></span><br><span class="line"></span><br><span class="line">     WORD Hint;         <span class="comment">//该函数的导出序数</span></span><br><span class="line"></span><br><span class="line">     BYTE Name[<span class="number">1</span>];      <span class="comment">// 该函数的名字</span></span><br><span class="line"></span><br><span class="line">&#125; IMAGE_IMPORT_BY_NAME, *PIMAGE_IMPORT_BY_NAME;</span><br></pre></td></tr></table></figure>
+
+<p>看起来可能有些绕，一会IAT一会INT的</p>
+<p>The difference between IAT and INT:</p>
+<p>IMAGE_IMPORT_DESCRIPTOR<code>结构体中的</code>OriginalFirstThunk<code>和</code>FirstThunk<code>都指向</code>IMAGE_THUNK_DATA结构体。</p>
+<p><strong>当文件在磁盘上时，两者指向的是同一个 <code>IMAGE_THUNK_DATA</code>，而当文件载入内存时 <code>OriginalFirstThunk</code> 中保存的仍然是指向函数的 RVA，而 <code>FirstThunk</code> 指向的内存变成了由装载器填充的导入函数地址，即 IAT。</strong></p>
+<p>Look at this pictures:)</p>
+<p><img src="https://i.loli.net/2021/04/23/6YTqlu2GR1S4WbK.png" alt="210.jpg"></p>
+<p>操作系统填充IAT大致流程如下：</p>
+<p> 1.找到导入表起始地址</p>
+<p> 2.找到第一个IID</p>
+<p> 3.根据IID的第四个字段确定dll库名称</p>
+<p> 4.根据IID的第五个字段确定IAT表地址</p>
+<p> 5.通过IAT字符串指针定位到目标函数名称。</p>
+<p> 6.用目标函数地址修改IAT的字符串指针。</p>
+<p> 7.修改下一处IAT</p>
+<p> 8.IAT项为0，修改完毕</p>
+<p> 9.找到下一个IID从第3步开始重复上面的操作。</p>
+<h2 id="What’s-EAT"><a href="#What’s-EAT" class="headerlink" title="What’s EAT"></a><strong>What’s EAT</strong></h2><p>与INT相对应，EAT（Exoprt Adress Table）顾名思义，导出表。</p>
+<p> EAT是一种核心机制，使不同的应用程序可以调用库文件中提供的函数，只有通过EAT才能准确求得从相应库中到处函数的起始地址。PE文件内的IMAGE_EXPORT_DIRECTORY保存着导出信息，<strong>且PE文件中仅有一个用来说明EAT的IMAGE_EXPORT_DIRECTORY结构体。</strong>（这点对比IAT：IAT的 IMAGE_IMPORT_DESCRIPTOR结构体以数组形式存在，且有多个成员，这主要是因为PE文件可以同时导入多个库。</p>
+<p>EAT结构体位于PE头中，IMAGE_OPTIONAL_HEADER32.DataDirectory[0]</p>
+<p>  IMAGE_EXPORT_DIRECTORY结构：</p>
+<p>依旧先放结构体定义</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">IMAGE_EXPORT_DIRECTORY</span> &#123;</span></span><br><span class="line">	DWORD Characteristics;			<span class="comment">//保留 总是定义为0</span></span><br><span class="line">	DWORD TimeDateStamp;			<span class="comment">//文件生成时间</span></span><br><span class="line">	WORD  MajorVersion;				<span class="comment">//主版本号 一般不赋值</span></span><br><span class="line">	WORD  MinorVersion;				<span class="comment">//次版本号 一般不赋值</span></span><br><span class="line">	DWORD Name;						<span class="comment">//模块的真实名称</span></span><br><span class="line">	DWORD Base;						<span class="comment">//索引基数 加上序数就是函数地址数组的索引值</span></span><br><span class="line">	DWORD NumberOfFunctions;		<span class="comment">//地址表中个数</span></span><br><span class="line">	DWORD NumberOfNames;			<span class="comment">//名称表的个数</span></span><br><span class="line">	DWORD AddressOfFunctions;		<span class="comment">//输出函数地址的RVA</span></span><br><span class="line">	DWORD AddressOfNames;			<span class="comment">//输出函数名字的RVA</span></span><br><span class="line">	DWORD AddressOfNameOrdinals;	<span class="comment">//输出函数序号的RVA</span></span><br><span class="line">&#125; IMAGE_EXPORT_DIRECTORYM, *pIMAGE_EXPORT_DIRECTORY; </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.loli.net/2021/04/23/HaVkY3scUndb7fu.png" alt="EXP.jpg"></p>
+<p>Demo: kernel32.dll</p>
+<p><img src="https://i.loli.net/2021/04/23/jnRY8mx1zyHsTWw.png" alt="209.jpg"></p>
+<p>从库中获得函数地址的API为GetProcAddress()函数，该API引用EAT来获取指定API的地址。其过程大致如下：</p>
+<ol>
+<li>利用AddressOfName成员转到“函数名称数组”</li>
+<li>“函数名称数组”中存储着字符串地址，通过比较（strcmp）字符串，查找指定的函数名称（此时数组的索引称为name_index）</li>
+<li>利用AddressOfNameOrdinals成员，转到ordinal数组</li>
+<li>在ordinal数组中通过name_index查找相应ordinal值</li>
+<li>利用AddressOfFunctionis成员转到“函数地址数组”（EAT）</li>
+<li>在“函数地址数组”中将刚刚求得的ordinal用作数组索引，获得指定函数的起始地址</li>
+</ol>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a><strong>Summary</strong></h2><p>PE文件是逆向的一个基础，了解PE文件的结构和动态连接的过程有利于我们更好地理解高级调试。</p>
+]]></content>
+      <categories>
+        <category>Windows</category>
+      </categories>
+      <tags>
+        <tag>windows</tag>
+        <tag>PE文件</tag>
       </tags>
   </entry>
 </search>
