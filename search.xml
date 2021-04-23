@@ -1374,7 +1374,7 @@ Last Remainder chunk：对small bin的malloc机制的介绍中当用户请求的
 <li>SizeOfHeaders：指出整个PE头的大小</li>
 <li>Subsystem：区分系统驱动文件和普通可执行文件</li>
 <li>NumberOfRvaAndSize：指定DataDirectory数组的个数</li>
-<li>DataDirectory：由IMAGE_DATA_DIRECTORY结构体组成的数组</li>
+<li><strong>DataDirectory</strong>：<strong>由IMAGE_DATA_DIRECTORY结构体组成的数组</strong></li>
 </ul>
 </li>
 </ul>
@@ -1498,6 +1498,316 @@ Last Remainder chunk：对small bin的malloc机制的介绍中当用户请求的
       <tags>
         <tag>windows</tag>
         <tag>PE文件</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>linux_ELF文件格式</title>
+    <url>/2021/04/23/Linux_ELF%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<h1 id="linux-ELF"><a href="#linux-ELF" class="headerlink" title="linux_ELF"></a>linux_ELF</h1><p>在<a href="https://bupt3xplorer.github.io/2021/04/12/Linux%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B/">Linux环境下编译过程</a>一文中简单的提及了linux的ELF文件格式的链接的过程，本文系统地对ELF文件格式规范进行分析，系统分析ELF文件类型、程序头、节头、符号、重定位、动态链接、编码ELF解析器。</p>
+<h2 id="ELF文件格式"><a href="#ELF文件格式" class="headerlink" title="ELF文件格式"></a><strong>ELF文件格式</strong></h2><p><strong>ELF文件类型</strong></p>
+<p>目标文件有三种类型：</p>
+<ul>
+<li><p>可重定位文件（Relocatable File）包含适合于与其他目标文件链接来创建可执行文件或者共享目标文件的代码和数据。</p>
+</li>
+<li><p>可执行文件（Executable File）包含适合于执行的一个程序，此文件规定了 exec() 如何创建一个程序的进程映像。</p>
+</li>
+<li><p>共享目标文件（Shared Object File）包含可在两种上下文中链接的代码和数据。首先链接编辑器可以将它和其它可重定位文件和共享目标文件一起处理，生成另外一个目标文件。其次，动态链接器（Dynamic Linker）可能将它与某个可执行文件以及其它共享目标一起组合，创建进程映像。</p>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2021/04/10/rPaJSl5UQHMc16s.png" alt="EOF.png"></p>
+<p>一个更清晰易懂的ELF格式：</p>
+<p><img src="https://i.loli.net/2021/04/23/hvCmAw4kEVQ6JqS.png" alt="ELF_type.png"></p>
+<p>文件开始处是一个ELF 头部（ELF  Header），用来描述整个文件的组织。节区部分包含链接视图的大量信息：指令、数据、符号表、重定位信息等等。</p>
+<p>程序头部表（Program Header Table），如果存在的话，告诉系统如何创建进程映像。用来构造进程映像的目标文件必须具有程序头部表，可重定位文件不需要这个表。</p>
+<p>节区头部表（Section  Heade  Table）包含了描述文件节区的信息，每个节区在表中都有一项，每一项给出诸如节区名称、节区大小这类信息。用于链接的目标文件必须包含节区头部表，其他目标文件可以有，也可以没有这个表。</p>
+<h2 id="ELF-Header"><a href="#ELF-Header" class="headerlink" title="ELF Header"></a><strong>ELF Header</strong></h2><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> EI_NIDENT (16)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">char</span> e_ident[EI_NIDENT];     <span class="comment">/* Magic number and other info */</span></span><br><span class="line">  Elf32_Half    e_type;                 <span class="comment">/* Object file type */</span></span><br><span class="line">  Elf32_Half    e_machine;              <span class="comment">/* Architecture */</span></span><br><span class="line">  Elf32_Word    e_version;              <span class="comment">/* Object file version */</span></span><br><span class="line">  Elf32_Addr    e_entry;                <span class="comment">/* Entry point virtual address */</span></span><br><span class="line">  Elf32_Off     e_phoff;                <span class="comment">/* Program header table file offset */</span></span><br><span class="line">  Elf32_Off     e_shoff;                <span class="comment">/* Section header table file offset */</span></span><br><span class="line">  Elf32_Word    e_flags;                <span class="comment">/* Processor-specific flags */</span></span><br><span class="line">  Elf32_Half    e_ehsize;               <span class="comment">/* ELF header size in bytes */</span></span><br><span class="line">  Elf32_Half    e_phentsize;            <span class="comment">/* Program header table entry size */</span></span><br><span class="line">  Elf32_Half    e_phnum;                <span class="comment">/* Program header table entry count */</span></span><br><span class="line">  Elf32_Half    e_shentsize;            <span class="comment">/* Section header table entry size */</span></span><br><span class="line">  Elf32_Half    e_shnum;                <span class="comment">/* Section header table entry count */</span></span><br><span class="line">  Elf32_Half    e_shstrndx;             <span class="comment">/* Section header string table index */</span></span><br><span class="line">&#125; Elf32_Ehdr;</span><br></pre></td></tr></table></figure>
+
+<p>上述的<code>Elf32_Half</code>定义</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* Type for a 16-bit quantity.  */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">uint16_t</span> Elf32_Half;</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>Elf32_Word</code>的定义</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* Types for signed and unsigned 32-bit quantities.  */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">uint32_t</span> Elf32_Word;</span><br></pre></td></tr></table></figure>
+
+<p>然后<code>Elf32_Addr</code>与<code>Elf32_Off</code>定义</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* Type of addresses.  */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">uint32_t</span> Elf32_Addr;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Type of file offsets.  */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">uint32_t</span> Elf32_Off;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>e_ident[EI_NIDENT]</strong></li>
+</ul>
+<p>文件的标识以及标识描述了elf如何编码等信息。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">Magic：   7f <span class="number">45</span> 4c <span class="number">46</span> <span class="number">01</span> <span class="number">01</span> <span class="number">01</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span></span><br></pre></td></tr></table></figure>
+
+<p>关于该结构体的索引可以看下面的表格：</p>
+<table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">取值</th>
+<th align="left">目的</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">EI_MAG0</td>
+<td align="left">0</td>
+<td align="left">文件标识(0x7f)</td>
+</tr>
+<tr>
+<td align="left">EI_MAG1</td>
+<td align="left">1</td>
+<td align="left">文件标识(E)</td>
+</tr>
+<tr>
+<td align="left">EI_MAG2</td>
+<td align="left">2</td>
+<td align="left">文件标识(L)</td>
+</tr>
+<tr>
+<td align="left">EI_MAG3</td>
+<td align="left">3</td>
+<td align="left">文件标识(F)</td>
+</tr>
+<tr>
+<td align="left">EI_CLASS</td>
+<td align="left">4</td>
+<td align="left">文件类</td>
+</tr>
+<tr>
+<td align="left">EI_DATA</td>
+<td align="left">5</td>
+<td align="left">数据编码</td>
+</tr>
+<tr>
+<td align="left">EI_VERSION</td>
+<td align="left">6</td>
+<td align="left">文件版本</td>
+</tr>
+<tr>
+<td align="left">EI_PAD</td>
+<td align="left">7</td>
+<td align="left">补齐字节开始处</td>
+</tr>
+<tr>
+<td align="left">EI_NIDENT</td>
+<td align="left">16</td>
+<td align="left">e_ident[]大小</td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>e_type</strong></li>
+</ul>
+<p>该数据类型是uint16_t数据类型的，占两个字节。通过字段查看，可以看到这个值为<code>00 02</code>。表格定义如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">取值</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">ET_NONE</td>
+<td align="left">0x0000</td>
+<td align="left">未知目标文件格式</td>
+</tr>
+<tr>
+<td align="left">ET_ERL</td>
+<td align="left">0x0001</td>
+<td align="left">可重定位文件</td>
+</tr>
+<tr>
+<td align="left">ET_EXEC</td>
+<td align="left">0x0002</td>
+<td align="left">可执行文件</td>
+</tr>
+<tr>
+<td align="left">ET_DYN</td>
+<td align="left">0x0003</td>
+<td align="left">共享目标文件</td>
+</tr>
+<tr>
+<td align="left">ET_CORE</td>
+<td align="left">0x0004</td>
+<td align="left">Core文件(转储格式)</td>
+</tr>
+<tr>
+<td align="left">ET_LOPROC</td>
+<td align="left">0xff00</td>
+<td align="left">特定处理器文件</td>
+</tr>
+<tr>
+<td align="left">ET_HIPROC</td>
+<td align="left">0xffff</td>
+<td align="left">特定处理器文件</td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>e_machine</strong></li>
+</ul>
+<p>由字段可以看到为<code>00 28</code>，关于这个字段的解析，基本上就是表示该elf文件是针对哪个处理器架构的。</p>
+<p>下面只列出几个常见的架构的序号</p>
+<table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">取值</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">EM_NONE</td>
+<td align="left">0</td>
+<td align="left">No machine</td>
+</tr>
+<tr>
+<td align="left">EM_SPARC</td>
+<td align="left">2</td>
+<td align="left">SPARC</td>
+</tr>
+<tr>
+<td align="left">EM_386</td>
+<td align="left">3</td>
+<td align="left">Intel 80386</td>
+</tr>
+<tr>
+<td align="left">EM_MIPS</td>
+<td align="left">8</td>
+<td align="left">MIPS I Architecture</td>
+</tr>
+<tr>
+<td align="left">EM_PPC</td>
+<td align="left">0x14</td>
+<td align="left">PowerPC</td>
+</tr>
+<tr>
+<td align="left">EM_ARM</td>
+<td align="left">0x28</td>
+<td align="left">Advanced RISC Machines ARM</td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>e_version</strong></li>
+</ul>
+<p>该字段占四个字节，表示当前文件版本的信息。现在取值为<code>00 00 00 01</code>。从取值上来看</p>
+<table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">取值</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">EV_NONE</td>
+<td align="left">0</td>
+<td align="left">非法版本</td>
+</tr>
+<tr>
+<td align="left">EV_CURRENT</td>
+<td align="left">1</td>
+<td align="left">当前版本</td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>e_entry</strong></li>
+</ul>
+<p>这里表示程序的入口地址，目前为四字节，所以通过字段解析到的内容为<code>00 00 80 00</code>。得到可执行程序的入口地址为<code>0x8000</code>。</p>
+<ul>
+<li><strong>e_phoff</strong></li>
+</ul>
+<p>该字段表示程序表头偏移。占四个字节，根据字段解析，可以查看当前的偏移量为<code>00 00 00 34</code>。也就是实际的偏移量为52个字节。这52个字节其实就是头部的信息数据结构体的大小。</p>
+<ul>
+<li><strong>e_shoff</strong></li>
+</ul>
+<p>该区域比较重要，记录了section的偏移地址。为四字节，解析出来的字段为<code>0x00 04 24 5c</code>。所以得到地址为0x4245c。</p>
+<ul>
+<li><strong>e_ehsize</strong></li>
+</ul>
+<p>elf文件的头部大小。该取值与头文件结构体的大小相关</p>
+<ul>
+<li><strong>e_phnum</strong></li>
+</ul>
+<p>目前取值为<code>00 01</code>，这里表示程序头的个数当前只有一个程序头，如果有多个程序头表，那么会在elf头文件之后，也就是52个字节之后，依次向下排列。因为这里是1，所以只有1个程序头。</p>
+<p>以下位64位ELF文件头内容</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ubuntu@ubuntu:~/code/c_code$ gcc -g test.c -o <span class="built_in">test</span></span><br><span class="line">ubuntu@ubuntu:~/code/c_code$ readelf -h <span class="built_in">test</span></span><br><span class="line">ELF Header:</span><br><span class="line">  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00 </span><br><span class="line">  Class:                             ELF64</span><br><span class="line">  Data:                              2<span class="string">&#x27;s complement, little endian</span></span><br><span class="line"><span class="string">  Version:                           1 (current)</span></span><br><span class="line"><span class="string">  OS/ABI:                            UNIX - System V</span></span><br><span class="line"><span class="string">  ABI Version:                       0</span></span><br><span class="line"><span class="string">  Type:                              DYN (Shared object file)</span></span><br><span class="line"><span class="string">  Machine:                           Advanced Micro Devices X86-64</span></span><br><span class="line"><span class="string">  Version:                           0x1</span></span><br><span class="line"><span class="string">  Entry point address:               0x530</span></span><br><span class="line"><span class="string">  Start of program headers:          64 (bytes into file)</span></span><br><span class="line"><span class="string">  Start of section headers:          8648 (bytes into file)</span></span><br><span class="line"><span class="string">  Flags:                             0x0</span></span><br><span class="line"><span class="string">  Size of this header:               64 (bytes)</span></span><br><span class="line"><span class="string">  Size of program headers:           56 (bytes)</span></span><br><span class="line"><span class="string">  Number of program headers:         9</span></span><br><span class="line"><span class="string">  Size of section headers:           64 (bytes)</span></span><br><span class="line"><span class="string">  Number of section headers:         34</span></span><br><span class="line"><span class="string">  Section header string table index: 33</span></span><br></pre></td></tr></table></figure>
+
+<p>以上是ELF_Header部分</p>
+<p>关于程序头部(Program Header)将在程序加载和动态链接部分介绍</p>
+<h2 id="节区（Sections）"><a href="#节区（Sections）" class="headerlink" title="节区（Sections）"></a><strong>节区（Sections）</strong></h2><p>节区中包含目标文件中的所有信息，除了：ELF头部、程序头部表格、节区头部表格。节区满足以下条件：</p>
+<p>(1).目标文件中的每个节区都有对应的节区头部描述它，反过来，有节区头部不意味着有节区。</p>
+<p>(2).每个节区占用文件中一个连续字节区域（这个区域可能长度为 0）。</p>
+<p>(3).文件中的节区不能重叠，不允许一个字节存在于两个节区中的情况发生。</p>
+<p>(4).目标文件中可能包含非活动空间（INACTIVE  SPACE）。这些区域不属于任何头部和节区，其内容未指定。</p>
+<p><strong>这里引入节(section)和段(segment)的区别:</strong></p>
+<p>段是程序执行的必要组成成分。</p>
+<p>每个段中，会有代码或数据被划分为不同的节。</p>
+<p>节头表是对这些节位置和大小的描述，主要用于链接和调试。对于程序执行来说是非必须的，没有节头表程序一九可以正常执行，因为节头表没有对程序内存布局进行布局，<strong>对程序布局的描述是程序头表的任务</strong>。</p>
+<p>如果二进制文件中缺少节头，并不意味着节就不存在。只是没有办法通过节头来引用节，对于调试器或者反编译程序来说，只是可以参考的信息变少了而已。</p>
+<p>每一个节都保存了某种类型的代码或者数据。数据可以是程序中的全局变量，也可以是链接器所需要的动态链接信息。正如前面提到的，每个ELF目标文件都有节，但是不一定有节头，尤其是有人故意将节头从节头表中删除了之后。当然，默认是有节头的。</p>
+<p>节区头部数据结构如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  Elf32_Word sh_name;  <span class="comment">/* Section name (string tbl index) */</span></span><br><span class="line">  Elf32_Word sh_type;  <span class="comment">/* Section type */</span></span><br><span class="line">  Elf32_Word sh_flags;  <span class="comment">/* Section flags */</span></span><br><span class="line">  Elf32_Addr sh_addr;  <span class="comment">/* Section virtual addr at execution */</span></span><br><span class="line">  Elf32_Off sh_offset;  <span class="comment">/* Section file offset */</span></span><br><span class="line">  Elf32_Word sh_size;  <span class="comment">/* Section size in bytes */</span></span><br><span class="line">  Elf32_Word sh_link;  <span class="comment">/* Link to another section */</span></span><br><span class="line">  Elf32_Word sh_info;  <span class="comment">/* Additional section information */</span></span><br><span class="line">  Elf32_Word sh_addralign;  <span class="comment">/* Section alignment */</span></span><br><span class="line">  Elf32_Word sh_entsize;  <span class="comment">/* Entry size if section holds table */</span></span><br><span class="line">&#125; Elf32_Shdr;</span><br></pre></td></tr></table></figure>
+
+<p>重要字段：</p>
+<p>sh_flags 字段 </p>
+<p>sh_flags字段定义了一个节区中包含的内容是否可以修改、是否可以执行等信息。如果一个标志位被设置，则该位取值为1。未定义的各位都设置为0。</p>
+<p>取值如下</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PF_X        (1 &lt;&lt; 0)    <span class="comment">/* Segment is executable */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PF_W        (1 &lt;&lt; 1)    <span class="comment">/* Segment is writable */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PF_R        (1 &lt;&lt; 2)    <span class="comment">/* Segment is readable */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PF_MASKOS   0x0ff00000  <span class="comment">/* OS-specific */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PF_MASKPROC 0xf0000000  <span class="comment">/* Processor-specific */</span></span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>下面介绍几个重要的节</p>
+<p><strong>.text 节</strong></p>
+<p> .text节是保存了程序代码指令的代码节。一段可执行程序，如果存在Phdr，.text节就会存在于text段中。由于.text节保存了程序代码，因此节的类型为SHT_PROGBITS。</p>
+<p><strong>.rodata 节</strong></p>
+<p>.rodata节保存了只读的数据，如一行C语言代码中的字符串。下面这条命令就是存放在.rodata节中的：printf(“Hello World!\n”);  因为.rodata节是只读的，所以只能存在于一个可执行文件的只读段中。因此，只能在text段（不是data段）中找到.rodata节。由于.rodata节是只读的，因此节类型为SHT_PROGBITS。</p>
+<p><strong>.plt 节</strong></p>
+<p>本文在动态链接的过程链接表（Procedure  Linkage  Table，PLT）进行详细介绍。.plt节中包含了动态链接器调用从共享库导入的函数所必需的相关代码。由于其存在于text段中，同样保存了代码，因此节类型为SHT_PROGBITS。</p>
+<p> <strong>.data 节</strong></p>
+<p>不要将.data节和data段混淆了，.data节存在于data段中，保存了初始化的全局变量等数据。由于其保存了程序的变量数据，因此类型被标记为SHT_PROGBITS。</p>
+<p> <strong>.bss 节</strong></p>
+<p>.bss节保存了未进行初始化的全局数据，是data段的一部分，占用空间不超过4字节，仅表示这个节本身的空间。程序加载时数据被初始化为0，在程序执行期间可以进行赋值。由于.bss节未保存实际的数据，因此节类型为SHT_NOBITS。</p>
+<p> <strong>.got.plt 节</strong></p>
+<p>.got节保存了全局偏移表。.got节和.plt节一起提供了对导入的共享库函数的访问入口，由动态链接器在运行时进行修改。如果攻击者获得了堆或者.bss漏洞的一个指针大小的写原语，就可以对该节任意进行修改。我们将在本问的ELF动态链接部分对此进行讨论。.got.plt节跟程序执行有关，因此节类型被标记为SHT_PROGBITS。</p>
+<p> <strong>.dynsym 节</strong> </p>
+<p>.dynsym节保存了从共享库导入的动态符号信息，该节保存在text段中，节类型被标记为SHT_DYNSYM。</p>
+<p> <strong>.dynstr 节</strong></p>
+<p>.dynstr节保存了动态符号字符串表，表中存放了一系列字符串，这些字符串代表了符号的名称，以空字符作为终止符。</p>
+<p> **.rel.<em>节</em>*</p>
+<p>重定位节保存了重定位相关的信息，这些信息描述了如何在链接或者运行时，对ELF目标文件的某部分内容或者进程镜像进行补充或修改。在本文重定位部分会深入讨论。重定位节保存了重定位相关的数据，因此节类型被标记为SHT_REL。</p>
+<p><strong>.hash节</strong></p>
+<p>.hash节有时也称为.gnu.hash，保存了一个用于查找符号的散列表。</p>
+<p>下面的散列算法是用来在Linux ELF文件中查找符号名的： </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">uint32.t     </span><br><span class="line">dl_new_hash(<span class="keyword">const</span> <span class="keyword">char</span> *s)      </span><br><span class="line">&#123;             <span class="keyword">uint32_t</span> h = <span class="number">5381</span>;   </span><br><span class="line"> 			<span class="keyword">for</span>(<span class="keyword">unsigned</span> <span class="keyword">char</span> c = *s;c != <span class="string">&#x27;\0&#x27;</span>; c = *++s)                 </span><br><span class="line">                h = h * <span class="number">33</span> + c;<span class="comment">//Or h = ((h &lt;&lt; 5) + h) + c               </span></span><br><span class="line"> 			<span class="keyword">return</span> h;      </span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>.symtab节</strong></p>
+<p>.symtab节保存了ElfN_Sym类型的符号信息，本章将在ELF符号和重定位部分（2.4节和2.5节）详细介绍。.symtab节保存了符号信息，因此节类型被标记为SHT_SYMTAB。</p>
+<p><strong>.strtab节</strong></p>
+<p>.strtab节保存的是符号字符串表，表中的内容会被.symtab的ElfN_Sym结构中的st_name条目引用。由于其保存了字符串表，因此节类型被标记为SHT_STRTAB。</p>
+<p><strong>.shstrtab节</strong></p>
+<p>.shstrtab节保存节头字符串表，该表是一个以空字符终止的字符串的集合，字符串保存了每个节的节名，如.text、.data等。有一个名为e_shsrndx的ELF文件头条目会指向.shstrtab节，e_shstrndx中保存了.shstrtab的偏移量。由于其保存了字符串表，因此节类型被标记为SHT_STRTAB。</p>
+<p><strong>.ctors和.dtors节</strong></p>
+<p>.ctors（构造器）和.dtors（析构器）这两个节保存了指向构造函数和析构函数的函数指针，构造函数是在main函数执行之前需要执行的代码，析构函数是在main函数之后需要执行的代码。</p>
+<h2 id="ELF程序头-Program-Header"><a href="#ELF程序头-Program-Header" class="headerlink" title="ELF程序头(Program Header)"></a><strong>ELF程序头</strong>(Program Header)</h2><p>执行时ELF视图：可以看到程序头的位置,Segmen段和Section节的映射关系</p>
+<p><img src="https://i.loli.net/2021/04/23/vEwSGMorg4cdBNs.png" alt="elf.jpg"></p>
+<p>What’s Program header?</p>
+<p>ELF程序头是对二进制文件中段的描述，是程序装载必需的一部分。段（segment）是在内核装载时被解析的，描述了磁盘上可执行文件的内存布局以及如何映射到内存中。可以通过引用原始ELF头中名为e_phoff（程序头表偏移量）的偏移量来得到程序头表，如前面ElfN_Ehdr结构中所示。</p>
+<p>结构体定义如下</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  Elf32_Word    p_type;         <span class="comment">/* Segment type */</span></span><br><span class="line">  Elf32_Off 	p_offset;       <span class="comment">/* Segment file offset 相对于ELF文件开头 */</span></span><br><span class="line">  Elf32_Addr    p_vaddr;        <span class="comment">/* Segment virtual address */</span></span><br><span class="line">  Elf32_Addr    p_paddr;        <span class="comment">/* Segment physical address */</span></span><br><span class="line">  Elf32_Word    p_filesz;       <span class="comment">/* Segment size in file */</span></span><br><span class="line">  Elf32_Word    p_memsz;        <span class="comment">/* Segment size in memory */</span></span><br><span class="line">  Elf32_Word    p_flags;        <span class="comment">/* Segment flags */</span></span><br><span class="line">  Elf32_Word    p_align;        <span class="comment">/* Segment alignment对齐方式 */</span></span><br><span class="line">&#125; Elf32_Phdr;</span><br></pre></td></tr></table></figure>
+
+<p>p_type表示segment的类型。它的可能值如下所示：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PT_NULL     0       <span class="comment">/* Program header table entry unused */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PT_LOAD     1       <span class="comment">/* Loadable program segment */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PT_DYNAMIC  2       <span class="comment">/* Dynamic linking information */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PT_INTERP   3       <span class="comment">/* Program interpreter */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PT_NOTE     4       <span class="comment">/* Auxiliary information */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PT_SHLIB    5       <span class="comment">/* Reserved */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PT_PHDR     6       <span class="comment">/* Entry for header table itself */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PT_TLS      7       <span class="comment">/* Thread-local storage segment */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PT_NUM      8       <span class="comment">/* Number of defined types */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PT_LOOS     0x60000000  <span class="comment">/* Start of OS-specific */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PT_GNU_EH_FRAME 0x6474e550  <span class="comment">/* GCC .eh_frame_hdr segment */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PT_GNU_STACK    0x6474e551  <span class="comment">/* Indicates stack executability */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PT_GNU_RELRO    0x6474e552  <span class="comment">/* Read-only after relocation */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PT_LOSUNW   0x6ffffffa</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PT_SUNWBSS  0x6ffffffa  <span class="comment">/* Sun Specific segment */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PT_SUNWSTACK    0x6ffffffb  <span class="comment">/* Stack segment */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PT_HISUNW   0x6fffffff</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PT_HIOS     0x6fffffff  <span class="comment">/* End of OS-specific */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PT_LOPROC   0x70000000  <span class="comment">/* Start of processor-specific */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PT_HIPROC   0x7fffffff  <span class="comment">/* End of processor-specific */</span></span></span><br></pre></td></tr></table></figure>
+
+<p>p_flags表示segment的标志。它的可能取值如下所示：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PF_X        (1 &lt;&lt; 0)    <span class="comment">/* Segment is executable */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PF_W        (1 &lt;&lt; 1)    <span class="comment">/* Segment is writable */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PF_R        (1 &lt;&lt; 2)    <span class="comment">/* Segment is readable */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PF_MASKOS   0x0ff00000  <span class="comment">/* OS-specific */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PF_MASKPROC 0xf0000000  <span class="comment">/* Processor-specific */</span></span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="程序加载和动态链接"><a href="#程序加载和动态链接" class="headerlink" title="程序加载和动态链接"></a><strong>程序加载和动态链接</strong></h2>]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>ELF文件</tag>
       </tags>
   </entry>
 </search>
