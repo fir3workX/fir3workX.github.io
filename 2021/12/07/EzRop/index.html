@@ -1,0 +1,308 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Return Oriented Programming Report | Firework</title><meta name="keywords" content="Pwn,Rop"><meta name="author" content="Firework"><meta name="copyright" content="Firework"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Return Oriented Programming Report1.Experiment requirements 针对实验一，通过gdb调试rop1确定Shellcode的地址；此外通过rop1.py的调试脚本确定shellcode的地址；最终拿到shell权限。相关详细分析过程写入报告，并比较两种方法的特点。 针对实验二的32位环境和64位环境，通过调试分析，完成实际rop2.py和rop">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Return Oriented Programming Report">
+<meta property="og:url" content="http://example.com/2021/12/07/EzRop/index.html">
+<meta property="og:site_name" content="Firework">
+<meta property="og:description" content="Return Oriented Programming Report1.Experiment requirements 针对实验一，通过gdb调试rop1确定Shellcode的地址；此外通过rop1.py的调试脚本确定shellcode的地址；最终拿到shell权限。相关详细分析过程写入报告，并比较两种方法的特点。 针对实验二的32位环境和64位环境，通过调试分析，完成实际rop2.py和rop">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://api.dujin.org/bing/1920.php">
+<meta property="article:published_time" content="2021-12-07T06:16:12.079Z">
+<meta property="article:modified_time" content="2021-12-07T06:30:37.320Z">
+<meta property="article:author" content="Firework">
+<meta property="article:tag" content="Pwn">
+<meta property="article:tag" content="Rop">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://api.dujin.org/bing/1920.php"><link rel="shortcut icon" href="https://i.loli.net/2021/04/08/2kj1dHCXRf7sGEo.jpg"><link rel="canonical" href="http://example.com/2021/12/07/EzRop/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":30,"languages":{"author":"作者: Firework","link":"链接: ","source":"来源: Firework","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-12-07 14:30:37'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Firework" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="https://i.loli.net/2021/04/08/2kj1dHCXRf7sGEo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">23</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2021/04/09/4OQIETdyGWwLYbX.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Firework</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Return Oriented Programming Report</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-12-07T06:16:12.079Z" title="发表于 2021-12-07 14:16:12">2021-12-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-12-07T06:30:37.320Z" title="更新于 2021-12-07 14:30:37">2021-12-07</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/CVE/">CVE</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Return Oriented Programming Report"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Return-Oriented-Programming-Report"><a href="#Return-Oriented-Programming-Report" class="headerlink" title="Return Oriented Programming Report"></a>Return Oriented Programming Report</h1><h3 id="1-Experiment-requirements"><a href="#1-Experiment-requirements" class="headerlink" title="1.Experiment requirements"></a>1.Experiment requirements</h3><ul>
+<li>针对实验一，通过gdb调试rop1确定Shellcode的地址；此外通过rop1.py的调试脚本确定shellcode的地址；最终拿到shell权限。相关详细分析过程写入报告，并比较两种方法的特点。</li>
+<li>针对实验二的32位环境和64位环境，通过调试分析，完成实际rop2.py和rop3.py(填补空白并修改错误)，最终拿到shell权限。相关详细分析写入报告。</li>
+</ul>
+<h3 id="2-Expriment-Target"><a href="#2-Expriment-Target" class="headerlink" title="2.Expriment Target"></a>2.Expriment Target</h3><ul>
+<li>工具方面：掌握gdb、pwntools等工具的使用。</li>
+<li>理解并掌握基本的ROP技能，能够编写pwntools脚本。</li>
+<li>==分析pwntools在ROP方面实现的原理==</li>
+</ul>
+<h3 id="3-Experimental-process-and-analysis"><a href="#3-Experimental-process-and-analysis" class="headerlink" title="3.Experimental process and analysis"></a>3.Experimental process and analysis</h3><h4 id="3-0-Environment-Settings"><a href="#3-0-Environment-Settings" class="headerlink" title="3.0 Environment Settings"></a>3.0 Environment Settings</h4><p>编译生成rop1，并关闭ASLR</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211001232503783.png" alt="image-20211001232503783"></p>
+<h4 id="3-1-gdb调试rop1"><a href="#3-1-gdb调试rop1" class="headerlink" title="3.1 gdb调试rop1"></a>3.1 gdb调试rop1</h4><p>在vuln处设断点：</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211001233044068.png" alt="image-20211001233044068"></p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211001233222234.png" alt="image-20211001233222234" style="zoom: 80%;" /></p>
+<p>观察到buf数组的首地址为[ebp-0x88]，以此地址为依据进行rop1.py获取真实地址</p>
+<h4 id="3-2-rop1-py分析"><a href="#3-2-rop1-py分析" class="headerlink" title="3.2 rop1.py分析"></a>3.2 rop1.py分析</h4><h5 id="写入一个错误的返回地址得到core转储文件"><a href="#写入一个错误的返回地址得到core转储文件" class="headerlink" title="写入一个错误的返回地址得到core转储文件"></a>写入一个错误的返回地址得到core转储文件</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">p = process(<span class="string">&#x27;rop1&#x27;</span>)</span><br><span class="line"><span class="comment">#gdb.attach(p,&#x27;b vuln&#x27;)</span></span><br><span class="line"><span class="comment">#shellcode = asm(shellcraft.sh())</span></span><br><span class="line">shellcode=<span class="string">b&#x27;jhh///sh/bin\x89\xe3h\x01\x01\x01\x01\x814$ri\x01\x011\xc9Qj\x04Y\x01\xe1Q\x89\xe11\xd2j\x0bX\xcd\x80&#x27;</span></span><br><span class="line">shellcode_addr = <span class="number">0xdeadbeef</span></span><br><span class="line">payload = shellcode.ljust(<span class="number">0x8c</span>,<span class="string">b&#x27;a&#x27;</span>)+p32(shellcode_addr)</span><br><span class="line">p.sendline(payload)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+<h5 id="gdb分析转储文件"><a href="#gdb分析转储文件" class="headerlink" title="gdb分析转储文件"></a>gdb分析转储文件</h5><p>程序由于访问了一段不可访问的内存而导致崩溃，此时ESP指针应该指向返回地址的下一地址</p>
+<p>计算此时ESP相对buf首地址偏移为：0x4(返回地址)+0x8c(buff数组+ebp)=0x90</p>
+<p>所以buf起始地址为ESP-0x90,写入py脚本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shellcode_addr&#x3D;0xffffd1e0 </span><br></pre></td></tr></table></figure>
+<h5 id="成功GetShell"><a href="#成功GetShell" class="headerlink" title="成功GetShell"></a>成功GetShell</h5><p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211001234529327.png" alt="image-20211001234529327"></p>
+<h5 id="关于GDB调试的分析"><a href="#关于GDB调试的分析" class="headerlink" title="关于GDB调试的分析"></a>关于GDB调试的分析</h5><p>gdb主要功能的实现依赖于一个系统函数ptrace，通过man手册可以了解到，ptrace可以让父进程观察和控制其子进程的检查、执行，改变其寄存器和内存的内容，主要应用于打断点（也是gdb的主要功能）和打印系统调用轨迹。</p>
+<p>ptrace函数原型如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/ptrace.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">ptrace</span><span class="params">(<span class="keyword">enum</span> __ptrace_request request, <span class="keyword">pid_t</span> pid,</span></span></span><br><span class="line"><span class="function"><span class="params">           <span class="keyword">void</span> *addr, <span class="keyword">void</span> *data)</span></span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>gbd调试ptrace基本流程</p>
+<ol>
+<li>gdb调试一个新进程：通过fork函数创建一个新进程，在子进程中执行ptrace(PTRACE_TRACEME, 0, 0, 0)函数，然后通过execv()调用准备调试的程序。</li>
+<li>attach到已运行进程：将pid传递给gdb，然后执行ptrace(PTRACE_ATTACH, pid, 0, 0)。</li>
+</ol>
+<p>在使用参数为PTRACE_TRACEME或PTRACE_ATTACH的ptrace系统调用建立调试关系之后，交付给目标程序的任何信号（除SIGKILL之外）都将被gdb先行截获，gdb因此有机会对信号进行相应处理，并根据信号的属性决定在继续目标程序运行时是否将之前截获的信号实际交付给目标程序。</p>
+<h5 id="关于gdb调试中看到的buf数组首地址和调试core转储文件不一致的解释"><a href="#关于gdb调试中看到的buf数组首地址和调试core转储文件不一致的解释" class="headerlink" title="==关于gdb调试中看到的buf数组首地址和调试core转储文件不一致的解释=="></a>==关于gdb调试中看到的buf数组首地址和调试core转储文件不一致的解释==</h5><p>基于gdb调试原理，可以得知gdb的调试会影响buf’在内存的位置，调试时gdb fork出子线程执行rop1，rop1环境变量继承自gdb，堆栈发生偏移，buf地址偏移。</p>
+<p>core dump 是进程终止运行时进程地址空间内容和进程有关状态的信息的保存，是实际运行时的数据，此buf地址是真实运行的地址。</p>
+<h5 id="不通过Pwntools工具，手动GetShell"><a href="#不通过Pwntools工具，手动GetShell" class="headerlink" title="==不通过Pwntools工具，手动GetShell=="></a>==不通过Pwntools工具，手动GetShell==</h5><p>在分析完毕GDB由于自己的环境变量会改变buff运行时地址后，    下面通过仅用GDB调试实现getShell过程。</p>
+<h6 id="1-首先要解决如何获取二进制shellcode"><a href="#1-首先要解决如何获取二进制shellcode" class="headerlink" title="1.首先要解决如何获取二进制shellcode"></a>1.首先要解决如何获取二进制shellcode</h6><p>用pwntools中的生成shellcode模块生成，但是得到的数据不是bytes类型的要进行转换</p>
+<ul>
+<li><p>方法1 将pwntools生成的shellcode数据直接用write()函数通过’ab+’的方式以二进制写入文件</p>
+</li>
+<li><p>方法2 利用python -m ‘print(b”shellcode”)’输入对应的shellcode到文件，此处踩坑点：必须写入二进制文件，因为python3对字节数据和字符串数据做了严格区分。(由于此处踩坑导致输入shellcode有问题导致后续有大量时间在debug)简单记录下debug过程，通过010edit定位write写入的shellcode和python 方法写入的shellcode区别。</p>
+</li>
+</ul>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014041146515.png" alt="image-20211014041146515"></p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014041205015.png" alt="image-20211014041205015"></p>
+<p>注：justwrite是用write方法二进制写入  justpython是通过上述python方法写入。</p>
+<ul>
+<li>方法3 利用 echo -e -n “\x11\x22” &gt; shellcode -e转义反斜杠 -n不添加行尾行标识符 </li>
+</ul>
+<p>通过以上任意一种方法最后均可得到二进制存储的shellcode</p>
+<h6 id="2-将二进制shellcode作为标准输入传入read-函数"><a href="#2-将二进制shellcode作为标准输入传入read-函数" class="headerlink" title="2.将二进制shellcode作为标准输入传入read()函数"></a>2.将二进制shellcode作为标准输入传入read()函数</h6><p>read(0,buf,128)函数0表示从标准输入中读取，此处不难想到可以通过linux的pipe管道机制作为标准输入传递buf给./rop1函数</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014041959400.png" alt="image-20211014041959400"></p>
+<p>上述命令含义：将bin_with_gdb(shellcode)作为标准输入并执行，可以看到成功写入</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014042124484.png" alt="image-20211014042124484"></p>
+<h6 id="3-修改覆盖的返回地址为0xdeadbeef然后确定shellcode首地址-同gdb-dump过程"><a href="#3-修改覆盖的返回地址为0xdeadbeef然后确定shellcode首地址-同gdb-dump过程" class="headerlink" title="3.修改覆盖的返回地址为0xdeadbeef然后确定shellcode首地址(同gdb dump过程)"></a>3.修改覆盖的返回地址为0xdeadbeef然后确定shellcode首地址(同gdb dump过程)</h6><p>此处和gdb core过程重复不做展开，最终可以得到正确的buf’地址，理论上执行就可getshell(❌)</p>
+<h6 id="4-无法调出shellcode分析Debug"><a href="#4-无法调出shellcode分析Debug" class="headerlink" title="4.无法调出shellcode分析Debug"></a>4.无法调出shellcode分析Debug</h6><p>修改正确buf地址后然后生成相应的shellcode再转为二进制文件，再通过管道传入，但是gdb执行却报错。结果如下：</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014042654043.png" alt="image-20211014042654043"></p>
+<ul>
+<li>首先可以确定的是成功调出了 shell ，此处是 bin/dash ，查看发现 sh:symbolic link to dash</li>
+</ul>
+<p>就是说 bin/sh被成功执行但是重定向到了dash，此时可以确定system函数成功执行</p>
+<ul>
+<li>分析具体报错信息</li>
+</ul>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014043138466.png" alt="image-20211014043138466"></p>
+<p>信息1：</p>
+<p>/bin/dash: 1: jhh///sh/bin��h�41�QjY�Q��1�j</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014043409340.png" alt="image-20211014043409340"></p>
+<p>再r的话就一致重复这个报错回显。</p>
+<p>此处省略冗长试错和查资料分析直接给出原因。</p>
+<p>在gdb r &lt; args执行的时候，此过程将args作为标准输入，然后将shellcode输入到read函数,此过程顺利执行，成功调出dash，问题在于如果不修改args值，后续所有涉及标准输入的过程 gdb都默认将args的内容作为标准输入，所以这也解释了为什么会有/bin/dash: + shellcode的回显，也可以解释为什么进程会一直卡在这里(是因为调起的system函数一直在重复执行 /bin/dash + shellcode)的过程。</p>
+<p>解决方法：在输入完shellcode后置空标准输入，此时system参数将从键盘读取得到交互界面。</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014044048010.png" alt="image-20211014044048010"></p>
+<p>分析（pwntools中的 p.interactive()这个过程其实就是修改标准输入到键盘）</p>
+<h5 id="不通过Pwntools，也不通过GDB进行ROP的尝试"><a href="#不通过Pwntools，也不通过GDB进行ROP的尝试" class="headerlink" title="==不通过Pwntools，也不通过GDB进行ROP的尝试=="></a>==不通过Pwntools，也不通过GDB进行ROP的尝试==</h5><h6 id="提出问题"><a href="#提出问题" class="headerlink" title="提出问题"></a>提出问题</h6><p>==一个问题==：上述gdb调试过程中得到的buf首地址是 ./rop1 过程中buf的首地址吗？</p>
+<p>答案是：不是</p>
+<p>==验证说明==：利用gdb调试出的shellcode 执行 ./rop1 &lt; shellcode 发现段异常（其实就是存在非法的返回地址或者栈帧结构有问题）</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014044514292.png" alt="image-20211014044514292"></p>
+<h6 id="理论解释-Thanks-to-Stackoverflow😊"><a href="#理论解释-Thanks-to-Stackoverflow😊" class="headerlink" title="==理论解释==:(Thanks to Stackoverflow😊)"></a>==理论解释==:(Thanks to Stackoverflow😊)</h6><p>此处将对GDB影响buf地址进行具体解释，关键在于env的改变，会影响buf首地址的偏移。</p>
+<p>Environment variables are stored together with command line arguments at the top of the process memory layout, above the stack.</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014045043451.png" alt="image-20211014045043451"></p>
+<h6 id="Demo验证"><a href="#Demo验证" class="headerlink" title="Demo验证"></a>Demo验证</h6><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[], <span class="keyword">char</span> *envp[])</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> *rsp;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;env: %p\narg: %p\nrsp: %p\n&quot;</span>, envp, argv, &amp;rsp);</span><br><span class="line">        <span class="keyword">while</span> (*envp != <span class="literal">NULL</span>) &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, *envp);</span><br><span class="line">                ++envp;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>正常执行：</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014045344503.png" alt="image-20211014045344503"></p>
+<p>GDB调试执行：</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014045450468.png" alt="image-20211014045450468"></p>
+<p>对比即可发现rsp位置发生了偏移，这是由于gdb调试的时候先执行本身main函数，然后fork出子进程执行 被调试的函数，子进程的环境变量是继承自gdb的main函数，这就导致了环境变量的不同，继而导致buf偏移量不同</p>
+<h6 id="尝试能找到-rop1执行时buf数组位置并getshell"><a href="#尝试能找到-rop1执行时buf数组位置并getshell" class="headerlink" title="尝试能找到./rop1执行时buf数组位置并getshell."></a>尝试能找到./rop1执行时buf数组位置并getshell.</h6><p>gdb调试时候执行rop1环境变量继承自gdb，pwntools执行rop1的时候环境变量继承自执行python程序，那么能否得到正常 ./rop1执行的buf首地址并执行shellcode呢。理论上可以。</p>
+<ul>
+<li>首先依旧先写0xdeadbeef作为返回地址的shellcode并生成二进制文件</li>
+</ul>
+<p>不做展开</p>
+<ul>
+<li>由于 并不会生成core文件，这里利用dmesg查看segment fault信息（因为没有生成core文件无法gdb调试）</li>
+</ul>
+<p>ps:dmesg存储所有dump信息</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014050517081.png" alt="image-20211014050517081"></p>
+<ul>
+<li>得到esp信息，减去0x90算出shellcode首地址，修改shellcode并生成二进制文件</li>
+</ul>
+<p><img src="C:/Users/%E5%BE%90/AppData/Roaming/Typora/typora-user-images/image-20211014050607826.png" alt="image-20211014050607826"></p>
+<ul>
+<li>理论上，是可以完美通过 ./rop1 &lt; bin_without_gdb执行shellcode，但是却什么也没有发生！！！</li>
+</ul>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014050755064.png" alt="image-20211014050755064"></p>
+<p>可以确定的是shellcode没问题，不然执行会报错，还可以确定的是控制流是跳转到了shellcode,因为没有让输入信息的过程，也没有hello rop回显。</p>
+<ul>
+<li>分析</li>
+</ul>
+<p>依旧是标准输入的原因，bin_without_gdb作为标准输入通过管道传递给rop1，然后正常执行shellcode调用system函数执行bin/sh，但是问题在于调用bin/sh没有正确的用户参数传入所以此线程直接跳过然后结束线程，也不返回main函数，也就不执行print(“hello rop”)</p>
+<ul>
+<li>解决办法 </li>
+</ul>
+<p>在执行到 bin/sh线程时更改标准输入，然后通过键盘传入命令即可，其实这也就是gdb调试和pwntools做的过程。。</p>
+<h5 id="方法总结："><a href="#方法总结：" class="headerlink" title="方法总结："></a>方法总结：</h5><p>gdb手动执行shellcode的过程能加强对环境变量、gdb调试能力、管道传递参数、标准输入的理解。</p>
+<p>通过pwntools执行ROP方便快捷，不需要知道底层实现原理，只需要理解栈溢出内容即可，不需要考虑具体环境变量、管道重定向、标准输入流的问题，是封装好的便捷工具。</p>
+<p>总之，pwntools就是我们gdb调试过程的一个封装，了解其底层实现原理是学习的目的，实际ROP时还是选用pwntools更方便快捷。</p>
+<h4 id="3-3-rop2-py-32-bit-分析"><a href="#3-3-rop2-py-32-bit-分析" class="headerlink" title="3.3 rop2.py(32-bit)分析"></a>3.3 rop2.py(32-bit)分析</h4><h5 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h5><p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211002010454951.png" alt="image-20211002010454951"></p>
+<p>开启No-eXecute 数据所在页不可执行保护</p>
+<p>验证</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211002011559038.png" alt="image-20211002011559038"></p>
+<h5 id="确定sys地址"><a href="#确定sys地址" class="headerlink" title="确定sys地址"></a>确定sys地址</h5><p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211002020110467.png" alt="image-20211002020110467"></p>
+<h5 id="找到libc-so库中system参数-“-bin-sh”-地址"><a href="#找到libc-so库中system参数-“-bin-sh”-地址" class="headerlink" title="找到libc.so库中system参数(“/bin/sh”)地址"></a>找到libc.so库中system参数(“/bin/sh”)地址</h5><p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211002021617778.png" alt="image-20211002021617778"></p>
+<p>找到system参数/bin/sh地址为0xf7f650af</p>
+<p>payload = b’a’*0x8c + p32(sys_addr)+p32(0xdeadbeef)+p32(binsh_addr)</p>
+<h5 id="GetShell"><a href="#GetShell" class="headerlink" title="GetShell"></a>GetShell</h5><p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211002021733640.png" alt="image-20211002021733640"></p>
+<h4 id="3-4-rop3-py-64-bit-分析"><a href="#3-4-rop3-py-64-bit-分析" class="headerlink" title="3.4 rop3.py(64-bit)分析"></a>3.4 rop3.py(64-bit)分析</h4><h5 id="环境准备-amp-工具安装"><a href="#环境准备-amp-工具安装" class="headerlink" title="环境准备&amp;工具安装"></a>环境准备&amp;工具安装</h5><p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211002022329398.png" alt="image-20211002022329398"></p>
+<h5 id="寻找可用gadget"><a href="#寻找可用gadget" class="headerlink" title="寻找可用gadget"></a>寻找可用gadget</h5><p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211002022632142.png" alt="image-20211002022632142"></p>
+<p>确定相对libc偏移为0x215bf，计算得指令地址为：0x7ffff7a035bf     </p>
+<h5 id="查看sys-addr"><a href="#查看sys-addr" class="headerlink" title="查看sys_addr"></a>查看sys_addr</h5><p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211002023851002.png" alt="image-20211002023851002"></p>
+<p>sys_addr=0x7ffff7a31550</p>
+<h5 id="查看”-bin-sh”地址"><a href="#查看”-bin-sh”地址" class="headerlink" title="查看”/bin/sh”地址"></a>查看”/bin/sh”地址</h5><p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211002024828003.png" alt="image-20211002024828003"></p>
+<p>binsh_addr=0x7ffff7b95e1a</p>
+<h5 id="修改pwn脚本并执行"><a href="#修改pwn脚本并执行" class="headerlink" title="修改pwn脚本并执行"></a>修改pwn脚本并执行</h5><p>需要注意的是64位情况下,offeset发生了变化=0x80(数组偏移)+0x8(ebp填充)</p>
+<p>当我们所有工作都做完之后发现并不能正常GetShell。。</p>
+<h5 id="RSP-16bytes-Alig-and-wirte-our-own-code"><a href="#RSP-16bytes-Alig-and-wirte-our-own-code" class="headerlink" title="==RSP 16bytes Alig and wirte our own code=="></a>==RSP 16bytes Alig and wirte our own code==</h5><ul>
+<li>Step 1 : 起初是以为是offset 或者system地址什么的算错了，再重复N次都计算得到同一结果时，排除此问题。</li>
+<li>Step 2: Search On Google 初步确定问题为 64位程序在call函数前要求RSP16 bytes对齐，带入本题具体情境：利用gadget获取rdi并将system函数调用参数”/bin/sh”入栈,然后执行system函数，问题出在call system时rsp不是16的倍数。</li>
+<li>Step 3: 问题溯源</li>
+</ul>
+<p>下载本函数使用的库函数，定位system函数调用前操作，使用IDA静态调试</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211007001227724.png" alt="image-20211007001227724" style="zoom:67%;" /></p>
+<p>关键处Movaps指令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">movaps  XMM,XMM&#x2F;m128 </span><br><span class="line">movaps  XMM&#x2F;m128,XMM</span><br><span class="line">把源存储器内容值送入目的寄存器,当有m128时, 内存地址必须是16字节对齐的。</span><br><span class="line">XMMWORD旨在表示与m128相同的类型,刚好这里符合第二条。</span><br></pre></td></tr></table></figure>
+<p>问题已经十分清晰，下面我们用GDB实际调试以下确认是否确实是由RSP没对齐导致的System不能执行。</p>
+<ul>
+<li>Step 3: gdb问题验证</li>
+</ul>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211007001531367.png" alt="image-20211007001531367" style="zoom:50%;" /></p>
+<p>调试转储文件core确认确实是rsp未对齐所致</p>
+<ul>
+<li>Step 4: Sove RSP Align Problems</li>
+</ul>
+<p>起初没有多想以为单纯增加payload长度(即 末尾增加8个b’a’)，修改后却发现依旧报错！</p>
+<p>👆上面问题主要出在对栈帧结构理解并不透彻，RSP是随着执行汇编指令而变化的！而payload多溢出的8个bytes对RSP不会有任何影响，通过gdb调试也验证了RSP依旧不变</p>
+<p>简单Google后发现解决办法,gadget一个return指令即可,然后在调用System 函数之前 执行ret指令使得rsp增加8满足16bytes对齐要求。</p>
+<p>修改后代码如下</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211007002054915.png" alt="image-20211007002054915" style="zoom:67%;" /></p>
+<p>验证：</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211007002246666.png" alt="image-20211007002246666" style="zoom:67%;" /></p>
+<h3 id="4-My-Summary"><a href="#4-My-Summary" class="headerlink" title="4.My Summary"></a>4.My Summary</h3><ul>
+<li><p>工具方面：初步了解gdb工作原理，能使用gdb对程序进行调试和栈帧分析，掌握gcc编译开启相关保护，初步了解NX绕过。学会使用ROPgadgets、dmesg。</p>
+</li>
+<li><p>内容方面，了解PLT和GOT表的原理，掌握基本ROP栈溢出，对Pwntools底层实现原理有了初步了解，了解elf文件执行时的Env环境变量。</p>
+</li>
+<li>技能方面，通过手动调试、发现问题、实际解决”关于gdb调试中看到的buf数组首地址和调试core转储文件不一致的解释”、”64-bit程序下RSP指针对齐问题”，自主查阅资料和分析的能力得到锻炼提升(有问题就找Stackoverflow)。</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Firework</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2021/12/07/EzRop/">http://example.com/2021/12/07/EzRop/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">Firework</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Pwn/">Pwn</a><a class="post-meta__tags" href="/tags/Rop/">Rop</a></div><div class="post_share"><div class="social-share" data-image="https://api.dujin.org/bing/1920.php" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button button--animated"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat.jpg" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay.jpg" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2021/06/04/Python%E7%88%AC%E8%99%AB/"><img class="next-cover" src="https://i.loli.net/2021/06/04/RdN6eAF5JwB9DS3.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Python微博评论爬取</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/04/18/Linux程序保护机制/" title="Linux程序保护机制"><img class="cover" src="https://i.loli.net/2021/04/18/VqduSoB2nyTh1Fr.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-18</div><div class="title">Linux程序保护机制</div></div></a></div><div><a href="/2021/04/20/Pwn_1/" title="Pwnable_game题解_1"><img class="cover" src="https://i.loli.net/2021/04/14/lRpdG9awJtTnovg.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-20</div><div class="title">Pwnable_game题解_1</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Return-Oriented-Programming-Report"><span class="toc-number">1.</span> <span class="toc-text">Return Oriented Programming Report</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Experiment-requirements"><span class="toc-number">1.0.1.</span> <span class="toc-text">1.Experiment requirements</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Expriment-Target"><span class="toc-number">1.0.2.</span> <span class="toc-text">2.Expriment Target</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Experimental-process-and-analysis"><span class="toc-number">1.0.3.</span> <span class="toc-text">3.Experimental process and analysis</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-0-Environment-Settings"><span class="toc-number">1.0.3.1.</span> <span class="toc-text">3.0 Environment Settings</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-gdb%E8%B0%83%E8%AF%95rop1"><span class="toc-number">1.0.3.2.</span> <span class="toc-text">3.1 gdb调试rop1</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-rop1-py%E5%88%86%E6%9E%90"><span class="toc-number">1.0.3.3.</span> <span class="toc-text">3.2 rop1.py分析</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%86%99%E5%85%A5%E4%B8%80%E4%B8%AA%E9%94%99%E8%AF%AF%E7%9A%84%E8%BF%94%E5%9B%9E%E5%9C%B0%E5%9D%80%E5%BE%97%E5%88%B0core%E8%BD%AC%E5%82%A8%E6%96%87%E4%BB%B6"><span class="toc-number">1.0.3.3.1.</span> <span class="toc-text">写入一个错误的返回地址得到core转储文件</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#gdb%E5%88%86%E6%9E%90%E8%BD%AC%E5%82%A8%E6%96%87%E4%BB%B6"><span class="toc-number">1.0.3.3.2.</span> <span class="toc-text">gdb分析转储文件</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%88%90%E5%8A%9FGetShell"><span class="toc-number">1.0.3.3.3.</span> <span class="toc-text">成功GetShell</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%B3%E4%BA%8EGDB%E8%B0%83%E8%AF%95%E7%9A%84%E5%88%86%E6%9E%90"><span class="toc-number">1.0.3.3.4.</span> <span class="toc-text">关于GDB调试的分析</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%B3%E4%BA%8Egdb%E8%B0%83%E8%AF%95%E4%B8%AD%E7%9C%8B%E5%88%B0%E7%9A%84buf%E6%95%B0%E7%BB%84%E9%A6%96%E5%9C%B0%E5%9D%80%E5%92%8C%E8%B0%83%E8%AF%95core%E8%BD%AC%E5%82%A8%E6%96%87%E4%BB%B6%E4%B8%8D%E4%B8%80%E8%87%B4%E7%9A%84%E8%A7%A3%E9%87%8A"><span class="toc-number">1.0.3.3.5.</span> <span class="toc-text">&#x3D;&#x3D;关于gdb调试中看到的buf数组首地址和调试core转储文件不一致的解释&#x3D;&#x3D;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%8D%E9%80%9A%E8%BF%87Pwntools%E5%B7%A5%E5%85%B7%EF%BC%8C%E6%89%8B%E5%8A%A8GetShell"><span class="toc-number">1.0.3.3.6.</span> <span class="toc-text">&#x3D;&#x3D;不通过Pwntools工具，手动GetShell&#x3D;&#x3D;</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#1-%E9%A6%96%E5%85%88%E8%A6%81%E8%A7%A3%E5%86%B3%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96%E4%BA%8C%E8%BF%9B%E5%88%B6shellcode"><span class="toc-number">1.0.3.3.6.1.</span> <span class="toc-text">1.首先要解决如何获取二进制shellcode</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#2-%E5%B0%86%E4%BA%8C%E8%BF%9B%E5%88%B6shellcode%E4%BD%9C%E4%B8%BA%E6%A0%87%E5%87%86%E8%BE%93%E5%85%A5%E4%BC%A0%E5%85%A5read-%E5%87%BD%E6%95%B0"><span class="toc-number">1.0.3.3.6.2.</span> <span class="toc-text">2.将二进制shellcode作为标准输入传入read()函数</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#3-%E4%BF%AE%E6%94%B9%E8%A6%86%E7%9B%96%E7%9A%84%E8%BF%94%E5%9B%9E%E5%9C%B0%E5%9D%80%E4%B8%BA0xdeadbeef%E7%84%B6%E5%90%8E%E7%A1%AE%E5%AE%9Ashellcode%E9%A6%96%E5%9C%B0%E5%9D%80-%E5%90%8Cgdb-dump%E8%BF%87%E7%A8%8B"><span class="toc-number">1.0.3.3.6.3.</span> <span class="toc-text">3.修改覆盖的返回地址为0xdeadbeef然后确定shellcode首地址(同gdb dump过程)</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#4-%E6%97%A0%E6%B3%95%E8%B0%83%E5%87%BAshellcode%E5%88%86%E6%9E%90Debug"><span class="toc-number">1.0.3.3.6.4.</span> <span class="toc-text">4.无法调出shellcode分析Debug</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%8D%E9%80%9A%E8%BF%87Pwntools%EF%BC%8C%E4%B9%9F%E4%B8%8D%E9%80%9A%E8%BF%87GDB%E8%BF%9B%E8%A1%8CROP%E7%9A%84%E5%B0%9D%E8%AF%95"><span class="toc-number">1.0.3.3.7.</span> <span class="toc-text">&#x3D;&#x3D;不通过Pwntools，也不通过GDB进行ROP的尝试&#x3D;&#x3D;</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%8F%90%E5%87%BA%E9%97%AE%E9%A2%98"><span class="toc-number">1.0.3.3.7.1.</span> <span class="toc-text">提出问题</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E7%90%86%E8%AE%BA%E8%A7%A3%E9%87%8A-Thanks-to-Stackoverflow%F0%9F%98%8A"><span class="toc-number">1.0.3.3.7.2.</span> <span class="toc-text">&#x3D;&#x3D;理论解释&#x3D;&#x3D;:(Thanks to Stackoverflow😊)</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Demo%E9%AA%8C%E8%AF%81"><span class="toc-number">1.0.3.3.7.3.</span> <span class="toc-text">Demo验证</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%B0%9D%E8%AF%95%E8%83%BD%E6%89%BE%E5%88%B0-rop1%E6%89%A7%E8%A1%8C%E6%97%B6buf%E6%95%B0%E7%BB%84%E4%BD%8D%E7%BD%AE%E5%B9%B6getshell"><span class="toc-number">1.0.3.3.7.4.</span> <span class="toc-text">尝试能找到.&#x2F;rop1执行时buf数组位置并getshell.</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="toc-number">1.0.3.3.8.</span> <span class="toc-text">方法总结：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-rop2-py-32-bit-%E5%88%86%E6%9E%90"><span class="toc-number">1.0.3.4.</span> <span class="toc-text">3.3 rop2.py(32-bit)分析</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="toc-number">1.0.3.4.1.</span> <span class="toc-text">环境准备</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%A1%AE%E5%AE%9Asys%E5%9C%B0%E5%9D%80"><span class="toc-number">1.0.3.4.2.</span> <span class="toc-text">确定sys地址</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%89%BE%E5%88%B0libc-so%E5%BA%93%E4%B8%ADsystem%E5%8F%82%E6%95%B0-%E2%80%9C-bin-sh%E2%80%9D-%E5%9C%B0%E5%9D%80"><span class="toc-number">1.0.3.4.3.</span> <span class="toc-text">找到libc.so库中system参数(“&#x2F;bin&#x2F;sh”)地址</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#GetShell"><span class="toc-number">1.0.3.4.4.</span> <span class="toc-text">GetShell</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-rop3-py-64-bit-%E5%88%86%E6%9E%90"><span class="toc-number">1.0.3.5.</span> <span class="toc-text">3.4 rop3.py(64-bit)分析</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87-amp-%E5%B7%A5%E5%85%B7%E5%AE%89%E8%A3%85"><span class="toc-number">1.0.3.5.1.</span> <span class="toc-text">环境准备&amp;工具安装</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AF%BB%E6%89%BE%E5%8F%AF%E7%94%A8gadget"><span class="toc-number">1.0.3.5.2.</span> <span class="toc-text">寻找可用gadget</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8Bsys-addr"><span class="toc-number">1.0.3.5.3.</span> <span class="toc-text">查看sys_addr</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E2%80%9D-bin-sh%E2%80%9D%E5%9C%B0%E5%9D%80"><span class="toc-number">1.0.3.5.4.</span> <span class="toc-text">查看”&#x2F;bin&#x2F;sh”地址</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9pwn%E8%84%9A%E6%9C%AC%E5%B9%B6%E6%89%A7%E8%A1%8C"><span class="toc-number">1.0.3.5.5.</span> <span class="toc-text">修改pwn脚本并执行</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#RSP-16bytes-Alig-and-wirte-our-own-code"><span class="toc-number">1.0.3.5.6.</span> <span class="toc-text">&#x3D;&#x3D;RSP 16bytes Alig and wirte our own code&#x3D;&#x3D;</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-My-Summary"><span class="toc-number">1.0.4.</span> <span class="toc-text">4.My Summary</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2021 By Firework</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi,welcome to my world.Hava a good day!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

