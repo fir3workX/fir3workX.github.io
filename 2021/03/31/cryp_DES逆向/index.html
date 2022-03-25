@@ -1,0 +1,685 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DES逆向分析 | Firework</title><meta name="keywords" content="DES、IDA逆向"><meta name="author" content="Firework"><meta name="copyright" content="Firework"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="DES加密过程回顾DES是一个分组加密算法，典型的DES以64位为分组对数据加密，加密和解密用的是同一个算法。整个DES加密过程，可以大致分为如下几个阶段： 初始置换、生成子密钥、迭代过程、最后逆置换 （其中迭代过程包括：扩展置换E、S盒代替、P盒置换） 初始IP置换： 加密开始时，对输入的长度为64位的明文，进行初始置换 IPIP。其置换方式如下图中 8×88×8 的表格所示：     58 5">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DES逆向分析">
+<meta property="og:url" content="http://example.com/2021/03/31/cryp_DES%E9%80%86%E5%90%91/index.html">
+<meta property="og:site_name" content="Firework">
+<meta property="og:description" content="DES加密过程回顾DES是一个分组加密算法，典型的DES以64位为分组对数据加密，加密和解密用的是同一个算法。整个DES加密过程，可以大致分为如下几个阶段： 初始置换、生成子密钥、迭代过程、最后逆置换 （其中迭代过程包括：扩展置换E、S盒代替、P盒置换） 初始IP置换： 加密开始时，对输入的长度为64位的明文，进行初始置换 IPIP。其置换方式如下图中 8×88×8 的表格所示：     58 5">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/04/22/oNfanehKTFCApLx.jpg">
+<meta property="article:published_time" content="2021-03-30T17:24:39.000Z">
+<meta property="article:modified_time" content="2022-03-25T13:51:42.000Z">
+<meta property="article:author" content="Firework">
+<meta property="article:tag" content="DES、IDA逆向">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/04/22/oNfanehKTFCApLx.jpg"><link rel="shortcut icon" href="https://i.loli.net/2021/04/08/2kj1dHCXRf7sGEo.jpg"><link rel="canonical" href="http://example.com/2021/03/31/cryp_DES%E9%80%86%E5%90%91/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":30,"languages":{"author":"作者: Firework","link":"链接: ","source":"来源: Firework","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-03-25 21:51:42'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Firework" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="https://i.loli.net/2021/04/08/2kj1dHCXRf7sGEo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">19</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">24</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2021/04/09/4OQIETdyGWwLYbX.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Firework</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">DES逆向分析</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-03-30T17:24:39.000Z" title="发表于 2021-03-31 01:24:39">2021-03-31</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-03-25T13:51:42.000Z" title="更新于 2022-03-25 21:51:42">2022-03-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/cryptography%E3%80%81%E9%80%86%E5%90%91/">cryptography、逆向</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>9分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="DES逆向分析"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="DES加密过程回顾"><a href="#DES加密过程回顾" class="headerlink" title="DES加密过程回顾"></a>DES加密过程回顾</h2><p>DES是一个分组加密算法，典型的DES以64位为分组对数据加密，加密和解密用的是同一个算法。整个DES加密过程，可以大致分为如下几个阶段：</p>
+<p>初始置换、生成子密钥、迭代过程、最后逆置换 （其中迭代过程包括：扩展置换E、S盒代替、P盒置换）</p>
+<p><strong>初始IP置换：</strong></p>
+<p>加密开始时，对输入的长度为64位的明文，进行初始置换 IPIP。其置换方式如下图中 8×88×8 的表格所示：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>58</th>
+<th>50</th>
+<th>42</th>
+<th>34</th>
+<th>26</th>
+<th>18</th>
+<th>10</th>
+<th>2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>60</td>
+<td>52</td>
+<td>44</td>
+<td>36</td>
+<td>28</td>
+<td>20</td>
+<td>12</td>
+<td>4</td>
+</tr>
+<tr>
+<td>62</td>
+<td>54</td>
+<td>46</td>
+<td>38</td>
+<td>30</td>
+<td>22</td>
+<td>14</td>
+<td>6</td>
+</tr>
+<tr>
+<td>64</td>
+<td>56</td>
+<td>48</td>
+<td>40</td>
+<td>32</td>
+<td>24</td>
+<td>16</td>
+<td>8</td>
+</tr>
+<tr>
+<td>57</td>
+<td>49</td>
+<td>41</td>
+<td>33</td>
+<td>25</td>
+<td>17</td>
+<td>9</td>
+<td>1</td>
+</tr>
+<tr>
+<td>59</td>
+<td>51</td>
+<td>43</td>
+<td>35</td>
+<td>27</td>
+<td>19</td>
+<td>11</td>
+<td>3</td>
+</tr>
+<tr>
+<td>61</td>
+<td>53</td>
+<td>45</td>
+<td>37</td>
+<td>29</td>
+<td>21</td>
+<td>13</td>
+<td>5</td>
+</tr>
+<tr>
+<td>63</td>
+<td>55</td>
+<td>47</td>
+<td>39</td>
+<td>31</td>
+<td>23</td>
+<td>15</td>
+<td>7</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>即：表中的数字代表新数据中此位置的数据在原数据中的位置，即原数据块的第58位放到新数据的第1位</p>
+<p><strong>子密钥生成：</strong></p>
+<p>DES 加密共执行16次迭代，每次迭代过程的数据长度为48位，因此需要16个48位的子密钥来进行加密，生成子密钥的过程如下：</p>
+<p><img src="https://i.loli.net/2021/05/04/SNTe8sQKwIMrHV9.png" alt="DES子密钥生成.png"></p>
+<p><strong>迭代过程：</strong></p>
+<p><img src="https://i.loli.net/2021/05/04/62bDGESo95THNad.png" alt="DES迭代过程.png"></p>
+<p>E扩展：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>32</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+</tr>
+<tr>
+<td>8</td>
+<td>9</td>
+<td>10</td>
+<td>11</td>
+<td>12</td>
+<td>13</td>
+</tr>
+<tr>
+<td>12</td>
+<td>13</td>
+<td>14</td>
+<td>15</td>
+<td>16</td>
+<td>17</td>
+</tr>
+<tr>
+<td>16</td>
+<td>17</td>
+<td>18</td>
+<td>19</td>
+<td>20</td>
+<td>21</td>
+</tr>
+<tr>
+<td>20</td>
+<td>21</td>
+<td>22</td>
+<td>23</td>
+<td>24</td>
+<td>25</td>
+</tr>
+<tr>
+<td>24</td>
+<td>25</td>
+<td>26</td>
+<td>27</td>
+<td>28</td>
+<td>29</td>
+</tr>
+<tr>
+<td>28</td>
+<td>29</td>
+<td>30</td>
+<td>31</td>
+<td>32</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>经过 E扩展 的变换，结果中的各位，依次为输入的第32, 1, 2, …, 32, 1位。可以看到，输入的有些位，在输出中重复出现了。所以输出的位数，由输入时的32，增加到了48。</p>
+<p>S盒替换：</p>
+<p>E扩展得到的结果仍然是48位的。将其每6位编为一组，共8组记为：</p>
+<script type="math/tex; mode=display">
+B_{1}B_{2}B_{3}B_{4}B_{5}B_{6}B_{7}B_{8}</script><p>然后，对每一个 Bi，使用对应的S-box进行变换，并将结果继续拼接起来。</p>
+<p>对于长度为6位的输入，根据其第1, 6位确定所在行，再根据其第2至5位确定所在列，找到对应的值，即为sbox的输出结果。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>S1</strong></th>
+<th><strong>x0000x</strong></th>
+<th><strong>x0001x</strong></th>
+<th><strong>x0010x</strong></th>
+<th><strong>x0011x</strong></th>
+<th><strong>x0100x</strong></th>
+<th><strong>x0101x</strong></th>
+<th><strong>x0110x</strong></th>
+<th><strong>x0111x</strong></th>
+<th><strong>x1000x</strong></th>
+<th><strong>x1001x</strong></th>
+<th><strong>x1010x</strong></th>
+<th><strong>x1011x</strong></th>
+<th><strong>x1100x</strong></th>
+<th><strong>x1101x</strong></th>
+<th><strong>x1110x</strong></th>
+<th><strong>x1111x</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0yyyy0</strong></td>
+<td>14</td>
+<td>4</td>
+<td>13</td>
+<td>1</td>
+<td>2</td>
+<td>15</td>
+<td>11</td>
+<td>8</td>
+<td>3</td>
+<td>10</td>
+<td>6</td>
+<td>12</td>
+<td>5</td>
+<td>9</td>
+<td>0</td>
+<td>7</td>
+</tr>
+<tr>
+<td><strong>0yyyy1</strong></td>
+<td>0</td>
+<td>15</td>
+<td>7</td>
+<td>4</td>
+<td>14</td>
+<td>2</td>
+<td>13</td>
+<td>1</td>
+<td>10</td>
+<td>6</td>
+<td>12</td>
+<td>11</td>
+<td>9</td>
+<td>5</td>
+<td>3</td>
+<td>8</td>
+</tr>
+<tr>
+<td><strong>1yyyy0</strong></td>
+<td>4</td>
+<td>1</td>
+<td>14</td>
+<td>8</td>
+<td>13</td>
+<td>6</td>
+<td>2</td>
+<td>11</td>
+<td>15</td>
+<td>12</td>
+<td>9</td>
+<td>7</td>
+<td>3</td>
+<td>10</td>
+<td>5</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>1yyyy1</strong></td>
+<td>15</td>
+<td>12</td>
+<td>8</td>
+<td>2</td>
+<td>4</td>
+<td>9</td>
+<td>1</td>
+<td>7</td>
+<td>5</td>
+<td>11</td>
+<td>3</td>
+<td>14</td>
+<td>10</td>
+<td>0</td>
+<td>6</td>
+<td>13</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>，如果输入是 011011，那么其变换的结果是在第2行，倒数第3列，值为5=0101。所以：</p>
+<script type="math/tex; mode=display">
+S_{1}(011011)=0101</script><p>对于这8个 Bi，通过 SiSi 全部计算完成后再拼接，得到长度为32位的结果：</p>
+<p>P盒置换：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>16</th>
+<th>7</th>
+<th>20</th>
+<th>21</th>
+<th>29</th>
+<th>12</th>
+<th>28</th>
+<th>17</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>15</td>
+<td>23</td>
+<td>26</td>
+<td>5</td>
+<td>18</td>
+<td>31</td>
+<td>10</td>
+</tr>
+<tr>
+<td>2</td>
+<td>8</td>
+<td>24</td>
+<td>14</td>
+<td>32</td>
+<td>27</td>
+<td>3</td>
+<td>9</td>
+</tr>
+<tr>
+<td>19</td>
+<td>13</td>
+<td>30</td>
+<td>6</td>
+<td>22</td>
+<td>11</td>
+<td>4</td>
+<td>25</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>表中的数字代表原数据中此位置的数据在新数据中的位置，即原数据块的第16位放到新数据的第1位，第7位放到第2位，……依此类推，第25位放到第32位。</p>
+<p>最后IP逆置换：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>40</th>
+<th>8</th>
+<th>48</th>
+<th>16</th>
+<th>56</th>
+<th>24</th>
+<th>64</th>
+<th>32</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>39</td>
+<td>7</td>
+<td>47</td>
+<td>15</td>
+<td>55</td>
+<td>23</td>
+<td>63</td>
+<td>31</td>
+</tr>
+<tr>
+<td>38</td>
+<td>6</td>
+<td>46</td>
+<td>14</td>
+<td>54</td>
+<td>22</td>
+<td>62</td>
+<td>30</td>
+</tr>
+<tr>
+<td>37</td>
+<td>5</td>
+<td>45</td>
+<td>13</td>
+<td>53</td>
+<td>21</td>
+<td>61</td>
+<td>29</td>
+</tr>
+<tr>
+<td>36</td>
+<td>4</td>
+<td>44</td>
+<td>12</td>
+<td>52</td>
+<td>20</td>
+<td>60</td>
+<td>28</td>
+</tr>
+<tr>
+<td>35</td>
+<td>3</td>
+<td>43</td>
+<td>11</td>
+<td>51</td>
+<td>19</td>
+<td>59</td>
+<td>27</td>
+</tr>
+<tr>
+<td>34</td>
+<td>2</td>
+<td>42</td>
+<td>10</td>
+<td>50</td>
+<td>18</td>
+<td>58</td>
+<td>26</td>
+</tr>
+<tr>
+<td>33</td>
+<td>1</td>
+<td>41</td>
+<td>9</td>
+<td>49</td>
+<td>17</td>
+<td>57</td>
+<td>25</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>以上是对DES加密算法的简单回顾</p>
+<p>下面我们以desenc.exe为实例对DES加密函数进行具体分析</p>
+<p><img src="https://i.loli.net/2021/05/06/3PFkJlhIUDyEOwr.png" alt="DESen.png"></p>
+<p>运行该小程序后发现我们需要输入一个被加密的字符串，测试后发现，我们输入某个正确的八位字符串即可获取flag.</p>
+<p>下面借助IDA对其中的关键函数进行分析：</p>
+<h2 id="main函数分析"><a href="#main函数分析" class="headerlink" title="main函数分析"></a>main函数分析</h2><p><img src="https://i.loli.net/2021/05/06/ZnwJh8SX3ORKU5T.png" alt="DES_IDA.png"></p>
+<p>首先借助IDA的F5反编译插件查看main函数伪代码，获取加密大致流程：</p>
+<ul>
+<li>首先字符串”DE3_En1c”被放入v7字符数组中，根据其为8字节共64bit而且此程序为加密函数可以分析出v7字符数组应该储存的是密钥</li>
+<li>其次获取用户输入并将用户输入储存在Str字符数组中，判断此为明文输入</li>
+<li>接着对用户输入长度进行判断，若用户输入字符长度为8则进入加密子程序</li>
+<li><strong>sub_40100F((int)v7)</strong>根据该函数处理的数据为密钥v7,猜测此函数为密钥生成函数</li>
+<li><strong>sub_401032(Str, v5);</strong>根据输入参数可以猜测此函数对用户输入进行加密并将加密后密文储存在v5字符数组中</li>
+<li>最后将密文同指定的字符数组进行比较，若一致则最终可以get flag</li>
+</ul>
+<p>下面对子密钥生成模块和加密迭代过程模块过程进行重点分析：</p>
+<h2 id="DES子密钥生成模块分析"><a href="#DES子密钥生成模块分析" class="headerlink" title="DES子密钥生成模块分析"></a>DES子密钥生成模块分析</h2><p><strong>sub_40100F((int)v7)</strong>跟进该函数：</p>
+<p><img src="https://i.loli.net/2021/05/06/yIoUFT81twGz6L4.png" alt="DES_Key.png"></p>
+<p><strong>sub_40101E(a1, v6, 8)分析</strong></p>
+<p><img src="https://i.loli.net/2021/05/06/7oFzeRmViPkx3Yw.png" alt="DES_Key1.png"></p>
+<p>该函数参数为a1,v6,8 该函数将固定的数据a1作为参数处理，将结果储存在栈空间v6中。</p>
+<p>该函数取参数中每一字节数据的每一位，并将每一位数据再放入一个字节中。</p>
+<p><strong>result = (void *)sub_401046(v6, v4);</strong>分析</p>
+<p>跟进函数sub_401046(v6, v4)</p>
+<p><img src="https://i.loli.net/2021/05/06/fZspba97gjnmUSt.png" alt="DES_Key2.png"></p>
+<p>该函数利用栈中数据v6作为参数进行56轮的处理，每一轮循环都是根据字节 数组0x4280EC处的值来将v6中的数据放入输出地址a2处， 经过该函数，输入的64字节数据变成了56字节数据，这是子密钥生成算法的的第一步PC-1置换选择</p>
+<p>接下来应该是两部分子密钥进行循环左移的过程</p>
+<p><img src="https://i.loli.net/2021/05/06/8kSaRgoHl9WdPAy.png" alt="DES_Key4.png"></p>
+<p><strong>sub_401014(v4, (int)v4, byte_428154[i]);</strong>分析：</p>
+<p><img src="https://i.loli.net/2021/05/06/aorVd5hktPTONLu.png" alt="DES_Key3.png"></p>
+<ul>
+<li>函数sub_4014F0就是循环移位的函数，分别对 56位密钥中的左右两个子密钥进行移位。</li>
+<li>经过16轮循环生成16组子密钥</li>
+</ul>
+<h2 id="DES加密模块分析"><a href="#DES加密模块分析" class="headerlink" title="DES加密模块分析"></a>DES加密模块分析</h2><p><strong>sub_401032(Str, v5)</strong></p>
+<p>跟进该函数</p>
+<p><img src="https://i.loli.net/2021/05/06/WgdDZBXJbaU37L6.png" alt="DES_Func.jpg"></p>
+<p><strong>sub_40101E(a1, (int)Src, 8)</strong>分析：</p>
+<p>该函数同子密钥生成模块第一个函数一样：将用户的输入中的每一位提取出来转换成一个64字节的数组；</p>
+<p><strong>sub_401028(Src, (int)Src);</strong>分析</p>
+<p>跟进该函数：</p>
+<p><img src="https://i.loli.net/2021/05/06/zksxNF2AnS8vbYc.png" alt="DES_Func1.png"></p>
+<p>该部分0对这64字节数组进行处理，即加密过程中的IP置换；</p>
+<p><strong>两次memcpy调用分析：</strong></p>
+<p>跟进函数结合DES过程分析这部分分成了左右两个分组</p>
+<p><strong>十六轮循环迭代部分：</strong></p>
+<p>for循环完成前十五轮迭代</p>
+<p>for循环后完成最后一轮迭代</p>
+<p><img src="https://i.loli.net/2021/05/06/khcYPVR3QBdtiZj.png" alt="DES_Func2 _2_.png"></p>
+<p>  <strong>sub_401005((int)v3, v5, (int)&amp;unk_42DC9C + 48 * i);</strong>分析：</p>
+<p><img src="https://i.loli.net/2021/05/06/2XczYpNhDwmsTE6.png" alt="DES_Func3.png"></p>
+<ul>
+<li><p>sub_40104B(a1, (int)v5)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">unsigned</span> __int8 __cdecl <span class="title">sub_401660</span><span class="params">(<span class="keyword">void</span> *Src, <span class="keyword">int</span> a2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">unsigned</span> __int8 result; <span class="comment">// al</span></span><br><span class="line">  <span class="keyword">int</span> i; <span class="comment">// [esp+4Ch] [ebp-34h]</span></span><br><span class="line">  <span class="keyword">char</span> v4[<span class="number">48</span>]; <span class="comment">// [esp+50h] [ebp-30h] BYREF</span></span><br><span class="line"></span><br><span class="line">  result = (<span class="keyword">unsigned</span> __int8)<span class="built_in">memcpy</span>(v4, Src, <span class="keyword">sizeof</span>(v4));</span><br><span class="line">  <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt; <span class="number">48</span>; ++i )</span><br><span class="line">  &#123;</span><br><span class="line">    result = *((_BYTE *)&amp;i + byte_42809C[i] + <span class="number">3</span>);</span><br><span class="line">    *(_BYTE *)(i + a2) = result;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>a1为一个32字节的数据，v5则是分配的栈上的 空间，大小为0x30（48）字节，跟进该函数可知这部分为E扩展</p>
+</li>
+<li><p>sub_401023(v5, a3, 48)函数:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> __cdecl <span class="title">sub_401900</span><span class="params">(<span class="keyword">int</span> a1, <span class="keyword">int</span> a2, <span class="keyword">int</span> a3)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> result; <span class="comment">// eax</span></span><br><span class="line">  <span class="keyword">int</span> i; <span class="comment">// [esp+4Ch] [ebp-4h]</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt; a3; ++i )</span><br><span class="line">  &#123;</span><br><span class="line">    *(_BYTE *)(i + a1) = (*(_BYTE *)(i + a2) + *(_BYTE *)(i + a1)) &amp; <span class="number">1</span>;</span><br><span class="line">    result = i + <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br></pre></td></tr></table></figure>
+<p>该函数将第一个参数和第二个参数逐字节的相加，并将结果‘与’ 上0x1（也即取最低位），这其实就是异或的操作， 也是标准DES加密过程中右边分组经扩展置换后与 密钥进行异或的部分</p>
+</li>
+<li><p>sub_40103C(v5, Src)</p>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> __cdecl <span class="title">sub_4016F0</span><span class="params">(<span class="keyword">int</span> a1, <span class="keyword">int</span> a2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> result; <span class="comment">// eax</span></span><br><span class="line">  <span class="keyword">char</span> v3; <span class="comment">// [esp+4Ch] [ebp-14h]</span></span><br><span class="line">  <span class="keyword">int</span> v4; <span class="comment">// [esp+58h] [ebp-8h]</span></span><br><span class="line">  <span class="keyword">int</span> v5; <span class="comment">// [esp+5Ch] [ebp-4h]</span></span><br><span class="line"></span><br><span class="line">  v5 = <span class="number">0</span>;</span><br><span class="line">  v4 = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> ( v5 &lt; <span class="number">8</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    v3 = byte_428164[<span class="number">64</span> * v5</span><br><span class="line">                   + <span class="number">16</span> * ((*(_BYTE *)(a1 + <span class="number">6</span> * v5 + <span class="number">5</span>) | (<span class="keyword">unsigned</span> __int8)(<span class="number">2</span> * *(_BYTE *)(a1 + <span class="number">6</span> * v5))) &amp; <span class="number">3</span>)</span><br><span class="line">                   + ((*(_BYTE *)(a1 + <span class="number">6</span> * v5 + <span class="number">4</span>) | (<span class="keyword">unsigned</span> __int8)((<span class="number">2</span> * *(_BYTE *)(a1 + <span class="number">6</span> * v5 + <span class="number">3</span>)) | (<span class="number">4</span> * *(_BYTE *)(a1 + <span class="number">6</span> * v5 + <span class="number">2</span>)) | (<span class="number">8</span> * *(_BYTE *)(a1 + <span class="number">6</span> * v5 + <span class="number">1</span>)))) &amp; <span class="number">0xF</span>)] &amp; <span class="number">0xF</span>;</span><br><span class="line">    *(_BYTE *)(v4 + a2) = (v3 &gt;&gt; <span class="number">3</span>) &amp; <span class="number">1</span>;</span><br><span class="line">    *(_BYTE *)(v4 + a2 + <span class="number">1</span>) = (v3 &gt;&gt; <span class="number">2</span>) &amp; <span class="number">1</span>;</span><br><span class="line">    *(_BYTE *)(v4 + a2 + <span class="number">2</span>) = (v3 &gt;&gt; <span class="number">1</span>) &amp; <span class="number">1</span>;</span><br><span class="line">    *(_BYTE *)(v4 + a2 + <span class="number">3</span>) = v3 &amp; <span class="number">1</span>;</span><br><span class="line">    v4 += <span class="number">4</span>;</span><br><span class="line">    result = ++v5;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>根据迭代流程猜测此函数为S-box替换，查表将6bit数据替换为4bit数据</p>
+<ul>
+<li>sub_401037(Src, (int)Src)</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">unsigned</span> __int8 __cdecl <span class="title">sub_401870</span><span class="params">(<span class="keyword">void</span> *Src, <span class="keyword">int</span> a2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">unsigned</span> __int8 result; <span class="comment">// al</span></span><br><span class="line">  <span class="keyword">int</span> i; <span class="comment">// [esp+4Ch] [ebp-24h]</span></span><br><span class="line">  <span class="keyword">char</span> v4[<span class="number">32</span>]; <span class="comment">// [esp+50h] [ebp-20h] BYREF</span></span><br><span class="line"></span><br><span class="line">  result = (<span class="keyword">unsigned</span> __int8)<span class="built_in">memcpy</span>(v4, Src, <span class="keyword">sizeof</span>(v4));</span><br><span class="line">  <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt; <span class="number">32</span>; ++i )</span><br><span class="line">  &#123;</span><br><span class="line">    result = *((_BYTE *)&amp;i + byte_4280CC[i] + <span class="number">3</span>);</span><br><span class="line">    *(_BYTE *)(i + a2) = result;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该函数完成P置换部分</p>
+<h2 id="Exp"><a href="#Exp" class="headerlink" title="Exp"></a>Exp</h2><p>可转化为：已知加密流程为DES，密钥DE3_En1C：，加密后密文，求明文。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> key[<span class="number">9</span>] = <span class="string">&quot;DE3_En1C&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> plaintext[<span class="number">20</span>];</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> ciphertext[<span class="number">8</span>]=&#123;<span class="number">0xef</span>,<span class="number">0x34</span>,<span class="number">0xd4</span>,<span class="number">0xa3</span>,<span class="number">0xc6</span>,<span class="number">0x84</span>,<span class="number">0xe4</span>,<span class="number">0x23</span>&#125;;</span><br><span class="line">    <span class="comment">//to generate 16 round subkey</span></span><br><span class="line">    get_subkey(key);</span><br><span class="line">    <span class="comment">//to encrypt plaintext</span></span><br><span class="line">    decryption(ciphertext,plaintext);</span><br><span class="line">	plaintext[<span class="number">8</span>]=<span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>,plaintext);</span><br><span class="line">	system(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2021/05/06/hbptjoW16B8UcvQ.png" alt="DES_exp.png"></p>
+<p>Finally   :)</p>
+<p><img src="https://i.loli.net/2021/05/06/jyLOhmvkso7AfCI.png" alt="DES_exp_out.png"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Firework</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2021/03/31/cryp_DES%E9%80%86%E5%90%91/">http://example.com/2021/03/31/cryp_DES%E9%80%86%E5%90%91/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">Firework</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/DES%E3%80%81IDA%E9%80%86%E5%90%91/">DES、IDA逆向</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/04/22/oNfanehKTFCApLx.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button button--animated"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat.jpg" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay.jpg" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/04/02/cryp_%E6%B5%81%E5%AF%86%E7%A0%81/"><img class="prev-cover" src="https://i.loli.net/2021/04/22/fJ9hZAsE7BRoxeg.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">流密码</div></div></a></div><div class="next-post pull-right"><a href="/2021/03/28/cryp_AES/"><img class="next-cover" src="https://i.loli.net/2021/04/22/RLahJbrND4Gzfxm.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">AES分析</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#DES%E5%8A%A0%E5%AF%86%E8%BF%87%E7%A8%8B%E5%9B%9E%E9%A1%BE"><span class="toc-number">1.</span> <span class="toc-text">DES加密过程回顾</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#main%E5%87%BD%E6%95%B0%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">main函数分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DES%E5%AD%90%E5%AF%86%E9%92%A5%E7%94%9F%E6%88%90%E6%A8%A1%E5%9D%97%E5%88%86%E6%9E%90"><span class="toc-number">3.</span> <span class="toc-text">DES子密钥生成模块分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DES%E5%8A%A0%E5%AF%86%E6%A8%A1%E5%9D%97%E5%88%86%E6%9E%90"><span class="toc-number">4.</span> <span class="toc-text">DES加密模块分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Exp"><span class="toc-number">5.</span> <span class="toc-text">Exp</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2021 - 2022 By Firework</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi,welcome to my world.Hava a good day!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script></div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
