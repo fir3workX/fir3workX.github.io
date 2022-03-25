@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SystemcallABI | Firework</title><meta name="keywords" content="linux"><meta name="author" content="Firework"><meta name="copyright" content="Firework"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="系统调用权威指南The Definitive Guide to Linux System Calls  Linux System Call TableWarning: This document is old &amp; has moved. Please update any links:https:&#x2F;&#x2F;chromium.googlesource.com&#x2F;chromiumos&#x2F;docs&#x2F;+&#x2F;HE">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SystemcallABI | Firework</title><meta name="keywords" content="linux"><meta name="author" content="Firework"><meta name="copyright" content="Firework"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Ref: https:&#x2F;&#x2F;chromium.googlesource.com&#x2F;chromiumos&#x2F;docs&#x2F;+&#x2F;HEAD&#x2F;constants&#x2F;syscalls.md Linux System Call TableThese are the system call numbers (NR) and their corresponding symbolic names. These vary sig">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SystemcallABI">
 <meta property="og:url" content="http://example.com/2022/02/03/SystemcallABI/index.html">
 <meta property="og:site_name" content="Firework">
-<meta property="og:description" content="系统调用权威指南The Definitive Guide to Linux System Calls  Linux System Call TableWarning: This document is old &amp; has moved. Please update any links:https:&#x2F;&#x2F;chromium.googlesource.com&#x2F;chromiumos&#x2F;docs&#x2F;+&#x2F;HE">
+<meta property="og:description" content="Ref: https:&#x2F;&#x2F;chromium.googlesource.com&#x2F;chromiumos&#x2F;docs&#x2F;+&#x2F;HEAD&#x2F;constants&#x2F;syscalls.md Linux System Call TableThese are the system call numbers (NR) and their corresponding symbolic names. These vary sig">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://fireworkxzww.top//pic/005BYxJSly1h0jile4cw2j31hc0u0tda.jpg">
 <meta property="article:published_time" content="2022-02-02T17:37:04.000Z">
-<meta property="article:modified_time" content="2022-03-25T17:43:42.917Z">
+<meta property="article:modified_time" content="2022-03-25T18:09:11.047Z">
 <meta property="article:author" content="Firework">
 <meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary">
@@ -57,7 +57,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2022-03-26 01:43:42'
+  postUpdate: '2022-03-26 02:09:11'
 }</script><noscript><style type="text/css">
   #nav {
     opacity: 1
@@ -140,29 +140,36 @@
         }
       }
     })(window)</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Firework" type="application/atom+xml">
-</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="https://i.loli.net/2021/04/08/2kj1dHCXRf7sGEo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">24</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2021/04/09/4OQIETdyGWwLYbX.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Firework</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">SystemcallABI</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-02-02T17:37:04.000Z" title="发表于 2022-02-03 01:37:04">2022-02-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-03-25T17:43:42.917Z" title="更新于 2022-03-26 01:43:42">2022-03-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/linux/">linux</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">18k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>112分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="SystemcallABI"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>系统调用权威指南<a target="_blank" rel="noopener" href="https://blog.packagecloud.io/eng/2016/04/05/the-definitive-guide-to-linux-system-calls/">The Definitive Guide to Linux System Calls</a></p>
-<p><img src="D:/pictures/mypic-master/pic/image-20220203020442899.png" alt="image-20220203020442899"></p>
-<h1 id="Linux-System-Call-Table"><a href="#Linux-System-Call-Table" class="headerlink" title="Linux System Call Table"></a>Linux System Call Table</h1><p><strong>Warning: This document is old &amp; has moved. Please update any links:</strong><br><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromiumos/docs/+/HEAD/constants/syscalls.md">https://chromium.googlesource.com/chromiumos/docs/+/HEAD/constants/syscalls.md</a></p>
-<p>These are the system call numbers (NR) and their corresponding symbolic names.</p>
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="https://i.loli.net/2021/04/08/2kj1dHCXRf7sGEo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">24</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2021/04/09/4OQIETdyGWwLYbX.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Firework</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">SystemcallABI</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-02-02T17:37:04.000Z" title="发表于 2022-02-03 01:37:04">2022-02-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-03-25T18:09:11.047Z" title="更新于 2022-03-26 02:09:11">2022-03-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/linux/">linux</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">19.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>119分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="SystemcallABI"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>Ref: <a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromiumos/docs/+/HEAD/constants/syscalls.md">https://chromium.googlesource.com/chromiumos/docs/+/HEAD/constants/syscalls.md</a></p>
+<h1 id="Linux-System-Call-Table"><a href="#Linux-System-Call-Table" class="headerlink" title="Linux System Call Table"></a>Linux System Call Table</h1><p>These are the system call numbers (NR) and their corresponding symbolic names.</p>
 <p>These vary significantly across architectures/ABIs, both in mappings and in actual name.</p>
 <p>This is a quick reference for people debugging things (e.g. seccomp failures).</p>
 <p>For more details on syscalls in general, see the <a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/syscall.2.html">syscall(2)</a> man page.</p>
-<h2 id="Contents"><a href="#Contents" class="headerlink" title="Contents"></a>Contents</h2><p><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromiumos/docs/+/master/constants/syscalls.md#naming">Random Names</a></p>
-<p><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromiumos/docs/+/master/constants/syscalls.md#Kernel-Implementations">Kernel Implementations</a></p>
-<p><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromiumos/docs/+/master/constants/syscalls.md#Calling-Conventions">Calling Conventions</a></p>
-<p><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromiumos/docs/+/master/constants/syscalls.md#Tables">Tables</a></p>
-<p><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromiumos/docs/+/master/constants/syscalls.md#x86_64-64_bit">x86_64 (64-bit)</a></p>
-<p><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromiumos/docs/+/master/constants/syscalls.md#arm-32_bit_EABI">arm (32-bit/EABI)</a></p>
-<p><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromiumos/docs/+/master/constants/syscalls.md#arm64-64_bit">arm64 (64-bit)</a></p>
-<p><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromiumos/docs/+/master/constants/syscalls.md#x86-32_bit">x86 (32-bit)</a></p>
-<p><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromiumos/docs/+/master/constants/syscalls.md#Cross_arch-Numbers">Cross-arch Numbers</a></p>
+<h2 id="Contents"><a href="#Contents" class="headerlink" title="Contents"></a>Contents</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromiumos/docs/+/HEAD/constants/syscalls.md#naming">Random Names</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromiumos/docs/+/HEAD/constants/syscalls.md#Kernel-Implementations">Kernel Implementations</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromiumos/docs/+/HEAD/constants/syscalls.md#Calling-Conventions">Calling Conventions</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromiumos/docs/+/HEAD/constants/syscalls.md#Tables">Tables</a></p>
+</li>
+<li><ul>
+<li><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromiumos/docs/+/HEAD/constants/syscalls.md#x86_64-64_bit">x86_64 (64-bit)</a></li>
+<li><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromiumos/docs/+/HEAD/constants/syscalls.md#arm-32_bit_EABI">arm (32-bit/EABI)</a></li>
+<li><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromiumos/docs/+/HEAD/constants/syscalls.md#arm64-64_bit">arm64 (64-bit)</a></li>
+<li><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromiumos/docs/+/HEAD/constants/syscalls.md#x86-32_bit">x86 (32-bit)</a></li>
+<li><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromiumos/docs/+/HEAD/constants/syscalls.md#Cross_arch-Numbers">Cross-arch Numbers</a></li>
+</ul>
+</li>
+</ul>
 <h2 id="Random-Names"><a href="#Random-Names" class="headerlink" title="Random Names"></a>Random Names</h2><p>Depending on the environment you’re in, syscall names might use slightly different naming conventions.</p>
 <p>The kernel headers (e.g. <code>asm/unistd.h</code>) use names like <code>__NR_xxx</code>, but don’t provide any other utility code. The C library headers (e.g. <code>syscall.h</code> &amp; <code>sys/syscall.h</code>) use names like <code>SYS_xxx</code> with the intention they be used with <code>syscall(...)</code>. These defines will be exactly the same — so <code>__NR_foo</code> will have the same value as <code>SYS_foo</code>.</p>
 <p>Which one a developer chooses to use is a bit arbitrary, and most likely belies their background (with kernel developers tending towards <code>__NR_xxx</code>). If you’re writing userland C code and the <code>syscall(...)</code> function, you probably should stick to <code>SYS_xxx</code> instead.</p>
 <p>The short name “NR” itself just refers to “number”. You might see “syscall number” and “NR” and “syscall NR” used interchangeably.</p>
 <p>Another fun difference is that some architectures namespace syscalls that are specific to their port in some way. Or they don‘t. It’s another situation of different kernel maintainers making different choices and there not being a central authority who noticed &amp; enforced things. For example, ARM has a few <code>__ARM_NR_xxx</code> syscalls that they consider “private”, and they have a few <code>__NR_arm_xxx</code> syscalls to indicate that they have a custom wrapper around the <code>xxx</code> syscall!</p>
 <p>Another edge case to keep in mind is that different architectures might use the same name for different entry points. It‘s uncommon, but can come up when looking at syscalls with variants. For example, an older architecture port might have <code>setuid</code> &amp; <code>setuid32</code> while newer ones only have <code>setuid</code>. The older port’s <code>setuid</code> takes a 16-bit argument while the newer port’s <code>setuid</code> takes a 32-bit argument and is equivalent to <code>setuid32</code>. There are many parallels with filesystem calls like <code>statfs</code> &amp; <code>statfs64</code>.</p>
-<h2 id="Kernel-Implementations"><a href="#Kernel-Implementations" class="headerlink" title="Kernel Implementations"></a>Kernel Implementations</h2><p>The cs/ links to kernel sources are mostly best effort. They focus on the common C entry point, but depending on your execution environment, that might not be the first place the kernel executes. Unfortunately, they‘re Google-internal only currently as we haven’t found any good public indexes to point to instead.</p>
+<h2 id="Kernel-Implementations"><a href="#Kernel-Implementations" class="headerlink" title="Kernel Implementations"></a>Kernel Implementations</h2><p>The cs/ links to kernel sources are mostly best effort. They focus on the common C entry point, but depending on your execution environment, that might not be the first place the kernel executes.</p>
 <p>Every architecture may point a syscall from its initial entry point to custom trampoline code. For example, ARM‘s fstatfs64 implementation starts execution in sys_fstatfs64_wrapper which lives under arch/arm/ as assembly code. That in turn calls sys_fstatfs64 which is C code in the common fs/ tree. Usually these trampolines are not complicated, but they might add an extra check to overall execution. If you’re seeing confusing behavior related to the C code, you might want to dive deeper.</p>
 <p>When working with 32-bit ABIs on 64-bit kernels, you might run into the syscall compat layers which try to swizzle structures. This shows up a lot on x86 &amp; ARM systems where the userland is 32-bit but the kernel is 64-bit. These will use conventions like compat_sys_xxx instead of sys_xxx, and COMPAT_SYSCALL_XXX wrappers instead of SYSCALL_XXX. They‘re responsible for taking the 32-bit structures from userland, converting them to the 64-bit structures the kernel uses, then calling the 64-bit C code. Normally this conversion is not a problem, but if the code detects issues with the data structures, it’ll error out before the common implementation of the syscall is ever executed.</p>
 <p>The Android/ARC++ container executes under the alt-syscall layer. This allows defining of a custom syscall table for the purpose of hard disabling any syscalls for all processes (without needing seccomp), or for adding extra checks to the entry/exit points of the common implementation, or stubbing things out regardless of any arguments. All of this code will run before the common implementation of the syscall is ever executed. Since the tables are hand maintained in our kernel (and not upstream), new syscalls aren‘t added to the whitelist automatically, so you might see confusing errors like ENOSYS, but only when run inside of the container. If you’re seeing misbehavior, you should check to see if alt-syscall is enabled for the process, and if so, look at the wrappers under security/chromiumos/.</p>
@@ -535,7 +542,7 @@
 <td style="text-align:center">fd_set *inp</td>
 <td style="text-align:center">fd_set *outp</td>
 <td style="text-align:center">fd_set *exp</td>
-<td style="text-align:center">struct timeval *tvp</td>
+<td style="text-align:center">struct __kernel_old_timeval *tvp</td>
 <td style="text-align:center">-</td>
 </tr>
 <tr>
@@ -688,7 +695,7 @@
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/getitimer.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*getitimer">cs/</a></td>
 <td style="text-align:center">0x24</td>
 <td style="text-align:center">int which</td>
-<td style="text-align:center">struct itimerval *value</td>
+<td style="text-align:center">struct __kernel_old_itimerval *value</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -712,8 +719,8 @@
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/setitimer.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*setitimer">cs/</a></td>
 <td style="text-align:center">0x26</td>
 <td style="text-align:center">int which</td>
-<td style="text-align:center">struct itimerval *value</td>
-<td style="text-align:center">struct itimerval *ovalue</td>
+<td style="text-align:center">struct __kernel_old_itimerval *value</td>
+<td style="text-align:center">struct __kernel_old_itimerval *ovalue</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -1407,7 +1414,7 @@
 <td style="text-align:center">gettimeofday</td>
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/gettimeofday.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*gettimeofday">cs/</a></td>
 <td style="text-align:center">0x60</td>
-<td style="text-align:center">struct timeval *tv</td>
+<td style="text-align:center">struct __kernel_old_timeval *tv</td>
 <td style="text-align:center">struct timezone *tz</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -2223,7 +2230,7 @@
 <td style="text-align:center">settimeofday</td>
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/settimeofday.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*settimeofday">cs/</a></td>
 <td style="text-align:center">0xa4</td>
-<td style="text-align:center">struct timeval *tv</td>
+<td style="text-align:center">struct __kernel_old_timeval *tv</td>
 <td style="text-align:center">struct timezone *tz</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -2667,7 +2674,7 @@
 <td style="text-align:center">time</td>
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/time.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*time">cs/</a></td>
 <td style="text-align:center">0xc9</td>
-<td style="text-align:center">time_t *tloc</td>
+<td style="text-align:center">__kernel_old_time_t *tloc</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -2682,7 +2689,7 @@
 <td style="text-align:center">u32 *uaddr</td>
 <td style="text-align:center">int op</td>
 <td style="text-align:center">u32 val</td>
-<td style="text-align:center">struct __kernel_timespec *utime</td>
+<td style="text-align:center">const struct __kernel_timespec *utime</td>
 <td style="text-align:center">u32 *uaddr2</td>
 <td style="text-align:center">u32 val3</td>
 </tr>
@@ -3076,7 +3083,7 @@
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/utimes.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*utimes">cs/</a></td>
 <td style="text-align:center">0xeb</td>
 <td style="text-align:center">char *filename</td>
-<td style="text-align:center">struct timeval *utimes</td>
+<td style="text-align:center">struct __kernel_old_timeval *utimes</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -3389,7 +3396,7 @@
 <td style="text-align:center">0x105</td>
 <td style="text-align:center">int dfd</td>
 <td style="text-align:center">const char *filename</td>
-<td style="text-align:center">struct timeval *utimes</td>
+<td style="text-align:center">struct __kernel_old_timeval *utimes</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -4144,8 +4151,8 @@
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/membarrier.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*membarrier">cs/</a></td>
 <td style="text-align:center">0x144</td>
 <td style="text-align:center">int cmd</td>
-<td style="text-align:center">int flags</td>
-<td style="text-align:center">-</td>
+<td style="text-align:center">unsigned int flags</td>
+<td style="text-align:center">int cpu_id</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -4244,6 +4251,1290 @@
 <td style="text-align:center">unsigned flags</td>
 <td style="text-align:center">unsigned mask</td>
 <td style="text-align:center">struct statx *buffer</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">333</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x14d</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">334</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x14e</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">335</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x14f</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">336</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x150</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">337</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x151</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">338</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x152</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">339</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x153</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">340</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x154</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">341</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x155</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">342</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x156</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">343</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x157</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">344</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x158</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">345</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x159</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">346</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x15a</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">347</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x15b</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">348</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x15c</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">349</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x15d</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">350</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x15e</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">351</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x15f</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">352</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x160</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">353</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x161</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">354</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x162</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">355</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x163</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">356</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x164</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">357</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x165</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">358</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x166</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">359</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x167</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">360</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x168</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">361</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x169</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">362</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x16a</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">363</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x16b</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">364</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x16c</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">365</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x16d</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">366</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x16e</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">367</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x16f</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">368</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x170</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">369</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x171</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">370</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x172</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">371</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x173</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">372</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x174</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">373</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x175</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">374</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x176</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">375</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x177</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">376</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x178</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">377</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x179</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">378</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x17a</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">379</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x17b</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">380</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x17c</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">381</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x17d</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">382</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x17e</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">383</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x17f</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">384</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x180</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">385</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x181</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">386</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x182</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">387</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x183</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">388</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x184</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">389</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x185</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">390</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x186</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">391</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x187</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">392</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x188</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">393</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x189</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">394</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x18a</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">395</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x18b</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">396</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x18c</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">397</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x18d</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">398</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x18e</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">399</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x18f</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">400</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x190</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">401</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x191</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">402</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x192</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">403</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x193</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">404</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x194</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">405</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x195</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">406</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x196</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">407</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x197</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">408</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x198</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">409</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x199</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">410</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x19a</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">411</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x19b</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">412</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x19c</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">413</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x19d</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">414</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x19e</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">415</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x19f</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">416</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1a0</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">417</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1a1</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">418</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1a2</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">419</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1a3</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">420</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1a4</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">421</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1a5</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">422</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1a6</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">423</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1a7</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">424</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1a8</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">425</td>
+<td style="text-align:center">io_uring_setup</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/io_uring_setup.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*io_uring_setup">cs/</a></td>
+<td style="text-align:center">0x1a9</td>
+<td style="text-align:center">u32 entries</td>
+<td style="text-align:center">struct io_uring_params *p</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">426</td>
+<td style="text-align:center">io_uring_enter</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/io_uring_enter.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*io_uring_enter">cs/</a></td>
+<td style="text-align:center">0x1aa</td>
+<td style="text-align:center">unsigned int fd</td>
+<td style="text-align:center">u32 to_submit</td>
+<td style="text-align:center">u32 min_complete</td>
+<td style="text-align:center">u32 flags</td>
+<td style="text-align:center">const void *argp</td>
+<td style="text-align:center">size_t argsz</td>
+</tr>
+<tr>
+<td style="text-align:center">427</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1ab</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">428</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1ac</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">429</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1ad</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">430</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1ae</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">431</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1af</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">432</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b0</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">433</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b1</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">434</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b2</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">435</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b3</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">436</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b4</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">437</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b5</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">438</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b6</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">439</td>
+<td style="text-align:center">faccessat2</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/faccessat2.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*faccessat2">cs/</a></td>
+<td style="text-align:center">0x1b7</td>
+<td style="text-align:center">int dfd</td>
+<td style="text-align:center">const char *filename</td>
+<td style="text-align:center">int mode</td>
+<td style="text-align:center">int flags</td>
+<td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 </tr>
 </tbody>
@@ -5208,7 +6499,7 @@
 <td style="text-align:center">gettimeofday</td>
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/gettimeofday.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*gettimeofday">cs/</a></td>
 <td style="text-align:center">0x4e</td>
-<td style="text-align:center">struct timeval *tv</td>
+<td style="text-align:center">struct __kernel_old_timeval *tv</td>
 <td style="text-align:center">struct timezone *tz</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -5220,7 +6511,7 @@
 <td style="text-align:center">settimeofday</td>
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/settimeofday.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*settimeofday">cs/</a></td>
 <td style="text-align:center">0x4f</td>
-<td style="text-align:center">struct timeval *tv</td>
+<td style="text-align:center">struct __kernel_old_timeval *tv</td>
 <td style="text-align:center">struct timezone *tz</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -5521,8 +6812,8 @@
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/setitimer.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*setitimer">cs/</a></td>
 <td style="text-align:center">0x68</td>
 <td style="text-align:center">int which</td>
-<td style="text-align:center">struct itimerval *value</td>
-<td style="text-align:center">struct itimerval *ovalue</td>
+<td style="text-align:center">struct __kernel_old_itimerval *value</td>
+<td style="text-align:center">struct __kernel_old_itimerval *ovalue</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -5533,7 +6824,7 @@
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/getitimer.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*getitimer">cs/</a></td>
 <td style="text-align:center">0x69</td>
 <td style="text-align:center">int which</td>
-<td style="text-align:center">struct itimerval *value</td>
+<td style="text-align:center">struct __kernel_old_itimerval *value</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -5880,12 +7171,12 @@
 <td style="text-align:center">bdflush</td>
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/bdflush.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*bdflush">cs/</a></td>
 <td style="text-align:center">0x86</td>
-<td style="text-align:center">int func</td>
-<td style="text-align:center">long data</td>
-<td style="text-align:center">-</td>
-<td style="text-align:center">-</td>
-<td style="text-align:center">-</td>
-<td style="text-align:center">-</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
 </tr>
 <tr>
 <td style="text-align:center">135</td>
@@ -7155,7 +8446,7 @@
 <td style="text-align:center">u32 *uaddr</td>
 <td style="text-align:center">int op</td>
 <td style="text-align:center">u32 val</td>
-<td style="text-align:center">struct __kernel_timespec *utime</td>
+<td style="text-align:center">const struct __kernel_timespec *utime</td>
 <td style="text-align:center">u32 *uaddr2</td>
 <td style="text-align:center">u32 val3</td>
 </tr>
@@ -7501,7 +8792,7 @@
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/utimes.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*utimes">cs/</a></td>
 <td style="text-align:center">0x10d</td>
 <td style="text-align:center">char *filename</td>
-<td style="text-align:center">struct timeval *utimes</td>
+<td style="text-align:center">struct __kernel_old_timeval *utimes</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -8186,7 +9477,7 @@
 <td style="text-align:center">0x146</td>
 <td style="text-align:center">int dfd</td>
 <td style="text-align:center">const char *filename</td>
-<td style="text-align:center">struct timeval *utimes</td>
+<td style="text-align:center">struct __kernel_old_timeval *utimes</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -8953,8 +10244,8 @@
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/membarrier.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*membarrier">cs/</a></td>
 <td style="text-align:center">0x185</td>
 <td style="text-align:center">int cmd</td>
-<td style="text-align:center">int flags</td>
-<td style="text-align:center">-</td>
+<td style="text-align:center">unsigned int flags</td>
+<td style="text-align:center">int cpu_id</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -9053,6 +10344,510 @@
 <td style="text-align:center">unsigned flags</td>
 <td style="text-align:center">unsigned mask</td>
 <td style="text-align:center">struct statx *buffer</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">398</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x18e</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">399</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x18f</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">400</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x190</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">401</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x191</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">402</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x192</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">403</td>
+<td style="text-align:center">clock_gettime64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/clock_gettime64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*clock_gettime64">cs/</a></td>
+<td style="text-align:center">0x193</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">404</td>
+<td style="text-align:center">clock_settime64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/clock_settime64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*clock_settime64">cs/</a></td>
+<td style="text-align:center">0x194</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">405</td>
+<td style="text-align:center">clock_adjtime64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/clock_adjtime64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*clock_adjtime64">cs/</a></td>
+<td style="text-align:center">0x195</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">406</td>
+<td style="text-align:center">clock_getres_time64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/clock_getres_time64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*clock_getres_time64">cs/</a></td>
+<td style="text-align:center">0x196</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">407</td>
+<td style="text-align:center">clock_nanosleep_time64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/clock_nanosleep_time64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*clock_nanosleep_time64">cs/</a></td>
+<td style="text-align:center">0x197</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">408</td>
+<td style="text-align:center">timer_gettime64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/timer_gettime64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*timer_gettime64">cs/</a></td>
+<td style="text-align:center">0x198</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">409</td>
+<td style="text-align:center">timer_settime64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/timer_settime64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*timer_settime64">cs/</a></td>
+<td style="text-align:center">0x199</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">410</td>
+<td style="text-align:center">timerfd_gettime64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/timerfd_gettime64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*timerfd_gettime64">cs/</a></td>
+<td style="text-align:center">0x19a</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">411</td>
+<td style="text-align:center">timerfd_settime64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/timerfd_settime64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*timerfd_settime64">cs/</a></td>
+<td style="text-align:center">0x19b</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">412</td>
+<td style="text-align:center">utimensat_time64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/utimensat_time64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*utimensat_time64">cs/</a></td>
+<td style="text-align:center">0x19c</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">413</td>
+<td style="text-align:center">pselect6_time64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/pselect6_time64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*pselect6_time64">cs/</a></td>
+<td style="text-align:center">0x19d</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">414</td>
+<td style="text-align:center">ppoll_time64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/ppoll_time64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*ppoll_time64">cs/</a></td>
+<td style="text-align:center">0x19e</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">415</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x19f</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">416</td>
+<td style="text-align:center">io_pgetevents_time64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/io_pgetevents_time64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*io_pgetevents_time64">cs/</a></td>
+<td style="text-align:center">0x1a0</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">417</td>
+<td style="text-align:center">recvmmsg_time64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/recvmmsg_time64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*recvmmsg_time64">cs/</a></td>
+<td style="text-align:center">0x1a1</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">418</td>
+<td style="text-align:center">mq_timedsend_time64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/mq_timedsend_time64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*mq_timedsend_time64">cs/</a></td>
+<td style="text-align:center">0x1a2</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">419</td>
+<td style="text-align:center">mq_timedreceive_time64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/mq_timedreceive_time64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*mq_timedreceive_time64">cs/</a></td>
+<td style="text-align:center">0x1a3</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">420</td>
+<td style="text-align:center">semtimedop_time64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/semtimedop_time64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*semtimedop_time64">cs/</a></td>
+<td style="text-align:center">0x1a4</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">421</td>
+<td style="text-align:center">rt_sigtimedwait_time64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/rt_sigtimedwait_time64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*rt_sigtimedwait_time64">cs/</a></td>
+<td style="text-align:center">0x1a5</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">422</td>
+<td style="text-align:center">futex_time64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/futex_time64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*futex_time64">cs/</a></td>
+<td style="text-align:center">0x1a6</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">423</td>
+<td style="text-align:center">sched_rr_get_interval_time64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/sched_rr_get_interval_time64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*sched_rr_get_interval_time64">cs/</a></td>
+<td style="text-align:center">0x1a7</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">424</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1a8</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">425</td>
+<td style="text-align:center">io_uring_setup</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/io_uring_setup.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*io_uring_setup">cs/</a></td>
+<td style="text-align:center">0x1a9</td>
+<td style="text-align:center">u32 entries</td>
+<td style="text-align:center">struct io_uring_params *p</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">426</td>
+<td style="text-align:center">io_uring_enter</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/io_uring_enter.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*io_uring_enter">cs/</a></td>
+<td style="text-align:center">0x1aa</td>
+<td style="text-align:center">unsigned int fd</td>
+<td style="text-align:center">u32 to_submit</td>
+<td style="text-align:center">u32 min_complete</td>
+<td style="text-align:center">u32 flags</td>
+<td style="text-align:center">const void *argp</td>
+<td style="text-align:center">size_t argsz</td>
+</tr>
+<tr>
+<td style="text-align:center">427</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1ab</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">428</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1ac</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">429</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1ad</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">430</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1ae</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">431</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1af</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">432</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b0</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">433</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b1</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">434</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b2</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">435</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b3</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">436</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b4</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">437</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b5</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">438</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b6</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">439</td>
+<td style="text-align:center">faccessat2</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/faccessat2.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*faccessat2">cs/</a></td>
+<td style="text-align:center">0x1b7</td>
+<td style="text-align:center">int dfd</td>
+<td style="text-align:center">const char *filename</td>
+<td style="text-align:center">int mode</td>
+<td style="text-align:center">int flags</td>
+<td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 </tr>
 <tr>
@@ -10320,7 +12115,7 @@
 <td style="text-align:center">u32 *uaddr</td>
 <td style="text-align:center">int op</td>
 <td style="text-align:center">u32 val</td>
-<td style="text-align:center">struct __kernel_timespec *utime</td>
+<td style="text-align:center">const struct __kernel_timespec *utime</td>
 <td style="text-align:center">u32 *uaddr2</td>
 <td style="text-align:center">u32 val3</td>
 </tr>
@@ -10366,7 +12161,7 @@
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/getitimer.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*getitimer">cs/</a></td>
 <td style="text-align:center">0x66</td>
 <td style="text-align:center">int which</td>
-<td style="text-align:center">struct itimerval *value</td>
+<td style="text-align:center">struct __kernel_old_itimerval *value</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -10378,8 +12173,8 @@
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/setitimer.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*setitimer">cs/</a></td>
 <td style="text-align:center">0x67</td>
 <td style="text-align:center">int which</td>
-<td style="text-align:center">struct itimerval *value</td>
-<td style="text-align:center">struct itimerval *ovalue</td>
+<td style="text-align:center">struct __kernel_old_itimerval *value</td>
+<td style="text-align:center">struct __kernel_old_itimerval *ovalue</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -11169,7 +12964,7 @@
 <td style="text-align:center">gettimeofday</td>
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/gettimeofday.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*gettimeofday">cs/</a></td>
 <td style="text-align:center">0xa9</td>
-<td style="text-align:center">struct timeval *tv</td>
+<td style="text-align:center">struct __kernel_old_timeval *tv</td>
 <td style="text-align:center">struct timezone *tz</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -11181,7 +12976,7 @@
 <td style="text-align:center">settimeofday</td>
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/settimeofday.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*settimeofday">cs/</a></td>
 <td style="text-align:center">0xaa</td>
-<td style="text-align:center">struct timeval *tv</td>
+<td style="text-align:center">struct __kernel_old_timeval *tv</td>
 <td style="text-align:center">struct timezone *tz</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -12538,8 +14333,8 @@
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/membarrier.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*membarrier">cs/</a></td>
 <td style="text-align:center">0x11b</td>
 <td style="text-align:center">int cmd</td>
-<td style="text-align:center">int flags</td>
-<td style="text-align:center">-</td>
+<td style="text-align:center">unsigned int flags</td>
+<td style="text-align:center">int cpu_id</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -12638,6 +14433,186 @@
 <td style="text-align:center">unsigned flags</td>
 <td style="text-align:center">unsigned mask</td>
 <td style="text-align:center">struct statx *buffer</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">425</td>
+<td style="text-align:center">io_uring_setup</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/io_uring_setup.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*io_uring_setup">cs/</a></td>
+<td style="text-align:center">0x1a9</td>
+<td style="text-align:center">u32 entries</td>
+<td style="text-align:center">struct io_uring_params *p</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">426</td>
+<td style="text-align:center">io_uring_enter</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/io_uring_enter.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*io_uring_enter">cs/</a></td>
+<td style="text-align:center">0x1aa</td>
+<td style="text-align:center">unsigned int fd</td>
+<td style="text-align:center">u32 to_submit</td>
+<td style="text-align:center">u32 min_complete</td>
+<td style="text-align:center">u32 flags</td>
+<td style="text-align:center">const void *argp</td>
+<td style="text-align:center">size_t argsz</td>
+</tr>
+<tr>
+<td style="text-align:center">427</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1ab</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">428</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1ac</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">429</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1ad</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">430</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1ae</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">431</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1af</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">432</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b0</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">433</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b1</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">434</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b2</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">435</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b3</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">436</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b4</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">437</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b5</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">438</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b6</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">439</td>
+<td style="text-align:center">faccessat2</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/faccessat2.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*faccessat2">cs/</a></td>
+<td style="text-align:center">0x1b7</td>
+<td style="text-align:center">int dfd</td>
+<td style="text-align:center">const char *filename</td>
+<td style="text-align:center">int mode</td>
+<td style="text-align:center">int flags</td>
+<td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 </tr>
 </tbody>
@@ -12822,7 +14797,7 @@
 <td style="text-align:center">time</td>
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/time.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*time">cs/</a></td>
 <td style="text-align:center">0x0d</td>
-<td style="text-align:center">time_t *tloc</td>
+<td style="text-align:center">__kernel_old_time_t *tloc</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -12966,7 +14941,7 @@
 <td style="text-align:center">stime</td>
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/stime.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*stime">cs/</a></td>
 <td style="text-align:center">0x19</td>
-<td style="text-align:center">time_t *tptr</td>
+<td style="text-align:center">__kernel_old_time_t *tptr</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -13602,7 +15577,7 @@
 <td style="text-align:center">gettimeofday</td>
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/gettimeofday.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*gettimeofday">cs/</a></td>
 <td style="text-align:center">0x4e</td>
-<td style="text-align:center">struct timeval *tv</td>
+<td style="text-align:center">struct __kernel_old_timeval *tv</td>
 <td style="text-align:center">struct timezone *tz</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -13614,7 +15589,7 @@
 <td style="text-align:center">settimeofday</td>
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/settimeofday.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*settimeofday">cs/</a></td>
 <td style="text-align:center">0x4f</td>
-<td style="text-align:center">struct timeval *tv</td>
+<td style="text-align:center">struct __kernel_old_timeval *tv</td>
 <td style="text-align:center">struct timezone *tz</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -13654,7 +15629,7 @@
 <td style="text-align:center">fd_set *inp</td>
 <td style="text-align:center">fd_set *outp</td>
 <td style="text-align:center">fd_set *exp</td>
-<td style="text-align:center">struct timeval *tvp</td>
+<td style="text-align:center">struct __kernel_old_timeval *tvp</td>
 <td style="text-align:center">-</td>
 </tr>
 <tr>
@@ -13915,8 +15890,8 @@
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/setitimer.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*setitimer">cs/</a></td>
 <td style="text-align:center">0x68</td>
 <td style="text-align:center">int which</td>
-<td style="text-align:center">struct itimerval *value</td>
-<td style="text-align:center">struct itimerval *ovalue</td>
+<td style="text-align:center">struct __kernel_old_itimerval *value</td>
+<td style="text-align:center">struct __kernel_old_itimerval *ovalue</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -13927,7 +15902,7 @@
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/getitimer.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*getitimer">cs/</a></td>
 <td style="text-align:center">0x69</td>
 <td style="text-align:center">int which</td>
-<td style="text-align:center">struct itimerval *value</td>
+<td style="text-align:center">struct __kernel_old_itimerval *value</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -14274,12 +16249,12 @@
 <td style="text-align:center">bdflush</td>
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/bdflush.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*bdflush">cs/</a></td>
 <td style="text-align:center">0x86</td>
-<td style="text-align:center">int func</td>
-<td style="text-align:center">long data</td>
-<td style="text-align:center">-</td>
-<td style="text-align:center">-</td>
-<td style="text-align:center">-</td>
-<td style="text-align:center">-</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
 </tr>
 <tr>
 <td style="text-align:center">135</td>
@@ -15549,7 +17524,7 @@
 <td style="text-align:center">u32 *uaddr</td>
 <td style="text-align:center">int op</td>
 <td style="text-align:center">u32 val</td>
-<td style="text-align:center">struct __kernel_timespec *utime</td>
+<td style="text-align:center">const struct __kernel_timespec *utime</td>
 <td style="text-align:center">u32 *uaddr2</td>
 <td style="text-align:center">u32 val3</td>
 </tr>
@@ -15919,7 +17894,7 @@
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/utimes.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*utimes">cs/</a></td>
 <td style="text-align:center">0x10f</td>
 <td style="text-align:center">char *filename</td>
-<td style="text-align:center">struct timeval *utimes</td>
+<td style="text-align:center">struct __kernel_old_timeval *utimes</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -16256,7 +18231,7 @@
 <td style="text-align:center">0x12b</td>
 <td style="text-align:center">int dfd</td>
 <td style="text-align:center">const char *filename</td>
-<td style="text-align:center">struct timeval *utimes</td>
+<td style="text-align:center">struct __kernel_old_timeval *utimes</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -17167,8 +19142,8 @@
 <td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/membarrier.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*membarrier">cs/</a></td>
 <td style="text-align:center">0x177</td>
 <td style="text-align:center">int cmd</td>
-<td style="text-align:center">int flags</td>
-<td style="text-align:center">-</td>
+<td style="text-align:center">unsigned int flags</td>
+<td style="text-align:center">int cpu_id</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -17281,10 +19256,670 @@
 <td style="text-align:center">?</td>
 <td style="text-align:center">?</td>
 </tr>
+<tr>
+<td style="text-align:center">385</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x181</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">386</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x182</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">387</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x183</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">388</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x184</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">389</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x185</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">390</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x186</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">391</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x187</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">392</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x188</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">393</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x189</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">394</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x18a</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">395</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x18b</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">396</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x18c</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">397</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x18d</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">398</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x18e</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">399</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x18f</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">400</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x190</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">401</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x191</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">402</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x192</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">403</td>
+<td style="text-align:center">clock_gettime64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/clock_gettime64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*clock_gettime64">cs/</a></td>
+<td style="text-align:center">0x193</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">404</td>
+<td style="text-align:center">clock_settime64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/clock_settime64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*clock_settime64">cs/</a></td>
+<td style="text-align:center">0x194</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">405</td>
+<td style="text-align:center">clock_adjtime64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/clock_adjtime64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*clock_adjtime64">cs/</a></td>
+<td style="text-align:center">0x195</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">406</td>
+<td style="text-align:center">clock_getres_time64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/clock_getres_time64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*clock_getres_time64">cs/</a></td>
+<td style="text-align:center">0x196</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">407</td>
+<td style="text-align:center">clock_nanosleep_time64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/clock_nanosleep_time64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*clock_nanosleep_time64">cs/</a></td>
+<td style="text-align:center">0x197</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">408</td>
+<td style="text-align:center">timer_gettime64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/timer_gettime64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*timer_gettime64">cs/</a></td>
+<td style="text-align:center">0x198</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">409</td>
+<td style="text-align:center">timer_settime64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/timer_settime64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*timer_settime64">cs/</a></td>
+<td style="text-align:center">0x199</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">410</td>
+<td style="text-align:center">timerfd_gettime64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/timerfd_gettime64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*timerfd_gettime64">cs/</a></td>
+<td style="text-align:center">0x19a</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">411</td>
+<td style="text-align:center">timerfd_settime64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/timerfd_settime64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*timerfd_settime64">cs/</a></td>
+<td style="text-align:center">0x19b</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">412</td>
+<td style="text-align:center">utimensat_time64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/utimensat_time64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*utimensat_time64">cs/</a></td>
+<td style="text-align:center">0x19c</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">413</td>
+<td style="text-align:center">pselect6_time64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/pselect6_time64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*pselect6_time64">cs/</a></td>
+<td style="text-align:center">0x19d</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">414</td>
+<td style="text-align:center">ppoll_time64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/ppoll_time64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*ppoll_time64">cs/</a></td>
+<td style="text-align:center">0x19e</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">415</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x19f</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">416</td>
+<td style="text-align:center">io_pgetevents_time64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/io_pgetevents_time64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*io_pgetevents_time64">cs/</a></td>
+<td style="text-align:center">0x1a0</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">417</td>
+<td style="text-align:center">recvmmsg_time64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/recvmmsg_time64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*recvmmsg_time64">cs/</a></td>
+<td style="text-align:center">0x1a1</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">418</td>
+<td style="text-align:center">mq_timedsend_time64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/mq_timedsend_time64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*mq_timedsend_time64">cs/</a></td>
+<td style="text-align:center">0x1a2</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">419</td>
+<td style="text-align:center">mq_timedreceive_time64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/mq_timedreceive_time64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*mq_timedreceive_time64">cs/</a></td>
+<td style="text-align:center">0x1a3</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">420</td>
+<td style="text-align:center">semtimedop_time64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/semtimedop_time64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*semtimedop_time64">cs/</a></td>
+<td style="text-align:center">0x1a4</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">421</td>
+<td style="text-align:center">rt_sigtimedwait_time64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/rt_sigtimedwait_time64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*rt_sigtimedwait_time64">cs/</a></td>
+<td style="text-align:center">0x1a5</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">422</td>
+<td style="text-align:center">futex_time64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/futex_time64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*futex_time64">cs/</a></td>
+<td style="text-align:center">0x1a6</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">423</td>
+<td style="text-align:center">sched_rr_get_interval_time64</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/sched_rr_get_interval_time64.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*sched_rr_get_interval_time64">cs/</a></td>
+<td style="text-align:center">0x1a7</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+<td style="text-align:center">?</td>
+</tr>
+<tr>
+<td style="text-align:center">424</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1a8</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">425</td>
+<td style="text-align:center">io_uring_setup</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/io_uring_setup.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*io_uring_setup">cs/</a></td>
+<td style="text-align:center">0x1a9</td>
+<td style="text-align:center">u32 entries</td>
+<td style="text-align:center">struct io_uring_params *p</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">426</td>
+<td style="text-align:center">io_uring_enter</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/io_uring_enter.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*io_uring_enter">cs/</a></td>
+<td style="text-align:center">0x1aa</td>
+<td style="text-align:center">unsigned int fd</td>
+<td style="text-align:center">u32 to_submit</td>
+<td style="text-align:center">u32 min_complete</td>
+<td style="text-align:center">u32 flags</td>
+<td style="text-align:center">const void *argp</td>
+<td style="text-align:center">size_t argsz</td>
+</tr>
+<tr>
+<td style="text-align:center">427</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1ab</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">428</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1ac</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">429</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1ad</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">430</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1ae</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">431</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1af</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">432</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b0</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">433</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b1</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">434</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b2</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">435</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b3</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">436</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b4</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">437</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b5</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">438</td>
+<td style="text-align:center"><em>not implemented</em></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0x1b6</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">439</td>
+<td style="text-align:center">faccessat2</td>
+<td style="text-align:center"><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/faccessat2.2.html">man/</a> <a target="_blank" rel="noopener" href="https://source.chromium.org/search?ss=chromiumos&amp;q=SYSCALL_DEFINE.*faccessat2">cs/</a></td>
+<td style="text-align:center">0x1b7</td>
+<td style="text-align:center">int dfd</td>
+<td style="text-align:center">const char *filename</td>
+<td style="text-align:center">int mode</td>
+<td style="text-align:center">int flags</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
 </tbody>
 </table>
 </div>
-<h3 id="Cross-arch-Numbers"><a href="#Cross-arch-Numbers" class="headerlink" title="Cross-arch Numbers"></a>Cross-arch Numbers</h3><p>This shows the syscall numbers for (hopefully) the same syscall name across architectures. Consult the <a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromiumos/docs/+/master/constants/syscalls.md#naming">Random Names</a> section for common gotchas.</p>
+<h3 id="Cross-arch-Numbers"><a href="#Cross-arch-Numbers" class="headerlink" title="Cross-arch Numbers"></a>Cross-arch Numbers</h3><p>This shows the syscall numbers for (hopefully) the same syscall name across architectures. Consult the <a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromiumos/docs/+/HEAD/constants/syscalls.md#naming">Random Names</a> section for common gotchas.</p>
 <div class="table-container">
 <table>
 <thead>
@@ -17522,11 +20157,25 @@
 <td style="text-align:center">343</td>
 </tr>
 <tr>
+<td style="text-align:center">clock_adjtime64</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">405</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">405</td>
+</tr>
+<tr>
 <td style="text-align:center">clock_getres</td>
 <td style="text-align:center">229</td>
 <td style="text-align:center">264</td>
 <td style="text-align:center">114</td>
 <td style="text-align:center">266</td>
+</tr>
+<tr>
+<td style="text-align:center">clock_getres_time64</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">406</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">406</td>
 </tr>
 <tr>
 <td style="text-align:center">clock_gettime</td>
@@ -17536,6 +20185,13 @@
 <td style="text-align:center">265</td>
 </tr>
 <tr>
+<td style="text-align:center">clock_gettime64</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">403</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">403</td>
+</tr>
+<tr>
 <td style="text-align:center">clock_nanosleep</td>
 <td style="text-align:center">230</td>
 <td style="text-align:center">265</td>
@@ -17543,11 +20199,25 @@
 <td style="text-align:center">267</td>
 </tr>
 <tr>
+<td style="text-align:center">clock_nanosleep_time64</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">407</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">407</td>
+</tr>
+<tr>
 <td style="text-align:center">clock_settime</td>
 <td style="text-align:center">227</td>
 <td style="text-align:center">262</td>
 <td style="text-align:center">112</td>
 <td style="text-align:center">264</td>
+</tr>
+<tr>
+<td style="text-align:center">clock_settime64</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">404</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">404</td>
 </tr>
 <tr>
 <td style="text-align:center">clone</td>
@@ -17716,6 +20386,13 @@
 <td style="text-align:center">334</td>
 <td style="text-align:center">48</td>
 <td style="text-align:center">307</td>
+</tr>
+<tr>
+<td style="text-align:center">faccessat2</td>
+<td style="text-align:center">439</td>
+<td style="text-align:center">439</td>
+<td style="text-align:center">439</td>
+<td style="text-align:center">439</td>
 </tr>
 <tr>
 <td style="text-align:center">fadvise64</td>
@@ -17933,6 +20610,13 @@
 <td style="text-align:center">240</td>
 <td style="text-align:center">98</td>
 <td style="text-align:center">240</td>
+</tr>
+<tr>
+<td style="text-align:center">futex_time64</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">422</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">422</td>
 </tr>
 <tr>
 <td style="text-align:center">futimesat</td>
@@ -18285,6 +20969,13 @@
 <td style="text-align:center">247</td>
 </tr>
 <tr>
+<td style="text-align:center">io_pgetevents_time64</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">416</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">416</td>
+</tr>
+<tr>
 <td style="text-align:center">io_setup</td>
 <td style="text-align:center">206</td>
 <td style="text-align:center">243</td>
@@ -18297,6 +20988,20 @@
 <td style="text-align:center">246</td>
 <td style="text-align:center">2</td>
 <td style="text-align:center">248</td>
+</tr>
+<tr>
+<td style="text-align:center">io_uring_enter</td>
+<td style="text-align:center">426</td>
+<td style="text-align:center">426</td>
+<td style="text-align:center">426</td>
+<td style="text-align:center">426</td>
+</tr>
+<tr>
+<td style="text-align:center">io_uring_setup</td>
+<td style="text-align:center">425</td>
+<td style="text-align:center">425</td>
+<td style="text-align:center">425</td>
+<td style="text-align:center">425</td>
 </tr>
 <tr>
 <td style="text-align:center">ioctl</td>
@@ -18649,11 +21354,25 @@
 <td style="text-align:center">280</td>
 </tr>
 <tr>
+<td style="text-align:center">mq_timedreceive_time64</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">419</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">419</td>
+</tr>
+<tr>
 <td style="text-align:center">mq_timedsend</td>
 <td style="text-align:center">242</td>
 <td style="text-align:center">276</td>
 <td style="text-align:center">182</td>
 <td style="text-align:center">279</td>
+</tr>
+<tr>
+<td style="text-align:center">mq_timedsend_time64</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">418</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">418</td>
 </tr>
 <tr>
 <td style="text-align:center">mq_unlink</td>
@@ -18915,6 +21634,13 @@
 <td style="text-align:center">309</td>
 </tr>
 <tr>
+<td style="text-align:center">ppoll_time64</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">414</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">414</td>
+</tr>
+<tr>
 <td style="text-align:center">prctl</td>
 <td style="text-align:center">157</td>
 <td style="text-align:center">172</td>
@@ -18983,6 +21709,13 @@
 <td style="text-align:center">335</td>
 <td style="text-align:center">72</td>
 <td style="text-align:center">308</td>
+</tr>
+<tr>
+<td style="text-align:center">pselect6_time64</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">413</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">413</td>
 </tr>
 <tr>
 <td style="text-align:center">ptrace</td>
@@ -19104,6 +21837,13 @@
 <td style="text-align:center">337</td>
 </tr>
 <tr>
+<td style="text-align:center">recvmmsg_time64</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">417</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">417</td>
+</tr>
+<tr>
 <td style="text-align:center">recvmsg</td>
 <td style="text-align:center">47</td>
 <td style="text-align:center">297</td>
@@ -19216,6 +21956,13 @@
 <td style="text-align:center">177</td>
 </tr>
 <tr>
+<td style="text-align:center">rt_sigtimedwait_time64</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">421</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">421</td>
+</tr>
+<tr>
 <td style="text-align:center">rt_tgsigqueueinfo</td>
 <td style="text-align:center">297</td>
 <td style="text-align:center">363</td>
@@ -19270,6 +22017,13 @@
 <td style="text-align:center">161</td>
 <td style="text-align:center">127</td>
 <td style="text-align:center">161</td>
+</tr>
+<tr>
+<td style="text-align:center">sched_rr_get_interval_time64</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">423</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">423</td>
 </tr>
 <tr>
 <td style="text-align:center">sched_setaffinity</td>
@@ -19354,6 +22108,13 @@
 <td style="text-align:center">312</td>
 <td style="text-align:center">192</td>
 <td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">semtimedop_time64</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">420</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">420</td>
 </tr>
 <tr>
 <td style="text-align:center">send</td>
@@ -19944,11 +22705,25 @@
 <td style="text-align:center">261</td>
 </tr>
 <tr>
+<td style="text-align:center">timer_gettime64</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">408</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">408</td>
+</tr>
+<tr>
 <td style="text-align:center">timer_settime</td>
 <td style="text-align:center">223</td>
 <td style="text-align:center">258</td>
 <td style="text-align:center">110</td>
 <td style="text-align:center">260</td>
+</tr>
+<tr>
+<td style="text-align:center">timer_settime64</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">409</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">409</td>
 </tr>
 <tr>
 <td style="text-align:center">timerfd_create</td>
@@ -19965,11 +22740,25 @@
 <td style="text-align:center">326</td>
 </tr>
 <tr>
+<td style="text-align:center">timerfd_gettime64</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">410</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">410</td>
+</tr>
+<tr>
 <td style="text-align:center">timerfd_settime</td>
 <td style="text-align:center">286</td>
 <td style="text-align:center">353</td>
 <td style="text-align:center">86</td>
 <td style="text-align:center">325</td>
+</tr>
+<tr>
+<td style="text-align:center">timerfd_settime64</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">411</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">411</td>
 </tr>
 <tr>
 <td style="text-align:center">times</td>
@@ -20105,6 +22894,13 @@
 <td style="text-align:center">320</td>
 </tr>
 <tr>
+<td style="text-align:center">utimensat_time64</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">412</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">412</td>
+</tr>
+<tr>
 <td style="text-align:center">utimes</td>
 <td style="text-align:center">235</td>
 <td style="text-align:center">269</td>
@@ -20192,6 +22988,7 @@
 </table>
 </div>
 <p>Powered by <a target="_blank" rel="noopener" href="https://gerrit.googlesource.com/gitiles/">Gitiles</a>| <a target="_blank" rel="noopener" href="https://policies.google.com/privacy">Privacy</a></p>
+<iframe id="redeviation-bs-sidebar" class="notranslate" aria-hidden="true" data-theme="default" data-pos="right" style="box-sizing: border-box; margin: 0px; padding: 0px; opacity: 0; pointer-events: none; position: fixed; top: 0px; left: auto; width: 350px; max-width: none; height: 0px; z-index: 2147483646; speak: none; border: none; transform: translate3d(350px, 0px, 0px); transition: width 0s ease 0.3s, height 0s ease 0.3s, opacity 0.3s ease 0s, transform 0.3s ease 0s; background-color: rgba(0, 0, 0, 0.6) !important; color-scheme: normal !important; display: block !important; right: 0px; color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;"></iframe>
 </article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Firework</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/02/03/SystemcallABI/">http://example.com/2022/02/03/SystemcallABI/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">Firework</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/linux/">linux</a></div><div class="post_share"><div class="social-share" data-image="https://fireworkxzww.top//pic/005BYxJSly1h0jile4cw2j31hc0u0tda.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button button--animated"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat.jpg" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay.jpg" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/03/25/Ptrace%E5%8E%9F%E7%90%86%E4%B8%8E%E5%8F%8D%E8%B0%83%E8%AF%95/"><img class="prev-cover" src="https://fireworkxzww.top//pic/005BYxJSly1h0iddwtw6pj30zk0qoq93.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Ptrace原理与反调试</div></div></a></div><div class="next-post pull-right"><a href="/2022/01/26/arm64/"><img class="next-cover" src="https://fireworkxzww.top//pic/005BYxJSly1h0ko96qnqoj30n30gm40f.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">arm64汇编基础</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/05/13/Linux环境下编译过程/" title="Linux代码编译过程"><img class="cover" src="https://i.loli.net/2021/04/09/y4Wmes6OuaktxiT.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-13</div><div class="title">Linux代码编译过程</div></div></a></div><div><a href="/2021/04/12/Linux程序保护机制/" title="Linux程序保护机制"><img class="cover" src="https://i.loli.net/2021/04/18/VqduSoB2nyTh1Fr.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-12</div><div class="title">Linux程序保护机制</div></div></a></div><div><a href="/2022/03/25/Ptrace原理与反调试/" title="Ptrace原理与反调试"><img class="cover" src="https://fireworkxzww.top//pic/005BYxJSly1h0iddwtw6pj30zk0qoq93.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-25</div><div class="title">Ptrace原理与反调试</div></div></a></div><div><a href="/2021/04/08/linux_Base/" title="linux_base题解"><img class="cover" src="https://i.loli.net/2021/04/20/fQiZcWtFpVdG1mu.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-08</div><div class="title">linux_base题解</div></div></a></div><div><a href="/2021/08/16/Linux_ELF文件/" title="linux_ELF文件格式"><img class="cover" src="https://i.loli.net/2021/04/22/ovjpNqMmGIrJYse.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-08-16</div><div class="title">linux_ELF文件格式</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux-System-Call-Table"><span class="toc-number">1.</span> <span class="toc-text">Linux System Call Table</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Contents"><span class="toc-number">1.1.</span> <span class="toc-text">Contents</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Random-Names"><span class="toc-number">1.2.</span> <span class="toc-text">Random Names</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Kernel-Implementations"><span class="toc-number">1.3.</span> <span class="toc-text">Kernel Implementations</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Calling-Conventions"><span class="toc-number">1.4.</span> <span class="toc-text">Calling Conventions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tables"><span class="toc-number">1.5.</span> <span class="toc-text">Tables</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#x86-64-64-bit"><span class="toc-number">1.5.1.</span> <span class="toc-text">x86_64 (64-bit)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#arm-32-bit-EABI"><span class="toc-number">1.5.2.</span> <span class="toc-text">arm (32-bit&#x2F;EABI)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#arm64-64-bit"><span class="toc-number">1.5.3.</span> <span class="toc-text">arm64 (64-bit)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#x86-32-bit"><span class="toc-number">1.5.4.</span> <span class="toc-text">x86 (32-bit)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cross-arch-Numbers"><span class="toc-number">1.5.5.</span> <span class="toc-text">Cross-arch Numbers</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2021 - 2022 By Firework</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi,welcome to my world.Hava a good day!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
   window.MathJax = {
     loader: {
