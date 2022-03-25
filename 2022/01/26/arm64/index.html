@@ -1,0 +1,470 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>arm64汇编基础 | Firework</title><meta name="keywords" content="Pwn"><meta name="author" content="Firework"><meta name="copyright" content="Firework"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="arm64 汇编寄存器通用寄存器31 个R0 ~ R30，每个寄存器可以存取一个 64 位大小的数。 当使用 x0 - x30访问时，是一个 64位的数；当使用 w0 - w30访问时，是一个 32 位的数，访问的是寄存器的 低 32 位，如图：  向量寄存器（也可以说是 浮点型寄存器）每个寄存器的大小是 128 位的。 分别可以用Bn Hn Sn Dn Qn的方式来访问不同的位数；如图:   注">
+<meta property="og:type" content="article">
+<meta property="og:title" content="arm64汇编基础">
+<meta property="og:url" content="http://example.com/2022/01/26/arm64/index.html">
+<meta property="og:site_name" content="Firework">
+<meta property="og:description" content="arm64 汇编寄存器通用寄存器31 个R0 ~ R30，每个寄存器可以存取一个 64 位大小的数。 当使用 x0 - x30访问时，是一个 64位的数；当使用 w0 - w30访问时，是一个 32 位的数，访问的是寄存器的 低 32 位，如图：  向量寄存器（也可以说是 浮点型寄存器）每个寄存器的大小是 128 位的。 分别可以用Bn Hn Sn Dn Qn的方式来访问不同的位数；如图:   注">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fireworkxzww.top//pic/005BYxJSly1h0ko96qnqoj30n30gm40f.jpg">
+<meta property="article:published_time" content="2022-01-25T17:37:04.000Z">
+<meta property="article:modified_time" content="2022-03-25T17:39:27.180Z">
+<meta property="article:author" content="Firework">
+<meta property="article:tag" content="Pwn">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fireworkxzww.top//pic/005BYxJSly1h0ko96qnqoj30n30gm40f.jpg"><link rel="shortcut icon" href="https://i.loli.net/2021/04/08/2kj1dHCXRf7sGEo.jpg"><link rel="canonical" href="http://example.com/2022/01/26/arm64/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":30,"languages":{"author":"作者: Firework","link":"链接: ","source":"来源: Firework","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-03-26 01:39:27'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Firework" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="https://i.loli.net/2021/04/08/2kj1dHCXRf7sGEo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">24</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2021/04/09/4OQIETdyGWwLYbX.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Firework</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">arm64汇编基础</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-01-25T17:37:04.000Z" title="发表于 2022-01-26 01:37:04">2022-01-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-03-25T17:39:27.180Z" title="更新于 2022-03-26 01:39:27">2022-03-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Pwn/">Pwn</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>12分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="arm64汇编基础"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="arm64-汇编"><a href="#arm64-汇编" class="headerlink" title="arm64 汇编"></a>arm64 汇编</h2><h3 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h3><h4 id="通用寄存器"><a href="#通用寄存器" class="headerlink" title="通用寄存器"></a>通用寄存器</h4><p><code>31</code> 个<code>R0 ~ R30</code>，每个寄存器可以存取一个 <strong>64</strong> 位大小的数。 当使用 <code>x0 - x30</code>访问时，是一个 64位的数；当使用 <code>w0 - w30</code>访问时，是一个 32 位的数，访问的是寄存器的 <strong>低 <code>32</code> 位</strong>，如图：</p>
+<p><img src="http://fireworkxzww.top//pic/image-20220317173609520.png" alt="image-20220317173609520"></p>
+<h4 id="向量寄存器"><a href="#向量寄存器" class="headerlink" title="向量寄存器"></a>向量寄存器</h4><p>（也可以说是 <strong>浮点型寄存器</strong>）每个寄存器的大小是 <code>128</code> 位的。 分别可以用<code>Bn Hn Sn Dn Qn</code>的方式来访问不同的位数；如图:</p>
+<p><img src="http://fireworkxzww.top//pic/image-20220317173632144.png" alt="image-20220317173632144"></p>
+<blockquote>
+<p><strong>注：</strong>word 是 <code>32</code> 位，也就是 4 Byte大小。</p>
+</blockquote>
+<ul>
+<li><strong>Bn：</strong>一个 Byte的大小，即 <code>8</code> 位</li>
+<li><strong>Hn：</strong>half word，即 <code>16</code> 位</li>
+<li><strong>Sn：</strong>single word，即 <code>32</code> 位</li>
+<li><strong>Dn：</strong>double word，即 <code>64</code> 位</li>
+<li><strong>Qn：</strong>quad word，即<code>128</code> 位</li>
+</ul>
+<h4 id="特殊寄存器"><a href="#特殊寄存器" class="headerlink" title="特殊寄存器"></a>特殊寄存器</h4><ul>
+<li><strong>sp：</strong> (Stack Pointer)，栈顶寄存器，用于保存栈顶地址；</li>
+<li><strong>fp(x29)：</strong> (Frame Pointer)为栈基址寄存，用于保存栈底地址；</li>
+<li><strong>lr(x30)：</strong> (Link Register) ，保存调用跳转指令 <em><code>bl</code></em> 指令的下一条指令的内存地址；</li>
+<li><strong>zr(x31)：</strong> (Zero Register)，<code>xzr/wzr</code>分别代表 64/32 位，其作用就是 0，写进去代表丢弃结果，读出来是 <code>0</code>；</li>
+<li><strong>pc：</strong>保存将要执行的指令的地址（有操作系统决定其值，不能改写）。</li>
+</ul>
+<h4 id="状态寄存器-CPSR"><a href="#状态寄存器-CPSR" class="headerlink" title="状态寄存器 CPSR"></a>状态寄存器 CPSR</h4><blockquote>
+<p><strong>CPSR</strong> (Current Program Status Register)和其他寄存器不一样，其他寄存器是用来存放数据的，都是整个寄存器具有一个含义；而 <strong>CPSR</strong> 寄存器是按位起作用的，即，每一位都有专门的含义，记录特定的信息；如下图</p>
+<p><strong>注：</strong> CPSR 寄存器是 <strong>32</strong> 位的。</p>
+</blockquote>
+<p><img src="http://fireworkxzww.top//pic/image-20220317173642969.png" alt="image-20220317173642969"></p>
+<ol>
+<li><code>CPSR</code> 的 <strong>低8位</strong>（包括 <code>I</code>、<code>F</code>、<code>T</code> 和 <code>M[4：0]</code>）称为控制位，程序无法修改，除非 CPU 运行于 <strong>特权模式</strong> 下，程序才能修改控制位。</li>
+<li><code>N</code>、<code>Z</code>、<code>C</code>、<code>V</code> 均为条件码标志位；其内容可被算术或逻辑运算的结果所改变，并且可以决定某条指令是否被执行。<ul>
+<li><strong>N（Negative）标志：</strong>CPSR 的第 <code>31</code> 位是 N，<em>符号标志位</em>；记录相关指令执行后其结果是否为负数，<strong>如果为负数，则 <code>N = 1</code>；如果是非负数，则 <code>N = 0</code></strong>。</li>
+<li><strong>Z(Zero)标志：</strong><code>CPSR</code> 的第 <code>30</code> 位是 Z，<em>0标志位</em>；记录相关指令执行后，其结果是否为0，<strong>如果结果为0，则 <code>Z = 1</code>；如果结果不为0，则 <code>Z = 0</code></strong>。</li>
+<li><strong>C(Carry)标志：</strong>CPSR 的第 <code>29</code> 位是C，<em>进位标志位</em>；<ul>
+<li>加法运算：当运算结果产生了 <strong>进位</strong> 时（无符号数溢出），<code>C = 1</code>，否则 <code>C = 0</code> ；</li>
+<li>减法运算（包括 <code>CMP</code>）： 当运算时产生了 <strong>借位</strong> 时（无符号数溢出），<code>C = 0</code>，否则 <code>C = 1</code> 。</li>
+</ul>
+</li>
+<li><strong>V(Overflow)标志：</strong>CPSR 的第 28` 位是 V，<em>溢出标志位</em>；在进行有符号数运算的时候，如果超过了机器所能标识的范围，称为溢出。</li>
+</ul>
+</li>
+</ol>
+<h4 id="条件码列表"><a href="#条件码列表" class="headerlink" title="条件码列表"></a>条件码列表</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>操作码</th>
+<th>条件码助记符</th>
+<th>标志</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0000</td>
+<td>EQ</td>
+<td>Z=1</td>
+<td>相等</td>
+</tr>
+<tr>
+<td>0001</td>
+<td>NE(Not Equal)</td>
+<td>Z=0</td>
+<td>不相等</td>
+</tr>
+<tr>
+<td>0010</td>
+<td>CS/HS(Carry Set/High or Same)</td>
+<td>C=1</td>
+<td>无符号数大于或等于</td>
+</tr>
+<tr>
+<td>0011</td>
+<td>CC/LO(Carry Clear/LOwer)</td>
+<td>C=0</td>
+<td>无符号数小于</td>
+</tr>
+<tr>
+<td>0100</td>
+<td>MI(MInus)</td>
+<td>N=1</td>
+<td>负数</td>
+</tr>
+<tr>
+<td>0101</td>
+<td>PL(PLus)</td>
+<td>N=0</td>
+<td>正数或零</td>
+</tr>
+<tr>
+<td>0110</td>
+<td>VS(oVerflow set)</td>
+<td>V=1</td>
+<td>溢出</td>
+</tr>
+<tr>
+<td>0111</td>
+<td>VC(oVerflow clear)</td>
+<td>V=0</td>
+<td>没有溢出</td>
+</tr>
+<tr>
+<td>1000</td>
+<td>HI(High)</td>
+<td>C=1,Z=0</td>
+<td>无符号数大于</td>
+</tr>
+<tr>
+<td>1001</td>
+<td>LS(Lower or Same)</td>
+<td>C=0,Z=1</td>
+<td>无符号数小于或等于</td>
+</tr>
+<tr>
+<td>1010</td>
+<td>GE(Greater or Equal)</td>
+<td>N=V</td>
+<td>有符号数大于或等于</td>
+</tr>
+<tr>
+<td>1011</td>
+<td>LT(Less Than)</td>
+<td>N!=V</td>
+<td>有符号数小于</td>
+</tr>
+<tr>
+<td>1100</td>
+<td>GT(Greater Than)</td>
+<td>Z=0,N=V</td>
+<td>有符号数大于</td>
+</tr>
+<tr>
+<td>1101</td>
+<td>LE(Less or Equal)</td>
+<td>Z=1,N!=V</td>
+<td>有符号数小于或等于</td>
+</tr>
+<tr>
+<td>1110</td>
+<td>AL</td>
+<td>任何</td>
+<td>无条件执行(默认)</td>
+</tr>
+<tr>
+<td>1111</td>
+<td>NV</td>
+<td>任何</td>
+<td>从不执行</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="指令读取"><a href="#指令读取" class="headerlink" title="指令读取"></a>指令读取</h4><p>在 <code>arm64</code> 架构中，每个指令读取都是 <em>64</em> 位，即 <strong><code>8</code>字节 空间</strong>。</p>
+<h4 id="arm64-约定（一般来说）"><a href="#arm64-约定（一般来说）" class="headerlink" title="arm64 约定（一般来说）"></a>arm64 约定（一般来说）</h4><ul>
+<li><code>x0 ~ x7</code> 分别会存放方法的前 8 个参数；如果参数个数超过了8个，多余的参数会存在栈上，新方法会通过栈来读取。</li>
+<li>方法的返回值一般都在 x0 上；如果方法返回值是一个较大的数据结构时，结果会存在 x8 执行的地址上。</li>
+</ul>
+<h3 id="常见汇编指令"><a href="#常见汇编指令" class="headerlink" title="常见汇编指令"></a>常见汇编指令</h3><ul>
+<li><p><strong>mov：</strong> 将某一寄存器的值复制到另一寄存器（只能用于寄存器与寄存器或者寄存器与常量之间传值，不能用于内存地址），如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov x1, x0 							; 将寄存器 x0 的值复制到寄存器 x1 中 </span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>add：</strong> 将某一寄存器的值和另一寄存器的值 <em>相加</em> 并将结果保存在另一寄存器中，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">add x0, x0, #1 					; 将寄存器 x0 的值和常量 1 相加后保存在寄存器 x0 中 </span><br><span class="line">add x0, x1, x2 					; 将寄存器 x1 和 x2 的值相加后保存到寄存器 x0 中 </span><br><span class="line">add x0, x1, [x2] 				; 将寄存器 x1 的值加上寄存器 x2 的值作为地址，再取该内存地址的内容放入寄存器 x0 中 </span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>sub：</strong> 将某一寄存器的值和另一寄存器的值 <em>相减</em> 并将结果保存在另一寄存器中，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sub x0, x1, x2 					; 将寄存器 x1 和 x2 的值相减后保存到寄存器 x0 中 </span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>mul：</strong>将某一寄存器的值和另一个寄存器的值 <em>相乘</em> 并将结果保存在另一寄存器中，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mul x0, x1, x2  				; 将寄存器 x1 和 x2 的值相乘后结果保存到寄存器 x0 中</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>sdiv：</strong>（有符号数，对应 <strong>udiv</strong>: 无符号数）将某一寄存器的值和另一个寄存器的值 <em>相除</em> 并将结果保存在另一寄存器中，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sdiv x0, x1, x2 				; 将寄存器 x1 和 x2 的值相除后结果保存到寄存器 x0 中</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>and：</strong> 将某一寄存器的值和另一寄存器的值 <em>按位与</em> 并将结果保存到另一寄存器中，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and x0, x0, #0xf 				; 将寄存器 x0 的值和常量 0xf 按位与后保存到寄存器 x0 中 </span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>orr：</strong> 将某一寄存器的值和另一寄存器的值 <em>按位或</em> 并将结果保存到另一寄存器中，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">orr x0, x0, #9 					; 将寄存器 x0 的值和常量 9 按位或后保存到寄存器 x0 中</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>eor：</strong> 将某一寄存器的值和另一寄存器的值 <em>按位异或</em> 并将结果保存到另一寄存器中，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eor x0, x0, #0xf 				; 将寄存器 x0 的值和常量 0xf 按位异或后保存到寄存器 x0 中 </span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>str：</strong> (store register) 将寄存器中的值写入到内存中，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">str w9, [sp, #0x8] 			; 将寄存器 w9 中的值保存到栈内存 [sp + 0x8] 处 </span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>strb：</strong> (store register byte) 将寄存器中的值写入到内存中（只存储一个字节），如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">strb w8, [sp, #7]				; 将寄存器 w8 中的低 1 字节的值保存到栈内存 [sp + 7] 处 </span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>ldr：</strong> (load register) 将内存中的值读取到寄存器中，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ldr x0, [x1] 						; 将寄存器 x1 的值作为地址，取该内存地址的值放入寄存器 x0 中 </span><br><span class="line">ldr w8, [sp, #0x8] 			; 将栈内存 [sp + 0x8] 处的值读取到 w8 寄存器中 </span><br><span class="line">ldr x0, [x1, #4]! 			; 将寄存器 x1 的值加上 4 作为内存地址, 取该内存地址的值放入寄存器 x0 中, 然后将寄存器 x1 的值加上 4 放入寄存器 x1 中 </span><br><span class="line">ldr x0, [x1], #4 				; 将寄存器 x1 的值作为内存地址，取内该存地址的值放入寄存器 x0 中, 再将寄存器 x1 的值加上 4 放入寄存器 x1 中 </span><br><span class="line">ldr x0, [x1, x2] 				; 将寄存器 x1 和寄存器 x2 的值相加作为地址，取该内存地址的值放入寄存器 x0 中 </span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>ldrsb：</strong> (load register byte) 将内存中的值（只读取一个字节）读取到寄存器中，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ldrsb	w8, [sp, #7]			; 将栈内存 [sp + 7] 出的 低 1 字节的值读取到寄存器 w8 中</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>stur：</strong>同 <code>str</code> 将寄存器中的值写入到内存中（一般用于 <code>负</code> 地址运算中），如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stur w10, [x29, #-0x4] 	; 将寄存器 w10 中的值保存到栈内存 [x29 - 0x04] 处 	</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>ldur：</strong> 同 <code>ldr</code> 将内存中的值读取到寄存器中（一般用于 <code>负</code> 地址运算中），如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ldur w8, [x29, #-0x4]   ; 将栈内存 [x29 - 0x04] 处的值读取到 w8 寄存器中</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>stp：</strong> 入栈指令（<code>str</code> 的变种指令，可以同时操作两个寄存器），如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stp x29, x30, [sp, #0x10] 	; 将 x29, x30 的值存入 sp 偏移 16 个字节的位置 </span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>ldp：</strong> 出栈指令（<code>ldr</code> 的变种指令，可以同时操作两个寄存器），如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ldp x29, x30, [sp, #0x10] 	; 将 sp 偏移 16 个字节的值取出来，存入寄存器 x29 和寄存器 x30 </span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>scvtf：</strong> (Signed Convert To Float)带符号 <em>定点数</em> 转换为 <em>浮点数</em>，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scvtf	d1, w0			; 将寄存器 w0 的值(顶点数，转化成 浮点数) 保存到 向量寄存器&#x2F;浮点寄存器 d1 中</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>fcvtzs：</strong>(Float Convert To Zero Signed)<em>浮点数</em> 转化为 <em>定点数</em> （舍入为0），如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fcvtzs w0, s0			; 将向量寄存器 s0 的值(浮点数，转换成 定点数)保存到寄存器 w0 中</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>cbz：</strong> 和 0 比较（Compare），如果结果为零（Zero）就转移（只能跳到后面的指令），如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cbz  x8, loc_1800b4530	; 将寄存器 x8 的值和 0 比较，如果结果为 “0” 则跳转到 ‘loc_1800b4530’ 标签处开始指令</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>cbnz：</strong> 和非 0 比较（Compare），如果结果非零（Non Zero）就转移（只能跳到后面的指令），如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cbnz  x9, loc_1800b4530	; 将寄存器 x9 的值和 0 比较，如果结果为 “非 0” 则跳转到 ‘loc_1800b4530’ 标签处开始指令</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>cmp：</strong> 比较指令，相当于 <code>subs</code>，影响程序状态寄存器 <em>CPSR</em> ;</p>
+</li>
+<li><p><strong>cset：</strong>比较指令，满足条件，则并置 <code>1</code>，否则置 <code>0</code> ，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cmp	 w8, #2    	; 将寄存器 w8 的值和常量 2 进行比较</span><br><span class="line">cset w8, gt			; 如果是大于(grater than)，则将寄存器 w8 的值设置为 1，否则设置为 0</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>LSL：</strong> 逻辑左移</p>
+</li>
+<li><p><strong>LSR：</strong> 逻辑右移</p>
+</li>
+<li><p><strong>ASR：</strong> 算术右移</p>
+</li>
+<li><p><strong>ROR：</strong> 循环右移</p>
+</li>
+<li><p><strong>adrp：</strong> 用来定位数据段中的数据用, 因为 <em>aslr</em> 会导致代码及数据的地址随机化, 用 <em>adrp</em> 来根据 <em>pc</em> 做辅助定位</p>
+</li>
+<li><p><strong>b：</strong> （branch）跳转到某地址（无返回）, 不会改变 <em>lr (x30)</em> 寄存器的值；一般是本方法内的跳转，如 <code>while</code> 循环，<code>if else</code> 等 ，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">b	LBB0_1				; 直接跳转到标签 ‘LLB0_1’ 处开始执行</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>bl：</strong> 跳转到某地址（有返回），先将下一指令地址（即函数返回地址）保存到寄存器 <em>lr</em> (x30)中，再进行跳转 ；一般用于不同方法直接的调用 ，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bl 0x100cfa754	; 先将下一指令地址（‘0x100cfa754’ 函数调用后的返回地址）保存到寄存器 ‘lr’ 中，然后再调用 ‘0x100cfa754’ 函数</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>blr：</strong> 跳转到 <code>某寄存器</code> (的值)指向的地址（有返回），先将下一指令地址（即函数返回地址）保存到寄存器 <em>lr</em> (x30)中，再进行跳转 ；如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">blr x20					; 先将下一指令地址（‘x20’指向的函数调用后的返回地址）保存到寄存器 ‘lr’ 中，然后再调用 ‘x20’ 指向的函数</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>br：</strong> 跳转到某寄存器(的值)指向的地址（无返回）, 不会改变 <em>lr (x30)</em> 寄存器的值。</p>
+</li>
+<li><p><strong>brk:</strong> 可以理解为跳转指令特殊的一种。</p>
+</li>
+<li><p><strong>ret：</strong> 子程序（函数调用）返回指令，返回地址已默认保存在寄存器 <em>lr</em> (x30) 中</p>
+</li>
+</ul>
+<h2 id="函数调用"><a href="#函数调用" class="headerlink" title="函数调用"></a>函数调用</h2><blockquote>
+<p>每个函数调用，都会有 <strong>入栈</strong> 和 <strong>出栈</strong> 操作。</p>
+</blockquote>
+<h3 id="例子-PushAndPop-c"><a href="#例子-PushAndPop-c" class="headerlink" title="例子: PushAndPop.c"></a>例子: PushAndPop.c</h3><h4 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">void TestPushAndPop()</span><br><span class="line">&#123;</span><br><span class="line">    printf(&quot;Push an Pop !&quot;);</span><br><span class="line">&#125;	</span><br></pre></td></tr></table></figure>
+<h4 id="汇编代码"><a href="#汇编代码" class="headerlink" title="汇编代码"></a>汇编代码</h4><ul>
+<li><p>通过 Xcode “<code>Product——&gt;Perform Action——&gt;Assemble PushAndPop.c</code>“ 查看其对应的汇编代码：</p>
+<p><img src="http://fireworkxzww.top//pic/image-20220317173715345.png" alt="image-20220317173715345"></p>
+</li>
+<li><p>也可以通过 <code>clang</code> 编译成汇编代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 注意，以下代码将默认生成pc版的汇编指令</span><br><span class="line">clang -S PushAndPop.c</span><br><span class="line">    </span><br><span class="line">&#x2F;&#x2F; arm64汇编需要如下命令，指定架构和系统头文件所在的目录，请务必将isysroot的sdk版本修改为对应的 xcode 中存在的版本！</span><br><span class="line">clang -S -arch arm64 -isysroot &#x2F;Applications&#x2F;Xcode.app&#x2F;Contents&#x2F;Developer&#x2F;Platforms&#x2F;iPhoneOS.platform&#x2F;Developer&#x2F;SDKs&#x2F;iPhoneOS11.1.sdk PushAndPop.c</span><br></pre></td></tr></table></figure>
+<p><img src="http://fireworkxzww.top//pic/image-20220317173729534.png" alt="image-20220317173729534"></p>
+</li>
+</ul>
+<blockquote>
+<p>去除一大堆 <strong>不相干东西</strong> 得到对应汇编代码，如下：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sub	sp, sp, #32             ; 更新栈顶寄存器的值，（可以看出：申请 32 字节占空间作为新用）</span><br><span class="line">stp	x29, x30, [sp, #16]     ; 保存调用该函数前的栈顶寄存器的值和该函数结束返回后下一将执行指令地址值</span><br><span class="line">add	x29, sp, #16            ; 更新栈底寄存器的值，(可以看出：还剩余 16 字节空间给该函数用)</span><br><span class="line">adrp     x0, l_.str@PAGE		; 获取 ‘l_.str’ 标签所在的页的地址 </span><br><span class="line">add x0, x0, l_.str@PAGEOFF	; 获取 ‘l_.str’ 标签对应页地址的偏移</span><br><span class="line">bl	_printf									; 调用 ‘printf’ 函数进行打印</span><br><span class="line">stur	w0, [x29, #-4]        ; 将 w0 寄存器的值(&#39;bl&#39; 函数调用的返回值)保存到 [x29 - 4] 的内存地址中</span><br><span class="line">ldp	x29, x30, [sp, #16]     ; 恢复调用该函数之前栈底寄存器的值</span><br><span class="line">add	sp, sp, #32             ; 恢复调用该函数之前栈顶寄存器的值</span><br><span class="line">ret													; 返回</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>对与上面的汇编代码，分配了 <code>32</code> 自己空间，其中 <code>16</code> 字节是用作 <strong>入栈操作</strong>，剩下的 <code>16</code> 字节是用于存储临时变量的。</p>
+<p><strong>疑问：</strong>例子函数命名是没有临时变量，为什么还会需要申请占空间？</p>
+<p><strong>解释：</strong>虽然该函数没有临时变量，但是调用 <code>printf</code> 函数后，编译器自动会加上 该函数<em>返回值</em> 的处理，由于 <strong>arm64 规定了整数型返回值放在 <code>x0</code> 寄存器里</strong>，因此会隐藏有一个局部变量 <code>int return_value;</code> 的声明在，该临时变量占用 <code>4</code>字节空间；又因为 <strong>arm64 下对于使用 <code>sp</code> 作为地址基址寻址的时候，必须要 <code>16byte-alignment</code>（对齐）</strong>，所以申请了 <code>16</code>字节空间作为临时变量使用。具体参见 <a target="_blank" rel="noopener" href="https://community.arm.com/developer/ip-products/processors/b/processors-ip-blog/posts/using-the-stack-in-aarch64-implementing-push-and-pop">这里</a>。</p>
+</blockquote>
+<ul>
+<li><p>其 <strong>入栈操作</strong> 汇编代码流程解析如下：</p>
+<p><img src="http://fireworkxzww.top//pic/image-20220317173738475.png" alt="image-20220317173738475"></p>
+</li>
+<li><p>其 <strong>出栈操作</strong> 汇编代码流程解析如下：</p>
+<p><img src="http://fireworkxzww.top//pic/image-20220317173746145.png" alt="image-20220317173746145"></p>
+<blockquote>
+<p><strong>注意：</strong>对栈的 <code>分配/释放</code> 操作只会对栈指针做加减法, 而不会对栈内存中的内容做任何修改(也不会把释放的栈空间设置为 0)。</p>
+</blockquote>
+</li>
+</ul>
+<p>ref</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">best one :https:&#x2F;&#x2F;cit.dixie.edu&#x2F;cs&#x2F;2810&#x2F;arm64-assembly.html</span><br><span class="line">iOS开发同学的arm64汇编入门：https:&#x2F;&#x2F;blog.cnbluebox.com&#x2F;blog&#x2F;2017&#x2F;07&#x2F;24&#x2F;arm64-start&#x2F;</span><br><span class="line">arm64 架构之入栈&#x2F;出栈操作：</span><br><span class="line">https:&#x2F;&#x2F;blog.shenyuanluo.com&#x2F;Arm64PushAndPopStack.html：</span><br><span class="line">基于ARM64 的常见汇编命令记录:</span><br><span class="line">https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;42486116</span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Firework</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/01/26/arm64/">http://example.com/2022/01/26/arm64/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">Firework</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Pwn/">Pwn</a></div><div class="post_share"><div class="social-share" data-image="https://fireworkxzww.top//pic/005BYxJSly1h0ko96qnqoj30n30gm40f.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button button--animated"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat.jpg" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay.jpg" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/02/03/SystemcallABI/"><img class="prev-cover" src="https://fireworkxzww.top//pic/005BYxJSly1h0jile4cw2j31hc0u0tda.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">SystemcallABI</div></div></a></div><div class="next-post pull-right"><a href="/2021/10/18/Pwnable_2_Rookiss/"><img class="next-cover" src="https://fireworkxzww.top//pic/005BYxJSly1h0ko8f5r8ej314y0qqtcm.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Pwnable_2_Rookiss</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/09/11/EzRop/" title="Return Oriented Programming Report"><img class="cover" src="https://api.dujin.org/bing/1920.php" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-11</div><div class="title">Return Oriented Programming Report</div></div></a></div><div><a href="/2021/09/18/FormatString/" title="Format String Analysis Report"><img class="cover" src="https://fireworkxzww.top//pic/005BYxJSly1gx2nps63nbj30zk0nptdq.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-18</div><div class="title">Format String Analysis Report</div></div></a></div><div><a href="/2021/04/12/Linux程序保护机制/" title="Linux程序保护机制"><img class="cover" src="https://i.loli.net/2021/04/18/VqduSoB2nyTh1Fr.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-12</div><div class="title">Linux程序保护机制</div></div></a></div><div><a href="/2021/10/18/Pwnable_2_Rookiss/" title="Pwnable_2_Rookiss"><img class="cover" src="https://fireworkxzww.top//pic/005BYxJSly1h0ko8f5r8ej314y0qqtcm.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-18</div><div class="title">Pwnable_2_Rookiss</div></div></a></div><div><a href="/2021/07/16/Pwnablekr_1/" title="Pwnable_game题解_1"><img class="cover" src="https://i.loli.net/2021/04/14/lRpdG9awJtTnovg.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-16</div><div class="title">Pwnable_game题解_1</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#arm64-%E6%B1%87%E7%BC%96"><span class="toc-number">1.</span> <span class="toc-text">arm64 汇编</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-number">1.1.</span> <span class="toc-text">寄存器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E7%94%A8%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-number">1.1.1.</span> <span class="toc-text">通用寄存器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%91%E9%87%8F%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-number">1.1.2.</span> <span class="toc-text">向量寄存器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%89%B9%E6%AE%8A%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-number">1.1.3.</span> <span class="toc-text">特殊寄存器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E5%AF%84%E5%AD%98%E5%99%A8-CPSR"><span class="toc-number">1.1.4.</span> <span class="toc-text">状态寄存器 CPSR</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E7%A0%81%E5%88%97%E8%A1%A8"><span class="toc-number">1.1.5.</span> <span class="toc-text">条件码列表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8C%87%E4%BB%A4%E8%AF%BB%E5%8F%96"><span class="toc-number">1.1.6.</span> <span class="toc-text">指令读取</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#arm64-%E7%BA%A6%E5%AE%9A%EF%BC%88%E4%B8%80%E8%88%AC%E6%9D%A5%E8%AF%B4%EF%BC%89"><span class="toc-number">1.1.7.</span> <span class="toc-text">arm64 约定（一般来说）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E6%B1%87%E7%BC%96%E6%8C%87%E4%BB%A4"><span class="toc-number">1.2.</span> <span class="toc-text">常见汇编指令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">函数调用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90-PushAndPop-c"><span class="toc-number">2.1.</span> <span class="toc-text">例子: PushAndPop.c</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BA%90%E4%BB%A3%E7%A0%81"><span class="toc-number">2.1.1.</span> <span class="toc-text">源代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B1%87%E7%BC%96%E4%BB%A3%E7%A0%81"><span class="toc-number">2.1.2.</span> <span class="toc-text">汇编代码</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2021 - 2022 By Firework</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi,welcome to my world.Hava a good day!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script></div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
