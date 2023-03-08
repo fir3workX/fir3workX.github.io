@@ -26695,4 +26695,18 @@ Last Remainder chunk：对small bin的malloc机制的介绍中当用户请求的
         <tag>linux</tag>
       </tags>
   </entry>
+  <entry>
+    <title>buuCTF刷题汇编</title>
+    <url>/2023/03/08/%E5%81%9A%E9%A2%98%E5%B0%8F%E5%AD%90%E8%AE%B0%E5%BD%95%E7%89%88/</url>
+    <content><![CDATA[<h1 id="buuCTF刷题汇编"><a href="#buuCTF刷题汇编" class="headerlink" title="buuCTF刷题汇编"></a>buuCTF刷题汇编</h1><p><a href="https://fireworkxzww.top/data/BuuctfWP_Page-1-4.pdf">https://fireworkxzww.top/data/BuuctfWP_Page-1-4.pdf</a></p>
+<p><a href="https://fireworkxzww.top/data/BuuctfWP_4_6.pdf">https://fireworkxzww.top/data/BuuctfWP_4_6.pdf</a></p>
+]]></content>
+      <categories>
+        <category>Pwn</category>
+      </categories>
+      <tags>
+        <tag>Pwn</tag>
+        <tag>CTF</tag>
+      </tags>
+  </entry>
 </search>
